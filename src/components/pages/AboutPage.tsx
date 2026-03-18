@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
+import { useCanHover } from "@/lib/useCanHover";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -87,6 +88,8 @@ const stack = [
 ];
 
 export default function AboutPage() {
+  const canHover = useCanHover();
+
   return (
     <>
       <PageHeader
@@ -357,7 +360,7 @@ export default function AboutPage() {
               outline how we can help — with a clear plan and timeline.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+              <motion.div whileHover={canHover ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.97 }}>
                 <Link
                   href="/contact"
                   className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#0A0A0A] hover:bg-[#1a1a1a] text-white font-medium rounded-full text-sm transition-colors duration-300 shadow-lg shadow-black/10"
@@ -366,7 +369,7 @@ export default function AboutPage() {
                   <ArrowRight size={16} />
                 </Link>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+              <motion.div whileHover={canHover ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.97 }}>
                 <Link
                   href="/work"
                   className="inline-flex items-center gap-2 px-7 py-3.5 border border-[#E5E5E5] hover:border-[#6B7280]/40 hover:bg-[#FAFAFA] text-[#0A0A0A] font-medium rounded-full text-sm transition-all duration-300"

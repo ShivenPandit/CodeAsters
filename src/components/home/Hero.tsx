@@ -11,6 +11,7 @@ import {
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useRef, useCallback, useEffect, useState } from "react";
+import { useCanHover } from "@/lib/useCanHover";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -253,6 +254,7 @@ function HeroVisual({ mockup, float1, float2 }: VisualProps) {
 
 export default function Hero() {
   const p = useHeroParallax();
+  const canHover = useCanHover();
 
   return (
     <section
@@ -299,7 +301,7 @@ export default function Hero() {
       <div className="floating-dot w-2 h-2 top-[70%] left-[85%]" style={{ animationDelay: "-2s" }} />
       <div className="floating-dot w-2.5 h-2.5 top-[40%] left-[5%]" style={{ animationDelay: "-4s" }} />
 
-      <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-8 py-24 lg:py-0 w-full">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-8 py-16 md:py-24 lg:py-0 w-full">
         <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left — text with subtle cursor parallax */}
           <motion.div
@@ -356,7 +358,7 @@ export default function Hero() {
               transition={{ duration: 0.5, delay: 0.3, ease }}
               className="flex flex-wrap gap-3 items-center"
             >
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+              <motion.div whileHover={canHover ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.97 }}>
                 <Link
                   href="/contact"
                   data-cursor="Start"
@@ -367,7 +369,7 @@ export default function Hero() {
                 </Link>
               </motion.div>
 
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+              <motion.div whileHover={canHover ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.97 }}>
                 <Link
                   href="/work"
                   data-cursor="View"
@@ -380,7 +382,7 @@ export default function Hero() {
           </motion.div>
 
           {/* Right — visual with cursor-reactive 3D depth */}
-          <div className="hidden md:block">
+          <div>
             <HeroVisual mockup={p.mockup} float1={p.float1} float2={p.float2} />
           </div>
         </div>

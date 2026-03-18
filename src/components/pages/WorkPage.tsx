@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
+import { useCanHover } from "@/lib/useCanHover";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -242,6 +243,8 @@ const projects = [
 ];
 
 export default function WorkPage() {
+  const canHover = useCanHover();
+
   return (
     <>
       <PageHeader
@@ -268,7 +271,7 @@ export default function WorkPage() {
                   {/* Visual mockup */}
                   <div className="p-6 lg:p-8 bg-[#FAFAFB] border-b border-[#E5E5E5]">
                     <motion.div
-                      whileHover={{ y: -4 }}
+                      whileHover={canHover ? { y: -4 } : undefined}
                       transition={{ duration: 0.3, ease: "easeOut" }}
                       className="max-w-lg mx-auto"
                     >
@@ -403,7 +406,7 @@ export default function WorkPage() {
                           href={project.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          whileHover={{ scale: 1.02 }}
+                          whileHover={canHover ? { scale: 1.02 } : undefined}
                           whileTap={{ scale: 0.97 }}
                           className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0A0A0A] hover:bg-[#1a1a1a] text-white text-sm font-medium rounded-full transition-colors duration-300 shadow-sm"
                         >
@@ -431,7 +434,7 @@ export default function WorkPage() {
             <p className="text-base text-[#4B5563] mb-6">
               Let&apos;s discuss what we can build together — with a clear scope, timeline, and technical approach.
             </p>
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className="inline-block">
+            <motion.div whileHover={canHover ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.97 }} className="inline-block">
               <Link
                 href="/contact"
                 className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#0A0A0A] hover:bg-[#1a1a1a] text-white font-medium rounded-full text-sm transition-colors duration-300 shadow-md"

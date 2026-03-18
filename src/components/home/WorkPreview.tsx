@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, ExternalLink, Globe, Database } from "lucide-react";
 import Link from "next/link";
+import { useCanHover } from "@/lib/useCanHover";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -132,6 +133,8 @@ const projects = [
 ];
 
 export default function WorkPreview() {
+  const canHover = useCanHover();
+
   return (
     <section className="py-24 bg-[#FAFAFB]">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
@@ -202,7 +205,7 @@ export default function WorkPreview() {
                         href={project.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        whileHover={{ scale: 1.02 }}
+                        whileHover={canHover ? { scale: 1.02 } : undefined}
                         whileTap={{ scale: 0.97 }}
                         className="inline-flex items-center gap-2 text-sm font-medium text-[#0A0A0A] hover:text-[#6366F1] transition-colors duration-300 w-fit"
                       >
@@ -215,7 +218,7 @@ export default function WorkPreview() {
                   {/* Visual mockup */}
                   <div className="p-5 lg:p-7 bg-[#FAFAFB] border-t md:border-t-0 md:border-l border-[#E5E5E5] flex items-center">
                     <motion.div
-                      whileHover={{ y: -4 }}
+                      whileHover={canHover ? { y: -4 } : undefined}
                       transition={{ duration: 0.3, ease: "easeOut" }}
                       className="w-full"
                     >

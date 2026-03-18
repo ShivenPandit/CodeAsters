@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Globe, Code2, Server, Layers, LayoutDashboard, Settings } from "lucide-react";
 import Link from "next/link";
+import { useCanHover } from "@/lib/useCanHover";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -46,6 +47,8 @@ const services = [
 ];
 
 export default function ServicesPreview() {
+  const canHover = useCanHover();
+
   return (
     <section className="py-24 bg-white">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
@@ -87,7 +90,7 @@ export default function ServicesPreview() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.06, ease }}
-                whileHover={{ y: -2 }}
+                whileHover={canHover ? { y: -2 } : undefined}
                 className="group p-6 rounded-xl border border-[#E5E5E5] bg-white hover:shadow-lg hover:shadow-black/[0.04] hover:border-[#D4D4D4] transition-all duration-300"
               >
                 <div

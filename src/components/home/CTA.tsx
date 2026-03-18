@@ -3,10 +3,13 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { useCanHover } from "@/lib/useCanHover";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
 export default function CTA() {
+  const canHover = useCanHover();
+
   return (
     <section className="py-24 bg-[#FAFAFB]">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
@@ -25,7 +28,7 @@ export default function CTA() {
             outline of how we can help — scope, timeline, and next&nbsp;steps.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+            <motion.div whileHover={canHover ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.97 }}>
               <Link
                 href="/contact"
                 data-cursor="Start"
@@ -35,7 +38,7 @@ export default function CTA() {
                 <ArrowRight size={16} />
               </Link>
             </motion.div>
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+            <motion.div whileHover={canHover ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.97 }}>
               <Link
                 href="/about"
                 className="inline-flex items-center gap-2 px-7 py-3.5 border border-[#E5E5E5] hover:border-[#6B7280]/40 hover:bg-white text-[#0A0A0A] font-medium rounded-full text-sm transition-all duration-300"

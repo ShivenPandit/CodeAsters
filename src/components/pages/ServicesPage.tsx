@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
+import { useCanHover } from "@/lib/useCanHover";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -231,6 +232,8 @@ const buildTypes = [
 ];
 
 export default function ServicesPage() {
+  const canHover = useCanHover();
+
   return (
     <>
       <PageHeader
@@ -412,7 +415,7 @@ export default function ServicesPage() {
             <p className="text-base text-[#4B5563] mb-6 max-w-lg mx-auto">
               Tell us what you&apos;re building. We&apos;ll respond with a clear technical scope, estimated timeline, and the right approach for your requirements.
             </p>
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className="inline-block">
+            <motion.div whileHover={canHover ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.97 }} className="inline-block">
               <Link
                 href="/contact"
                 className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#0A0A0A] hover:bg-[#1a1a1a] text-white font-medium rounded-full text-sm transition-colors duration-300 shadow-md"

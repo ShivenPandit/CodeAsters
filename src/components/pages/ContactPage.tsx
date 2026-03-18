@@ -1,10 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, MapPin, CheckCircle, Loader2, ArrowRight, Clock } from "lucide-react";
+import { Mail, MessageCircle, CheckCircle, Loader2, ArrowRight, Clock } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import emailjs from "@emailjs/browser";
 import PageHeader from "@/components/PageHeader";
+import { useCanHover } from "@/lib/useCanHover";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -23,6 +24,7 @@ const serviceOptions = [
 ];
 
 export default function ContactPage() {
+  const canHover = useCanHover();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -97,15 +99,20 @@ export default function ContactPage() {
                 </div>
               </a>
 
-              <div className="flex items-center gap-4 p-5 rounded-xl border border-[#E5E5E5] bg-white hover:border-[#D4D4D4] transition-colors duration-300">
+              <a
+                href="https://wa.me/916280807090"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-4 p-5 rounded-xl border border-[#E5E5E5] bg-white hover:border-[#D4D4D4] transition-colors duration-300"
+              >
                 <div className="w-11 h-11 rounded-lg bg-[#6366F1]/8 flex items-center justify-center shrink-0">
-                  <MapPin className="w-[18px] h-[18px] text-[#6366F1]" />
+                  <MessageCircle className="w-[18px] h-[18px] text-[#6366F1]" />
                 </div>
                 <div>
-                  <div className="text-sm font-semibold text-[#0A0A0A]">Location</div>
-                  <div className="text-sm text-[#6B7280]">India — Working Globally</div>
+                  <div className="text-sm font-semibold text-[#0A0A0A]">WhatsApp</div>
+                  <div className="text-sm text-[#6B7280]">Chat with us</div>
                 </div>
-              </div>
+              </a>
 
               <div className="flex items-center gap-4 p-5 rounded-xl border border-[#E5E5E5] bg-white hover:border-[#D4D4D4] transition-colors duration-300">
                 <div className="w-11 h-11 rounded-lg bg-[#6366F1]/8 flex items-center justify-center shrink-0">
@@ -277,7 +284,7 @@ export default function ContactPage() {
                   <motion.button
                     type="submit"
                     disabled={status === "sending"}
-                    whileHover={{ scale: status === "sending" ? 1 : 1.02 }}
+                    whileHover={canHover ? { scale: status === "sending" ? 1 : 1.02 } : undefined}
                     whileTap={{ scale: status === "sending" ? 1 : 0.97 }}
                     className="w-full flex items-center justify-center gap-2 py-3.5 px-8 bg-[#0A0A0A] hover:bg-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium rounded-full transition-colors duration-200 shadow-md"
                   >

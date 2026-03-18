@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Github, Linkedin, Instagram, ArrowUp, Mail } from "lucide-react";
 import Link from "next/link";
+import { useCanHover } from "@/lib/useCanHover";
 
 const footerLinks = {
   Company: [
@@ -29,6 +30,8 @@ const socials = [
 ];
 
 export default function Footer() {
+  const canHover = useCanHover();
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -64,7 +67,7 @@ export default function Footer() {
                   aria-label={social.label}
                   target={social.href.startsWith("http") ? "_blank" : undefined}
                   rel={social.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  whileHover={{ y: -2, scale: 1.05 }}
+                  whileHover={canHover ? { y: -2, scale: 1.05 } : undefined}
                   whileTap={{ scale: 0.95 }}
                   transition={{ duration: 0.2, ease: "easeOut" }}
                   className="w-9 h-9 rounded-lg bg-[#FAFAFA] border border-[#E5E5E5] hover:border-[#6366F1]/30 hover:text-[#6366F1] flex items-center justify-center transition-colors duration-300 text-[#6B7280]"
@@ -102,7 +105,7 @@ export default function Footer() {
           </p>
           <motion.button
             onClick={scrollToTop}
-            whileHover={{ y: -2 }}
+            whileHover={canHover ? { y: -2 } : undefined}
             whileTap={{ scale: 0.9 }}
             className="w-9 h-9 rounded-full border border-[#E5E5E5] hover:border-[#6366F1]/40 hover:text-[#6366F1] flex items-center justify-center transition-colors duration-300 text-[#6B7280]"
             aria-label="Scroll to top"

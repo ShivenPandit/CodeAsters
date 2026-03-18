@@ -5,6 +5,7 @@ import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useCanHover } from "@/lib/useCanHover";
 
 const links = [
   { name: "Services", href: "/services" },
@@ -17,6 +18,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const canHover = useCanHover();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -79,7 +81,7 @@ export default function Navbar() {
               </Link>
             ))}
 
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+            <motion.div whileHover={canHover ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.97 }}>
               <Link
                 href="/contact"
                 data-cursor="Let's Talk"
