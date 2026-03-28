@@ -19,37 +19,27 @@ const ease = [0.25, 0.1, 0.25, 1] as const;
 
 /* ─── Cursor parallax hook (hero-scoped) ─── */
 
-function useHeroParallax() {
+function useHeroParallax(isParallaxDisabled: boolean) {
   const ref = useRef<HTMLElement>(null);
   const rawX = useMotionValue(0);
   const rawY = useMotionValue(0);
   const [isHovered, setIsHovered] = useState(false);
-  const [disabled, setDisabled] = useState(true);
-
-  useEffect(() => {
-    const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setDisabled(isTouch || mq.matches);
-    const handler = () => setDisabled(isTouch || mq.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
 
   const onMouseMove = useCallback(
     (e: React.MouseEvent<HTMLElement>) => {
-      if (disabled) return;
+      if (isParallaxDisabled) return;
       const el = ref.current;
       if (!el) return;
       const { left, top, width, height } = el.getBoundingClientRect();
       rawX.set(((e.clientX - left) / width) * 2 - 1);
       rawY.set(((e.clientY - top) / height) * 2 - 1);
     },
-    [disabled, rawX, rawY]
+    [isParallaxDisabled, rawX, rawY]
   );
 
   const onMouseEnter = useCallback(() => {
-    if (!disabled) setIsHovered(true);
-  }, [disabled]);
+    if (!isParallaxDisabled) setIsHovered(true);
+  }, [isParallaxDisabled]);
 
   const onMouseLeave = useCallback(() => {
     setIsHovered(false);
@@ -92,15 +82,23 @@ function useHeroParallax() {
   const glowTop = useTransform(gSY, [-1, 1], ["20%", "80%"]);
 
   return {
-    ref,
+    sectionRef: ref,
     isHovered,
-    disabled,
-    handlers: { onMouseMove, onMouseEnter, onMouseLeave },
-    text: { x: textX, y: textY },
-    mockup: { x: mockX, y: mockY, rotateX: mockRX, rotateY: mockRY },
-    float1: { x: float1X, y: float1Y },
-    float2: { x: float2X, y: float2Y },
-    glow: { left: glowLeft, top: glowTop },
+    onMouseMove,
+    onMouseEnter,
+    onMouseLeave,
+    textX,
+    textY,
+    mockX,
+    mockY,
+    mockRotateX: mockRX,
+    mockRotateY: mockRY,
+    float1X,
+    float1Y,
+    float2X,
+    float2Y,
+    glowLeft,
+    glowTop,
   };
 }
 
@@ -763,22 +761,42 @@ function HeroVisual({ mockup, float1, float2 }: VisualProps) {
 /* ─── Hero Section ─── */
 
 export default function Hero() {
-  const p = useHeroParallax();
   const canHover = useCanHover();
   const reduceMotion = useReducedMotion();
+  const isParallaxDisabled = !canHover || !!reduceMotion;
+
+  const {
+    sectionRef,
+    isHovered,
+    onMouseMove,
+    onMouseEnter,
+    onMouseLeave,
+    textX,
+    textY,
+    mockX,
+    mockY,
+    mockRotateX,
+    mockRotateY,
+    float1X,
+    float1Y,
+    float2X,
+    float2Y,
+    glowLeft,
+    glowTop,
+  } = useHeroParallax(isParallaxDisabled);
 
   return (
     <section
-      ref={p.ref}
-      onMouseMove={p.handlers.onMouseMove}
-      onMouseEnter={p.handlers.onMouseEnter}
-      onMouseLeave={p.handlers.onMouseLeave}
+      ref={sectionRef}
+      onMouseMove={onMouseMove}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       className="relative flex min-h-[90vh] items-center overflow-hidden bg-page-soft"
       aria-label="Hero"
     >
       {/* Cursor-follow glow */}
       <AnimatePresence>
-        {p.isHovered && !p.disabled && (
+        {isHovered && !isParallaxDisabled && (
           <motion.div
             key="hero-glow"
             className="absolute inset-0 pointer-events-none z-0 overflow-hidden"
@@ -790,8 +808,8 @@ export default function Hero() {
             <motion.div
               className="absolute w-[600px] h-[600px] rounded-full"
               style={{
-                left: p.glow.left,
-                top: p.glow.top,
+                left: glowLeft,
+                top: glowTop,
                 translateX: "-50%",
                 translateY: "-50%",
                 background:
@@ -816,7 +834,7 @@ export default function Hero() {
         <div className="grid items-center gap-12 md:grid-cols-2 md:gap-14 lg:gap-20">
           {/* Left — text with subtle cursor parallax */}
           <motion.div
-            style={p.disabled ? undefined : { x: p.text.x, y: p.text.y }}
+            style={isParallaxDisabled ? undefined : { x: textX, y: textY }}
             className="pt-16 md:pt-0 will-change-transform"
           >
             <motion.div
@@ -847,7 +865,7 @@ export default function Hero() {
               <motion.span
                 className="text-[#6366F1] inline-block"
                 animate={{
-                  textShadow: p.isHovered
+                  textShadow: isHovered
                     ? "0 0 20px rgba(99,102,241,0.25), 0 0 40px rgba(99,102,241,0.08)"
                     : "0 0 0px rgba(99,102,241,0)",
                 }}
@@ -899,7 +917,11 @@ export default function Hero() {
 
           {/* Right — visual with cursor-reactive 3D depth (side card + below card need horizontal room) */}
           <div className="min-w-0 w-full lg:pr-4 xl:pr-8 2xl:pr-10">
-            <HeroVisual mockup={p.mockup} float1={p.float1} float2={p.float2} />
+            <HeroVisual
+              mockup={{ x: mockX, y: mockY, rotateX: mockRotateX, rotateY: mockRotateY }}
+              float1={{ x: float1X, y: float1Y }}
+              float2={{ x: float2X, y: float2Y }}
+            />
           </div>
         </div>
       </div>

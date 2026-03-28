@@ -20,6 +20,7 @@ import {
   Settings,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import PageHeader from "@/components/PageHeader";
 import { useCanHover } from "@/lib/useCanHover";
 
@@ -45,11 +46,13 @@ function DeepStudioMockup() {
         </div>
       </div>
       <div className="relative w-full bg-gradient-to-b from-[#EBEBEB] to-[#E5E5E5]">
-        <img
+        <Image
           src="/deepstudio-preview.png"
           alt="DeepStudio website preview"
+          width={1600}
+          height={1000}
+          sizes="(max-width: 1024px) 100vw, 60vw"
           className="block w-full h-auto max-h-[min(70vh,520px)] object-contain object-top"
-          loading="lazy"
         />
       </div>
       <div
@@ -83,11 +86,13 @@ function AnthriloMockup() {
         </div>
       </div>
       <div className="relative w-full bg-gradient-to-b from-[#EBEBEB] to-[#E5E5E5]">
-        <img
+        <Image
           src="/anthrilo-preview.png"
           alt="Anthrilo Management System dashboard preview"
+          width={1600}
+          height={1000}
+          sizes="(max-width: 1024px) 100vw, 60vw"
           className="block w-full h-auto max-h-[min(70vh,520px)] object-contain object-top"
-          loading="lazy"
         />
       </div>
       <div
@@ -121,11 +126,13 @@ function MyChoicesMockup() {
         </div>
       </div>
       <div className="relative w-full bg-gradient-to-b from-[#EBEBEB] to-[#E5E5E5]">
-        <img
+        <Image
           src="/mychoices-preview.png"
           alt="My Choices website preview"
+          width={1600}
+          height={1000}
+          sizes="(max-width: 1024px) 100vw, 60vw"
           className="block w-full h-auto max-h-[min(70vh,520px)] object-contain object-top"
-          loading="lazy"
         />
       </div>
       <div

@@ -27,10 +27,6 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
-
-  useEffect(() => {
     if (open) {
       document.body.classList.add("menu-open");
     } else {
@@ -94,7 +90,7 @@ export default function Navbar() {
           </LayoutGroup>
 
           <button
-            onClick={() => setOpen(!open)}
+            onClick={() => setOpen((prev) => !prev)}
             className="md:hidden w-9 h-9 flex items-center justify-center rounded-lg border border-[#E5E5E5] text-[#6B7280]"
             aria-label="Toggle menu"
           >
@@ -117,6 +113,7 @@ export default function Navbar() {
                 <Link
                   key={link.name}
                   href={link.href}
+                  onClick={() => setOpen(false)}
                   className={`block px-3 py-2.5 text-sm rounded-lg transition-colors duration-200 ${
                     pathname === link.href
                       ? "text-[#0A0A0A] font-medium bg-[#FAFAFA]"
@@ -128,6 +125,7 @@ export default function Navbar() {
               ))}
               <Link
                 href="/start"
+                onClick={() => setOpen(false)}
                 className="block mt-2 text-center px-5 py-2.5 bg-[#0A0A0A] text-white text-sm font-medium rounded-full"
               >
                 Start a Project

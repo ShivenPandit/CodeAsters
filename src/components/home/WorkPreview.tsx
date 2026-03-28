@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, ExternalLink, Globe, Database, ShoppingCart } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useCanHover } from "@/lib/useCanHover";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
@@ -21,11 +22,13 @@ function StaticImagePreview({ src, label }: { src: string; label: string }) {
         </div>
       </div>
       <div className="relative w-full bg-gradient-to-b from-[#EBEBEB] to-[#E5E5E5]">
-        <img
+        <Image
           src={src}
           alt={`${label} preview`}
+          width={1600}
+          height={1000}
+          sizes="(max-width: 768px) 100vw, 50vw"
           className="block w-full h-auto max-h-[min(70vh,520px)] object-contain object-top"
-          loading="lazy"
         />
       </div>
       <div

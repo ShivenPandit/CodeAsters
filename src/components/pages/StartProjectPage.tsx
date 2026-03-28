@@ -55,6 +55,19 @@ export default function StartProjectPage() {
   const [honeypot, setHoneypot] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
+  const setThankYouParam = (enabled: boolean) => {
+    if (typeof window === "undefined") return;
+
+    const nextUrl = new URL(window.location.href);
+    if (enabled) {
+      nextUrl.searchParams.set("thank-you", "true");
+    } else {
+      nextUrl.searchParams.delete("thank-you");
+    }
+
+    window.history.replaceState(window.history.state, "", `${nextUrl.pathname}${nextUrl.search}${nextUrl.hash}`);
+  };
+
   const update = (field: string, value: string) =>
     setForm((prev) => ({ ...prev, [field]: value }));
 
@@ -86,6 +99,7 @@ export default function StartProjectPage() {
         },
         EMAILJS_PUBLIC_KEY
       );
+      setThankYouParam(true);
       setStatus("sent");
       setForm({
         name: "",
@@ -242,7 +256,10 @@ export default function StartProjectPage() {
                   </p>
                   <button
                     type="button"
-                    onClick={() => setStatus("idle")}
+                    onClick={() => {
+                      setStatus("idle");
+                      setThankYouParam(false);
+                    }}
                     className="text-sm font-medium text-[#6366F1] hover:underline"
                   >
                     Submit another brief

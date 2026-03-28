@@ -2,15 +2,16 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
+import { useCanHover } from "@/lib/useCanHover";
 
 export default function CustomCursor() {
+  const canHover = useCanHover();
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
   const [isHovering, setIsHovering] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
   const [label, setLabel] = useState("");
   const [isVisible, setIsVisible] = useState(true);
-  const [isTouchDevice, setIsTouchDevice] = useState(true);
 
   const springConfig = { damping: 12, stiffness: 1400, mass: 0.12 };
   const smoothX = useSpring(cursorX, springConfig);
@@ -25,10 +26,7 @@ export default function CustomCursor() {
   );
 
   useEffect(() => {
-    const touch =
-      "ontouchstart" in window || navigator.maxTouchPoints > 0;
-    setIsTouchDevice(touch);
-    if (touch) return;
+    if (!canHover) return;
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -92,9 +90,9 @@ export default function CustomCursor() {
         handleMouseEnter
       );
     };
-  }, [moveCursor]);
+  }, [moveCursor, canHover]);
 
-  if (isTouchDevice) return null;
+  if (!canHover) return null;
 
   const hasLabel = label.length > 0;
   const size = hasLabel ? 64 : isHovering ? 44 : 8;
