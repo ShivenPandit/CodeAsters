@@ -120,9 +120,9 @@ const projects = [
     summary:
       "An enterprise-grade ERP system for textile manufacturing — managing raw materials, production workflows, garment inventory, multi-panel sales, and financial reporting across modular business operations.",
     stack: ["Next.js", "FastAPI", "Python", "PostgreSQL", "Redis"],
-    previewType: "image" as const,
+    previewType: "component" as const,
     previewLabel: "anthrilo / management",
-    imageSrc: "/anthrilo-preview.png",
+    imageSrc: null,
   },
 ];
 

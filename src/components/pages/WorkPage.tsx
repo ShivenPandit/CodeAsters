@@ -71,13 +71,46 @@ function AnthriloMockup() {
           </div>
         </div>
       </div>
-      <div className="relative aspect-[16/9] bg-[#0A0A0A]">
-        <img
-          src="/anthrilo-preview.png"
-          alt="Anthrilo website preview"
-          className="block w-full h-full object-cover object-top"
-          loading="lazy"
-        />
+      {/* ERP dashboard skeleton */}
+      <div className="p-5 bg-[#FAFAFA]">
+        <div className="flex gap-4">
+          {/* Sidebar */}
+          <div className="w-14 space-y-2.5 shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-[#F97316]/10 mx-auto" />
+            {[0, 1, 2, 3, 4].map((i) => (
+              <div key={i} className={`w-7 h-7 rounded-md mx-auto ${i === 0 ? "bg-[#F97316]/15" : "bg-[#E5E5E5]"}`} />
+            ))}
+          </div>
+          {/* Main content */}
+          <div className="flex-1 space-y-3">
+            {/* Stats row */}
+            <div className="grid grid-cols-4 gap-2.5">
+              {[0, 1, 2, 3].map((i) => (
+                <div key={i} className="rounded-lg border border-[#EBEBEB] bg-white p-2.5">
+                  <div className="h-2 w-10 rounded bg-[#E5E5E5] mb-2" />
+                  <div className="h-4 w-12 rounded bg-[#F97316]/15" />
+                </div>
+              ))}
+            </div>
+            {/* Table */}
+            <div className="rounded-lg border border-[#EBEBEB] bg-white overflow-hidden">
+              <div className="px-3 py-2 border-b border-[#F0F0F0] flex gap-4 bg-[#FAFAFA]">
+                <div className="h-2 w-20 rounded bg-[#E5E5E5]" />
+                <div className="h-2 w-14 rounded bg-[#E5E5E5]" />
+                <div className="h-2 w-10 rounded bg-[#E5E5E5]" />
+                <div className="h-2 w-12 rounded bg-[#E5E5E5]" />
+              </div>
+              {[0, 1, 2, 3].map((i) => (
+                <div key={i} className="px-3 py-2 flex gap-4 border-b border-[#F0F0F0] last:border-0">
+                  <div className="h-2 w-20 rounded bg-[#F5F5F5]" />
+                  <div className="h-2 w-14 rounded bg-[#F5F5F5]" />
+                  <div className="h-2 w-10 rounded bg-[#F97316]/10" />
+                  <div className="h-2 w-12 rounded bg-[#F5F5F5]" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
