@@ -12,7 +12,7 @@ interface PageHeaderProps {
 
 export default function PageHeader({ label, title, description }: PageHeaderProps) {
   return (
-    <section className="pt-32 pb-16 bg-[#FAFAFB]" aria-label={label}>
+    <section className="bg-page-soft pt-32 pb-16" aria-label={label}>
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import {
   ArrowRight,
+  Bot,
   Check,
   Globe,
   Code2,
@@ -28,7 +29,7 @@ const services = [
     accent: "#6366F1",
     title: "Web Design & Development",
     summary:
-      "Modern marketing websites, business websites, brand-led sites, landing pages, and content-driven platforms built for clarity, performance, and conversion. Every build is optimized for Core Web Vitals, structured for SEO, and designed to serve real business objectives.",
+      "Marketing sites and landing pages built for clarity, Core Web Vitals, SEO, and real conversion goals.",
     includes: [
       "Custom responsive design and development",
       "SEO-ready architecture and metadata structure",
@@ -44,7 +45,7 @@ const services = [
     accent: "#3B82F6",
     title: "Frontend Engineering",
     summary:
-      "High-quality responsive interfaces with strong focus on usability, interaction quality, and maintainable component architecture. We build frontends that are fast, accessible, and structured for long-term scalability — not just visual prototypes.",
+      "Fast, accessible UIs with solid components, motion where it helps, and architecture that scales past the first release.",
     includes: [
       "Component-driven UI architecture",
       "State management and data flow patterns",
@@ -60,7 +61,7 @@ const services = [
     accent: "#10B981",
     title: "Backend Development",
     summary:
-      "Scalable backend systems covering APIs, authentication flows, business logic, admin operations, and data workflows. We architect backends that handle real-world complexity — from role-based access control to multi-module data pipelines and reporting engines.",
+      "APIs, auth, business logic, and data workflows — structured for security, performance, and real operational load.",
     includes: [
       "RESTful API design and implementation",
       "Authentication and authorization systems",
@@ -76,7 +77,7 @@ const services = [
     accent: "#8B5CF6",
     title: "Full-Stack Product Development",
     summary:
-      "End-to-end product development across frontend, backend, database, integrations, deployment, and operational tooling. We take products from concept through architecture, development, testing, and production launch — handling the full technical scope.",
+      "End-to-end builds: UI, server, database, integrations, deploy, and handoff — one accountable technical path to launch.",
     includes: [
       "Architecture planning and technical scoping",
       "Frontend and backend development in parallel",
@@ -92,7 +93,7 @@ const services = [
     accent: "#F97316",
     title: "Admin Dashboards & Internal Tools",
     summary:
-      "Custom dashboards, reporting systems, operational panels, workflow management interfaces, and role-based business tools. Built for teams that need structured visibility into their data, operations, and business processes — not generic off-the-shelf admin templates.",
+      "Dashboards, reporting, and internal tools with roles, filters, and workflows — tailored to how your team actually works.",
     includes: [
       "Custom dashboard architecture and data visualization",
       "Role-based access control and permissions",
@@ -108,7 +109,7 @@ const services = [
     accent: "#059669",
     title: "ERP & Business Management Systems",
     summary:
-      "Complex internal systems for inventory, operations, finance, production tracking, reporting, and business process management. Our work on the Anthrilo Management System — a full ERP for textile manufacturing — demonstrates this capability across multi-module enterprise workflows.",
+      "Multi-module ERP-style systems: inventory, ops, finance, production, and reporting — built for serious day-to-day use.",
     includes: [
       "Multi-module platform architecture",
       "Inventory, production, and operations management",
@@ -124,7 +125,7 @@ const services = [
     accent: "#EC4899",
     title: "E-commerce Solutions",
     summary:
-      "Custom storefronts, catalog systems, checkout flows, order dashboards, inventory views, payment integrations, and performance-focused commerce experiences. We build e-commerce platforms that handle real transaction volume with clean UX and reliable backend operations.",
+      "Storefronts, catalog, checkout, orders, and payments — UX customers feel and backends that hold up under volume.",
     includes: [
       "Custom storefront design and development",
       "Product catalog and inventory management",
@@ -140,7 +141,7 @@ const services = [
     accent: "#EF4444",
     title: "Mobile App Development",
     summary:
-      "Cross-platform mobile applications for Android and iOS, aligned with backend systems and product workflows. We deliver mobile-ready product architecture that ensures consistent experiences across devices — from native apps to responsive progressive web applications.",
+      "Cross-platform apps aligned with your APIs and product — consistent experience on phones and tablets.",
     includes: [
       "Cross-platform mobile application development",
       "Mobile-first responsive architecture",
@@ -156,7 +157,7 @@ const services = [
     accent: "#A855F7",
     title: "UI/UX Design Systems",
     summary:
-      "Interface structure, design systems, user flows, interaction patterns, wireframes, high-fidelity screens, and usability-focused design decisions. We design with implementation in mind — every component, spacing decision, and interaction pattern is production-ready.",
+      "Flows, wireframes, UI systems, and handoff that developers can implement without guesswork.",
     includes: [
       "User research and journey mapping",
       "Wireframing and high-fidelity screen design",
@@ -172,7 +173,7 @@ const services = [
     accent: "#0EA5E9",
     title: "API Development & Integrations",
     summary:
-      "REST APIs, third-party integrations, payment systems, CRM connectors, reporting pipelines, and business workflow automation. We build integration layers that connect your systems reliably — handling data transformation, error handling, and operational monitoring.",
+      "REST APIs and integrations — payments, CRMs, webhooks, and pipelines with sane error handling and observability.",
     includes: [
       "Custom REST API design and development",
       "Payment gateway and financial integrations",
@@ -188,7 +189,7 @@ const services = [
     accent: "#14B8A6",
     title: "Cloud, Deployment & Performance",
     summary:
-      "VPS deployment, Nginx configuration, SSL setup, environment management, performance optimization, SEO-friendly architecture, and ongoing technical support. We handle the infrastructure side so your product runs reliably in production — with monitoring, backups, and continuous delivery.",
+      "Deploy, SSL, Nginx, CI/CD, performance passes, and SEO-friendly foundations — so production stays boring in a good way.",
     includes: [
       "VPS deployment with Nginx and SSL configuration",
       "CI/CD pipeline setup and automation",
@@ -198,6 +199,22 @@ const services = [
     ],
     ideal: "Products moving to production or existing applications that need infrastructure and performance work.",
     tags: ["VPS", "Docker", "Nginx", "CI/CD", "SEO"],
+  },
+  {
+    icon: Bot,
+    accent: "#06B6D4",
+    title: "Automation & Workflow Systems",
+    summary:
+      "Rules, triggers, and notifications across your tools — less manual work, clearer handoffs, fewer mistakes.",
+    includes: [
+      "Custom workflow and rules engine implementation",
+      "Trigger-based task automation across systems",
+      "Email, Slack, and webhook notification workflows",
+      "Approval routing and escalation logic",
+      "Monitoring, logging, and failure recovery handling",
+    ],
+    ideal: "Teams that want to replace repetitive manual work with reliable, measurable automation.",
+    tags: ["Automation", "Webhooks", "APIs", "Node.js", "FastAPI"],
   },
 ];
 
@@ -226,6 +243,7 @@ const buildTypes = [
   "Admin Dashboards",
   "ERP Systems",
   "E-commerce Platforms",
+  "Automation Workflows",
   "Backend Systems",
   "Cloud-Connected Platforms",
   "Mobile Applications",
@@ -238,12 +256,12 @@ export default function ServicesPage() {
     <>
       <PageHeader
         label="Services"
-        title="Modern software development across every layer."
-        description="From websites and mobile apps to enterprise platforms and cloud infrastructure — we deliver production-ready digital products."
+        title="Build across the full stack."
+        description="Websites, products, dashboards, ERP, mobile, and cloud — shipped with modern tooling and production discipline."
       />
 
       {/* Intro */}
-      <section className="pb-16 bg-[#FAFAFB]">
+      <section className="bg-page-soft pb-16">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -256,13 +274,13 @@ export default function ServicesPage() {
               <span className="inline-block text-xs font-medium tracking-[0.2em] uppercase text-[#6366F1] mb-4">
                 What We Build
               </span>
-              <h2 className="text-2xl sm:text-3xl font-semibold tracking-[-0.025em] leading-[1.1] text-[#0A0A0A]">
-                Full-stack capability across web, mobile, backend, and&nbsp;cloud.
+              <h2 className="text-2xl sm:text-3xl font-semibold tracking-[-0.025em] leading-[1.15] text-[#0A0A0A]">
+                One team for design, engineering, data, and&nbsp;ops.
               </h2>
             </div>
             <div className="lg:col-span-3 flex flex-col justify-center">
               <p className="text-base text-[#4B5563] leading-relaxed mb-6">
-                CodeAsters operates as a modern software development company — handling frontend engineering, backend architecture, database design, API integrations, cloud deployment, and product delivery. We work across the full technical stack to deliver systems that are production-ready, maintainable, and built for real business operations.
+                Frontend, backend, databases, APIs, and infrastructure — we ship systems you can run in production, not slide decks.
               </p>
               <div className="flex flex-wrap gap-2">
                 {buildTypes.map((type) => (
@@ -280,9 +298,9 @@ export default function ServicesPage() {
       </section>
 
       {/* Service Cards */}
-      <section className="pb-24 bg-[#FAFAFB]">
+      <section className="bg-page-soft pb-24">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="space-y-6">
+          <div className="space-y-8 lg:space-y-10">
             {services.map((service, i) => {
               const Icon = service.icon;
               return (
@@ -292,22 +310,22 @@ export default function ServicesPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ duration: 0.4, delay: i * 0.03, ease }}
-                  className="p-7 lg:p-8 rounded-xl border border-[#E5E5E5] bg-white hover:shadow-md hover:border-[#D4D4D4] transition-all duration-300 group"
+                  className="rounded-2xl border border-[#E5E5E5] bg-white p-6 transition-all duration-300 hover:border-[#D4D4D4] hover:shadow-md lg:p-8"
                 >
-                  <div className="grid lg:grid-cols-5 gap-8">
+                  <div className="grid gap-8 lg:grid-cols-5 lg:gap-10">
                     <div className="lg:col-span-3">
-                      <div className="flex items-start gap-4 mb-4">
+                      <div className="mb-4 flex items-start gap-4">
                         <div
-                          className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
-                          style={{ backgroundColor: `${service.accent}10` }}
+                          className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl"
+                          style={{ backgroundColor: `${service.accent}12` }}
                         >
-                          <Icon size={18} style={{ color: service.accent }} />
+                          <Icon size={20} style={{ color: service.accent }} strokeWidth={1.75} />
                         </div>
-                        <h3 className="text-xl font-semibold text-[#0A0A0A] tracking-tight pt-1.5">
+                        <h3 className="pt-1 text-xl font-semibold tracking-tight text-[#0A0A0A]">
                           {service.title}
                         </h3>
                       </div>
-                      <p className="text-sm text-[#4B5563] leading-relaxed mb-5">
+                      <p className="mb-5 max-w-prose text-[15px] leading-relaxed text-[#64748B]">
                         {service.summary}
                       </p>
                       <div className="flex flex-wrap gap-2">
@@ -323,22 +341,21 @@ export default function ServicesPage() {
                     </div>
 
                     <div className="lg:col-span-2">
-                      <div className="mb-5">
-                        <div className="text-xs font-semibold text-[#0A0A0A] uppercase tracking-wider mb-3">
-                          What&apos;s Included
+                      <div className="mb-4 rounded-xl bg-[#FAFAFA] p-4 ring-1 ring-[#E5E5E5]/80">
+                        <div className="mb-2.5 text-[11px] font-semibold uppercase tracking-wider text-[#0A0A0A]">
+                          Included
                         </div>
                         <ul className="space-y-2">
                           {service.includes.map((item) => (
-                            <li key={item} className="flex items-start gap-2 text-sm text-[#4B5563]">
-                              <Check size={14} className="mt-0.5 shrink-0" style={{ color: service.accent }} />
+                            <li key={item} className="flex gap-2.5 text-sm leading-snug text-[#475569]">
+                              <Check size={15} className="mt-0.5 shrink-0" style={{ color: service.accent }} strokeWidth={2.25} />
                               {item}
                             </li>
                           ))}
                         </ul>
                       </div>
-                      <p className="text-xs text-[#6B7280]">
-                        <span className="font-semibold text-[#374151]">Ideal for:</span>{" "}
-                        {service.ideal}
+                      <p className="text-xs leading-relaxed text-[#64748B]">
+                        <span className="font-semibold text-[#334155]">Best for:</span> {service.ideal}
                       </p>
                     </div>
                   </div>
@@ -350,7 +367,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Technology Stack */}
-      <section className="py-20 bg-white">
+      <section className="bg-page-white-soft py-20">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -362,11 +379,11 @@ export default function ServicesPage() {
             <span className="inline-block text-xs font-medium tracking-[0.2em] uppercase text-[#6366F1] mb-4">
               How We Build
             </span>
-            <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.025em] leading-[1.1] text-[#0A0A0A] mb-4">
-              Modern stack. Production-grade&nbsp;tooling.
+            <h2 className="mb-3 text-3xl font-semibold tracking-[-0.025em] text-[#0A0A0A] sm:text-4xl">
+              Stack we trust in production.
             </h2>
-            <p className="text-base text-[#4B5563] leading-relaxed max-w-2xl mx-auto">
-              Every project is built with technologies selected for performance, maintainability, and long-term reliability — not trends. We use what works at scale.
+            <p className="mx-auto max-w-xl text-base leading-relaxed text-[#64748B]">
+              Picked for speed, maintainability, and real-world reliability — not hype cycles.
             </p>
           </motion.div>
 
@@ -400,7 +417,7 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-[#FAFAFB]">
+      <section className="bg-page-soft py-20">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -409,21 +426,31 @@ export default function ServicesPage() {
             transition={{ duration: 0.4, delay: 0.2, ease }}
             className="text-center"
           >
-            <h3 className="text-2xl font-semibold text-[#0A0A0A] tracking-tight mb-3">
-              Ready to scope your project?
+            <h3 className="mb-2 text-2xl font-semibold tracking-tight text-[#0A0A0A]">
+              Ready when you are.
             </h3>
-            <p className="text-base text-[#4B5563] mb-6 max-w-lg mx-auto">
-              Tell us what you&apos;re building. We&apos;ll respond with a clear technical scope, estimated timeline, and the right approach for your requirements.
+            <p className="mx-auto mb-8 max-w-md text-base text-[#64748B]">
+              Send a project brief for scope &amp; timeline, or a short note if you&apos;re still exploring.
             </p>
-            <motion.div whileHover={canHover ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.97 }} className="inline-block">
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#0A0A0A] hover:bg-[#1a1a1a] text-white font-medium rounded-full text-sm transition-colors duration-300 shadow-md"
-              >
-                Start a Conversation
-                <ArrowRight size={16} />
-              </Link>
-            </motion.div>
+            <div className="flex flex-wrap justify-center gap-3">
+              <motion.div whileHover={canHover ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.97 }} className="inline-block">
+                <Link
+                  href="/start"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#0A0A0A] px-7 py-3.5 text-sm font-medium text-white shadow-md transition-colors hover:bg-[#1a1a1a]"
+                >
+                  Start a project
+                  <ArrowRight size={16} />
+                </Link>
+              </motion.div>
+              <motion.div whileHover={canHover ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.97 }} className="inline-block">
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-2 rounded-full border border-[#E5E5E5] px-7 py-3.5 text-sm font-medium text-[#0A0A0A] transition-colors hover:border-[#CBD5E1] hover:bg-white"
+                >
+                  Contact
+                </Link>
+              </motion.div>
+            </div>
           </motion.div>
         </div>
       </section>

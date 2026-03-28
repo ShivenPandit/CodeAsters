@@ -148,7 +148,7 @@ export default function Services() {
   const active = services[activeIndex];
 
   return (
-    <section id="services" className="relative py-20 bg-[#FAFAFB]">
+    <section id="services" className="relative bg-page-soft py-20">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <SectionHeading
           label="Services"

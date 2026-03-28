@@ -32,6 +32,21 @@ body {
   cursor: none;
 }
 
+/* Tiled stamps: inside .page-shell (isolate) so translucent sections blend correctly */
+.page-pattern-tiles {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("/dev-pattern.svg");
+  background-size: 400px 400px;
+  background-repeat: repeat;
+}
+
+.page-pattern-tiles--animate {
+  animation: site-pattern-drift 100s linear infinite;
+}
+
 a, button, input, textarea, select, [role="button"], [data-cursor] {
   cursor: none;
 }
@@ -107,11 +122,25 @@ html {
   scrollbar-width: none;
 }
 
+/* Tiled dev-tool stamps — slow drift (WhatsApp-style wallpaper) */
+@keyframes site-pattern-drift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 400px 400px;
+  }
+}
+
+.site-pattern-drift {
+  animation: site-pattern-drift 100s linear infinite;
+}
+
 /* Noise texture overlay */
 .noise-overlay {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: 20;
   pointer-events: none;
   opacity: 0.015;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
@@ -172,11 +201,50 @@ body.menu-open {
   .ambient-glow, .floating-dot {
     animation: none;
   }
+
+  .site-pattern-drift {
+    animation: none;
+  }
+
+  .page-pattern-tiles--animate {
+    animation: none;
+  }
 }
 
 /* Touch devices: restore cursor */
 @media (hover: none) and (pointer: coarse) {
   body, a, button, input, textarea, select, [role="button"], [data-cursor] {
     cursor: auto;
+  }
+}
+
+/* Plain rgba (no color-mix) so fills always work; tiles show through */
+.bg-page-soft {
+  background-color: rgba(250, 250, 251, 0.5);
+}
+
+.bg-page-white-soft {
+  background-color: rgba(255, 255, 255, 0.55);
+}
+
+@keyframes hero-code-cursor {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.hero-code-cursor {
+  animation: hero-code-cursor 1.05s step-end infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-code-cursor {
+    animation: none;
+    opacity: 1;
   }
 }

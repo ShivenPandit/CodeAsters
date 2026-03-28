@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <defs>
+    <style>
+      .t { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; font-weight: 600; fill: rgb(99 102 241); }
+      .o { opacity: 0.22; }
+      .p { stroke: rgb(99 102 241); stroke-width: 1.25; fill: none; opacity: 0.24; }
+    </style>
+  </defs>
+  <g class="o">
+    <text x="24" y="48" class="t" transform="rotate(-16 24 48)">TS</text>
+    <text x="168" y="36" class="t" transform="rotate(11 168 36)">Next</text>
+    <text x="292" y="62" class="t" transform="rotate(-8 292 62)">React</text>
+    <text x="48" y="128" class="t" transform="rotate(14 48 128)">Python</text>
+    <text x="220" y="118" class="t" transform="rotate(-12 220 118)">FastAPI</text>
+    <text x="338" y="142" class="t" transform="rotate(9 338 142)">Node</text>
+    <text x="12" y="210" class="t" transform="rotate(-10 12 210)">PostgreSQL</text>
+    <text x="188" y="198" class="t" transform="rotate(7 188 198)">Redis</text>
+    <text x="312" y="224" class="t" transform="rotate(-14 312 224)">Docker</text>
+    <text x="72" y="288" class="t" transform="rotate(13 72 288)">Tailwind</text>
+    <text x="248" y="276" class="t" transform="rotate(-11 248 276)">Git</text>
+    <text x="356" y="302" class="t" transform="rotate(8 356 302)">REST</text>
+    <text x="36" y="352" class="t" transform="rotate(-9 36 352)">JSON</text>
+    <text x="196" y="368" class="t" transform="rotate(15 196 368)">GraphQL</text>
+    <text x="284" y="338" class="t" transform="rotate(-7 284 338)">AWS</text>
+  </g>
+  <g class="p">
+    <path d="M320 24 L352 56 L320 88" />
+    <path d="M56 268 L24 300 L56 332" />
+    <path d="M180 320 L212 352 L244 320" />
+    <rect x="96" y="72" width="40" height="28" rx="4" transform="rotate(-12 116 86)" />
+    <rect x="260" y="168" width="36" height="36" rx="6" transform="rotate(18 278 186)" />
+    <path d="M140 340 L140 380 M140 360 L165 360" />
+    <circle cx="380" cy="220" r="14" />
+    <path d="M8 96 L48 96 M28 76 L28 116" />
+  </g>
+</svg>

@@ -83,7 +83,7 @@ export default function Navbar() {
 
             <motion.div whileHover={canHover ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.97 }}>
               <Link
-                href="/contact"
+                href="/start"
                 data-cursor="Let's Talk"
                 className="px-5 py-2 bg-[#0A0A0A] hover:bg-[#1a1a1a] text-white text-sm font-medium rounded-full transition-colors duration-300 shadow-sm"
               >
@@ -127,7 +127,7 @@ export default function Navbar() {
                 </Link>
               ))}
               <Link
-                href="/contact"
+                href="/start"
                 className="block mt-2 text-center px-5 py-2.5 bg-[#0A0A0A] text-white text-sm font-medium rounded-full"
               >
                 Start a Project

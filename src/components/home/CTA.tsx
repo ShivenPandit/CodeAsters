@@ -11,7 +11,7 @@ export default function CTA() {
   const canHover = useCanHover();
 
   return (
-    <section className="py-24 bg-[#FAFAFB]">
+    <section className="bg-page-soft py-24">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -30,7 +30,7 @@ export default function CTA() {
           <div className="flex flex-wrap justify-center gap-3">
             <motion.div whileHover={canHover ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.97 }}>
               <Link
-                href="/contact"
+                href="/start"
                 data-cursor="Start"
                 className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#0A0A0A] hover:bg-[#1a1a1a] text-white font-medium rounded-full text-sm transition-colors duration-300 shadow-lg shadow-black/10"
               >

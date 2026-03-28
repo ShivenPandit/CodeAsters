@@ -9,6 +9,7 @@ const footerLinks = {
   Company: [
     { name: "About", href: "/about" },
     { name: "Work", href: "/work" },
+    { name: "Start a project", href: "/start" },
     { name: "Contact", href: "/contact" },
   ],
   Services: [
@@ -37,10 +38,10 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-white text-[#0A0A0A] py-16" role="contentinfo">
+    <footer className="relative z-[1] border-t border-[#E5E5E5]/80 bg-page-white-soft py-16 text-[#0A0A0A] backdrop-blur-sm" role="contentinfo">
       <div className="absolute top-0 left-0 right-0 h-px bg-[#E5E5E5]" />
 
-      <div className="max-w-6xl mx-auto px-6 lg:px-8">
+      <div className="max-w-[88rem] mx-auto px-5 sm:px-6 lg:px-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-14">
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block mb-5">

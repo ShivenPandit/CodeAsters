@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, MessageCircle, CheckCircle, Loader2, ArrowRight, Clock } from "lucide-react";
+import { Mail, MessageCircle, CheckCircle, Loader2, ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import emailjs from "@emailjs/browser";
 import PageHeader from "@/components/PageHeader";
@@ -13,14 +14,11 @@ const EMAILJS_SERVICE_ID = "service_3zcdde9";
 const EMAILJS_TEMPLATE_CONTACT = "template_vbd0nmv";
 const EMAILJS_PUBLIC_KEY = "Tp5Pjp94y14gtbUti";
 
-const serviceOptions = [
-  "Website Design & Development",
-  "Admin Dashboard",
-  "Business System",
-  "UI/UX Design",
-  "Performance Optimization",
-  "Ongoing Support",
-  "Other",
+const topicOptions = [
+  "General question",
+  "Partnership or collaboration",
+  "Support on existing work",
+  "Something else",
 ];
 
 export default function ContactPage() {
@@ -29,7 +27,7 @@ export default function ContactPage() {
     name: "",
     email: "",
     phone: "",
-    service: "",
+    topic: "",
     message: "",
   });
   const [honeypot, setHoneypot] = useState("");
@@ -52,119 +50,115 @@ export default function ContactPage() {
         {
           name: form.name,
           email: form.email,
-          phone: form.phone,
-          service: form.service,
+          phone: form.phone || "—",
+          service: form.topic || "General contact",
           message: form.message,
         },
         EMAILJS_PUBLIC_KEY
       );
       setStatus("sent");
-      setForm({ name: "", email: "", phone: "", service: "", message: "" });
+      setForm({ name: "", email: "", phone: "", topic: "", message: "" });
     } catch {
       setStatus("error");
     }
   };
 
   const inputBase =
-    "w-full px-4 py-3 rounded-xl border border-[#D4D4D4] bg-white text-[#0A0A0A] text-sm placeholder:text-[#9CA3AF] outline-none transition-all duration-200 focus:border-[#6366F1] focus:ring-2 focus:ring-[#6366F1]/10";
+    "w-full px-4 py-3 rounded-xl border border-[#D4D4D4] bg-white text-[#0A0A0A] text-sm placeholder:text-[#9CA3AF] outline-none transition-all duration-200 focus:border-[#22C55E] focus:ring-2 focus:ring-[#22C55E]/10";
 
   return (
     <>
       <PageHeader
         label="Contact"
-        title="Let's discuss your project."
-        description="Tell us what you're building. We'll respond within 24 hours with a clear outline of how we can help."
+        title="Say hello."
+        description="Quick questions or introductions — we usually reply within a day. For a full project scope, use Start a project."
       />
 
-      <section className="pb-24 bg-[#FAFAFB]">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 max-w-5xl mx-auto">
-            {/* Left — Info */}
+      <section className="bg-page-soft pb-24">
+        <div className="mx-auto max-w-6xl px-6 lg:px-8">
+          <div className="mx-auto grid max-w-5xl grid-cols-1 gap-10 lg:grid-cols-5 lg:gap-14">
+            {/* Left — minimal, different from /start */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.1, ease }}
-              className="lg:col-span-2 space-y-4"
+              transition={{ duration: 0.4, delay: 0.08, ease }}
+              className="space-y-4 lg:col-span-2"
             >
+              <div className="rounded-2xl border border-emerald-200/60 bg-gradient-to-br from-emerald-50/80 to-white p-5 shadow-sm">
+                <p className="text-sm font-medium text-[#0A0A0A]">Need a proposal or timeline?</p>
+                <p className="mt-1 text-sm leading-relaxed text-[#64748B]">
+                  Use the project brief — it asks for scope, budget, and timing so we can respond with a real plan.
+                </p>
+                <Link
+                  href="/start"
+                  className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 hover:text-emerald-800"
+                >
+                  Start a project
+                  <ArrowRight size={14} />
+                </Link>
+              </div>
+
               <a
                 href="mailto:codeasters@gmail.com"
-                className="flex items-center gap-4 p-5 rounded-xl border border-[#E5E5E5] bg-white transition-all duration-300 hover:shadow-md hover:border-[#D4D4D4] group"
+                className="group flex items-center gap-4 rounded-2xl border border-[#E5E5E5] bg-white p-4 transition-all hover:border-[#D4D4D4] hover:shadow-sm"
               >
-                <div className="w-11 h-11 rounded-lg bg-[#6366F1]/8 flex items-center justify-center shrink-0">
-                  <Mail className="w-[18px] h-[18px] text-[#6366F1]" />
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F0FDF4]">
+                  <Mail className="h-[18px] w-[18px] text-emerald-600" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <div className="text-sm font-semibold text-[#0A0A0A]">Email</div>
-                  <div className="text-sm text-[#6B7280]">codeasters@gmail.com</div>
+                  <div className="truncate text-sm text-[#6B7280] group-hover:text-[#374151]">
+                    codeasters@gmail.com
+                  </div>
                 </div>
               </a>
 
               <a
-                href="https://wa.me/916280807090"
+                href="https://wa.me/919888069497"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 p-5 rounded-xl border border-[#E5E5E5] bg-white hover:border-[#D4D4D4] transition-colors duration-300"
+                className="flex items-center gap-4 rounded-2xl border border-[#E5E5E5] bg-white p-4 transition-all hover:border-[#D4D4D4]"
               >
-                <div className="w-11 h-11 rounded-lg bg-[#6366F1]/8 flex items-center justify-center shrink-0">
-                  <MessageCircle className="w-[18px] h-[18px] text-[#6366F1]" />
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F0FDF4]">
+                  <MessageCircle className="h-[18px] w-[18px] text-emerald-600" />
                 </div>
                 <div>
                   <div className="text-sm font-semibold text-[#0A0A0A]">WhatsApp</div>
                   <div className="text-sm text-[#6B7280]">Chat with us</div>
                 </div>
               </a>
-
-              <div className="flex items-center gap-4 p-5 rounded-xl border border-[#E5E5E5] bg-white hover:border-[#D4D4D4] transition-colors duration-300">
-                <div className="w-11 h-11 rounded-lg bg-[#6366F1]/8 flex items-center justify-center shrink-0">
-                  <Clock className="w-[18px] h-[18px] text-[#6366F1]" />
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-[#0A0A0A]">Response Time</div>
-                  <div className="text-sm text-[#6B7280]">Within 24 hours</div>
-                </div>
-              </div>
-
-              <div className="p-5 rounded-xl bg-[#6366F1]/5 border border-[#6366F1]/10">
-                <p className="text-sm text-[#4B5563] leading-relaxed">
-                  <span className="font-semibold text-[#0A0A0A]">How it works:</span>{" "}
-                  Share your project details through the form. We&apos;ll review your
-                  requirements and reply with a clear scope, estimated timeline, and next steps.
-                </p>
-              </div>
             </motion.div>
 
-            {/* Right — Form */}
+            {/* Right — short form */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.2, ease }}
+              transition={{ duration: 0.4, delay: 0.15, ease }}
               className="lg:col-span-3"
             >
               {status === "sent" ? (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
+                  initial={{ opacity: 0, scale: 0.98 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="p-10 rounded-2xl border border-[#E5E5E5] bg-white shadow-sm text-center"
+                  className="rounded-2xl border border-[#E5E5E5] bg-white p-10 text-center shadow-sm"
                 >
-                  <div className="w-14 h-14 rounded-full bg-green-500/10 flex items-center justify-center mx-auto mb-4">
-                    <CheckCircle className="w-7 h-7 text-green-600" />
+                  <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/10">
+                    <CheckCircle className="h-7 w-7 text-emerald-600" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#0A0A0A] mb-2">Message received.</h3>
-                  <p className="text-sm text-[#4B5563] mb-6">
-                    Thank you for reaching out. We&apos;ll review your project details and
-                    respond within 24 hours with a clear next step.
-                  </p>
+                  <h3 className="mb-2 text-xl font-semibold text-[#0A0A0A]">Thanks — got it.</h3>
+                  <p className="mb-6 text-sm text-[#4B5563]">We&apos;ll reply soon. Watch your inbox (and spam, just in case).</p>
                   <button
+                    type="button"
                     onClick={() => setStatus("idle")}
-                    className="text-sm font-medium text-[#6366F1] hover:underline"
+                    className="text-sm font-medium text-emerald-700 hover:underline"
                   >
-                    Send another message
+                    Send another note
                   </button>
                 </motion.div>
               ) : (
                 <form
                   onSubmit={handleSubmit}
-                  className="p-6 lg:p-8 rounded-2xl border border-[#E5E5E5] bg-white shadow-sm hover:shadow-md transition-shadow duration-500 space-y-5"
+                  className="space-y-5 rounded-2xl border border-[#E5E5E5] bg-white p-6 shadow-sm sm:p-8"
                 >
                   <input
                     type="text"
@@ -174,13 +168,13 @@ export default function ContactPage() {
                     autoComplete="off"
                     tabIndex={-1}
                     aria-hidden="true"
-                    className="absolute opacity-0 h-0 w-0 overflow-hidden pointer-events-none"
+                    className="pointer-events-none absolute h-0 w-0 overflow-hidden opacity-0"
                   />
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div className="grid gap-5 sm:grid-cols-2">
                     <div>
-                      <label htmlFor="name" className="block text-sm font-semibold text-[#374151] mb-2">
-                        Full Name <span className="text-red-400">*</span>
+                      <label htmlFor="name" className="mb-2 block text-sm font-semibold text-[#374151]">
+                        Name <span className="text-red-400">*</span>
                       </label>
                       <input
                         id="name"
@@ -189,12 +183,12 @@ export default function ContactPage() {
                         value={form.name}
                         onChange={(e) => update("name", e.target.value)}
                         className={inputBase}
-                        placeholder="John Smith"
+                        placeholder="Your name"
                       />
                     </div>
                     <div>
-                      <label htmlFor="email" className="block text-sm font-semibold text-[#374151] mb-2">
-                        Email Address <span className="text-red-400">*</span>
+                      <label htmlFor="email" className="mb-2 block text-sm font-semibold text-[#374151]">
+                        Email <span className="text-red-400">*</span>
                       </label>
                       <input
                         id="email"
@@ -203,58 +197,54 @@ export default function ContactPage() {
                         value={form.email}
                         onChange={(e) => update("email", e.target.value)}
                         className={inputBase}
-                        placeholder="you@company.com"
+                        placeholder="you@email.com"
                       />
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div>
-                      <label htmlFor="phone" className="block text-sm font-semibold text-[#374151] mb-2">
-                        Phone <span className="text-xs font-normal text-[#9CA3AF]">(optional)</span>
-                      </label>
-                      <input
-                        id="phone"
-                        type="tel"
-                        value={form.phone}
-                        onChange={(e) => update("phone", e.target.value)}
-                        className={inputBase}
-                        placeholder="+91 98765 43210"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="service" className="block text-sm font-semibold text-[#374151] mb-2">
-                        Service Needed <span className="text-red-400">*</span>
-                      </label>
-                      <div className="relative">
-                        <select
-                          id="service"
-                          required
-                          value={form.service}
-                          onChange={(e) => update("service", e.target.value)}
-                          className={`${inputBase} appearance-none pr-10 ${!form.service ? "text-[#9CA3AF]" : "text-[#0A0A0A]"}`}
-                        >
-                          <option value="" disabled>
-                            Select a service
+                  <div>
+                    <label htmlFor="phone" className="mb-2 block text-sm font-semibold text-[#374151]">
+                      Phone <span className="text-xs font-normal text-[#9CA3AF]">(optional)</span>
+                    </label>
+                    <input
+                      id="phone"
+                      type="tel"
+                      value={form.phone}
+                      onChange={(e) => update("phone", e.target.value)}
+                      className={inputBase}
+                      placeholder="+91 …"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="topic" className="mb-2 block text-sm font-semibold text-[#374151]">
+                      Topic
+                    </label>
+                    <div className="relative">
+                      <select
+                        id="topic"
+                        value={form.topic}
+                        onChange={(e) => update("topic", e.target.value)}
+                        className={`${inputBase} appearance-none pr-10 ${!form.topic ? "text-[#9CA3AF]" : "text-[#0A0A0A]"}`}
+                      >
+                        <option value="">What&apos;s this about?</option>
+                        {topicOptions.map((t) => (
+                          <option key={t} value={t}>
+                            {t}
                           </option>
-                          {serviceOptions.map((s) => (
-                            <option key={s} value={s} className="text-[#0A0A0A]">
-                              {s}
-                            </option>
-                          ))}
-                        </select>
-                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5">
-                          <svg className="h-4 w-4 text-[#6B7280]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                          </svg>
-                        </div>
+                        ))}
+                      </select>
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5">
+                        <svg className="h-4 w-4 text-[#6B7280]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
                       </div>
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="message" className="block text-sm font-semibold text-[#374151] mb-2">
-                      Project Details <span className="text-red-400">*</span>
+                    <label htmlFor="message" className="mb-2 block text-sm font-semibold text-[#374151]">
+                      Message <span className="text-red-400">*</span>
                     </label>
                     <textarea
                       id="message"
@@ -263,18 +253,15 @@ export default function ContactPage() {
                       value={form.message}
                       onChange={(e) => update("message", e.target.value)}
                       className={`${inputBase} resize-none leading-relaxed`}
-                      placeholder="Describe your project goals, requirements, and timeline..."
+                      placeholder="What’s on your mind?"
                     />
                   </div>
 
                   {status === "error" && (
-                    <div className="flex items-center gap-2.5 p-4 rounded-xl bg-red-50 border border-red-200">
-                      <svg className="w-4 h-4 text-red-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
+                    <div className="flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 p-4">
                       <p className="text-sm text-red-600">
-                        Something went wrong. Please try again or email us directly at{" "}
-                        <a href="mailto:codeasters@gmail.com" className="underline font-medium">
+                        Couldn&apos;t send. Email us at{" "}
+                        <a href="mailto:codeasters@gmail.com" className="font-medium underline">
                           codeasters@gmail.com
                         </a>
                       </p>
@@ -286,24 +273,22 @@ export default function ContactPage() {
                     disabled={status === "sending"}
                     whileHover={canHover ? { scale: status === "sending" ? 1 : 1.02 } : undefined}
                     whileTap={{ scale: status === "sending" ? 1 : 0.97 }}
-                    className="w-full flex items-center justify-center gap-2 py-3.5 px-8 bg-[#0A0A0A] hover:bg-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium rounded-full transition-colors duration-200 shadow-md"
+                    className="flex w-full items-center justify-center gap-2 rounded-full bg-emerald-600 py-3.5 text-sm font-medium text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {status === "sending" ? (
                       <>
                         <Loader2 size={16} className="animate-spin" />
-                        Sending...
+                        Sending…
                       </>
                     ) : (
                       <>
-                        Send Message
+                        Send message
                         <ArrowRight size={16} />
                       </>
                     )}
                   </motion.button>
 
-                  <p className="text-center text-xs text-[#6B7280]">
-                    Your information is secure and never shared with third parties.
-                  </p>
+                  <p className="text-center text-xs text-[#6B7280]">No spam — we only use this to reply.</p>
                 </form>
               )}
             </motion.div>

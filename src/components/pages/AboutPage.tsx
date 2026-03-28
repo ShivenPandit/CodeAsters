@@ -4,11 +4,8 @@ import { motion } from "framer-motion";
 import {
   ArrowRight,
   Target,
-  TrendingUp,
   Eye,
-  Layers,
   CheckCircle2,
-  Monitor,
   Gauge,
   Code2,
   Smartphone,
@@ -23,50 +20,42 @@ const ease = [0.25, 0.1, 0.25, 1] as const;
 const principles = [
   {
     icon: Eye,
-    title: "Design with Purpose",
-    description:
-      "Interfaces are built around real user needs — structured layouts, clear hierarchy, and deliberate visual decisions that support business goals.",
+    title: "Design with purpose",
+    description: "Hierarchy and layout that match how people actually use the product.",
   },
   {
     icon: Gauge,
-    title: "Performance as Standard",
-    description:
-      "Optimized builds, efficient rendering, and fast load times are baseline requirements — not afterthoughts.",
+    title: "Performance as standard",
+    description: "Fast loads and efficient UI — baseline, not a late add-on.",
   },
   {
     icon: Code2,
-    title: "Production-Grade Code",
-    description:
-      "TypeScript, scalable architecture, and maintainable component patterns — built for stability, not just demos.",
+    title: "Production-grade code",
+    description: "TypeScript, clear structure, patterns that survive the next feature.",
   },
   {
     icon: Smartphone,
-    title: "Responsive Across Devices",
-    description:
-      "Every project functions consistently across mobile, tablet, and desktop — tested and refined at every breakpoint.",
+    title: "Responsive everywhere",
+    description: "Refined across breakpoints, not just “works on mobile.”",
   },
   {
     icon: Target,
-    title: "Outcome-Oriented",
-    description:
-      "We focus on what actually drives results — usability, clarity, and systems that work reliably under real conditions.",
+    title: "Outcome-oriented",
+    description: "Usability and reliability under real load — not demo polish only.",
   },
   {
     icon: ShieldCheck,
-    title: "Long-Term Reliability",
-    description:
-      "Code is written for the long run — clean, documented, and structured to support future growth and iteration.",
+    title: "Built to last",
+    description: "Readable, documented enough to hand off and extend without fear.",
   },
 ];
 
 const expectations = [
-  "Thoughtful execution with attention to every detail",
-  "Honest, direct communication throughout the project",
-  "Organized delivery with clear milestones and timelines",
-  "Responsive behavior tested across all devices",
-  "Visual consistency maintained across every screen",
-  "Performance optimization as a core deliverable",
-  "Post-launch support and reliable handoff",
+  "Direct communication — no jargon walls",
+  "Milestones you can plan around",
+  "Tested layouts on real breakpoints",
+  "Performance treated as a feature",
+  "Clean handoff and sensible docs",
 ];
 
 const stack = [
@@ -94,12 +83,12 @@ export default function AboutPage() {
     <>
       <PageHeader
         label="About"
-        title="A modern software development company built for serious work."
-        description="CodeAsters designs and engineers production-ready digital products — from websites and mobile apps to enterprise platforms, cloud systems, and business software."
+        title="Software studio, production mindset."
+        description="We design and ship products — sites, apps, dashboards, ERP, and cloud — with the same care we’d want on our own stack."
       />
 
       {/* Intro */}
-      <section className="pb-20 bg-[#FAFAFB]">
+      <section className="bg-page-soft pb-20">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
             <motion.div
@@ -108,11 +97,9 @@ export default function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, ease }}
             >
-              <p className="text-base lg:text-lg text-[#4B5563] leading-relaxed">
-                Our work spans websites, web applications, admin dashboards, ERP systems, backend
-                services, mobile applications, and cloud-connected platforms. We operate across
-                the full technical stack — frontend, backend, database, API, and infrastructure
-                — with equal attention to design quality and engineering rigor.
+              <p className="text-base leading-relaxed text-[#64748B] lg:text-lg">
+                Sites, apps, dashboards, ERP, APIs, and cloud — frontend through infrastructure, with
+                design and engineering treated as one delivery.
               </p>
             </motion.div>
             <motion.div
@@ -146,7 +133,7 @@ export default function AboutPage() {
       </section>
 
       {/* What We Do */}
-      <section className="py-20 bg-white">
+      <section className="bg-page-white-soft py-20">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-5 gap-12 lg:gap-16">
             <motion.div
@@ -159,8 +146,8 @@ export default function AboutPage() {
               <span className="inline-block text-xs font-medium tracking-[0.2em] uppercase text-[#6366F1] mb-4">
                 What We Do
               </span>
-              <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.025em] leading-[1.1] text-[#0A0A0A]">
-                Full-stack capability. Real&nbsp;execution.
+              <h2 className="text-3xl font-semibold tracking-[-0.025em] text-[#0A0A0A] sm:text-4xl">
+                Capability + follow-through.
               </h2>
             </motion.div>
             <motion.div
@@ -170,17 +157,20 @@ export default function AboutPage() {
               transition={{ duration: 0.5, delay: 0.1, ease }}
               className="lg:col-span-3"
             >
-              <div className="space-y-4 text-sm lg:text-base text-[#4B5563] leading-relaxed">
-                <p>
-                  We handle frontend engineering, backend architecture, database design, API development,
-                  cloud deployment, and product delivery. Our portfolio includes enterprise ERP systems,
-                  custom admin dashboards, high-performance websites, and mobile-ready applications.
-                </p>
-                <p>
-                  Every project is built with modern tooling across Next.js, React, TypeScript, Node.js,
-                  FastAPI, Python, PostgreSQL, and MongoDB — chosen for production reliability, not trends.
-                </p>
-              </div>
+              <ul className="space-y-3 text-base leading-relaxed text-[#64748B]">
+                <li className="flex gap-3">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#6366F1]" />
+                  <span>Engineering across UI, APIs, data, deploy, and ops — not handoffs between silos.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#6366F1]" />
+                  <span>Portfolio spans ERP, dashboards, marketing sites, and mobile-friendly products.</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#6366F1]" />
+                  <span>Stack: Next.js, React, TypeScript, Node, FastAPI, Python, Postgres, Mongo — chosen for reliability.</span>
+                </li>
+              </ul>
 
               <div className="flex flex-wrap gap-3 mt-8">
                 {["Websites", "Web Apps", "Dashboards", "ERP Systems", "Backend Services", "Mobile Apps", "Cloud Platforms"].map(
@@ -200,7 +190,7 @@ export default function AboutPage() {
       </section>
 
       {/* How We Work */}
-      <section className="py-20 bg-[#FAFAFB]">
+      <section className="bg-page-soft py-20">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -212,14 +202,11 @@ export default function AboutPage() {
             <span className="inline-block text-xs font-medium tracking-[0.2em] uppercase text-[#6366F1] mb-4">
               Our Approach
             </span>
-            <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.025em] leading-[1.1] text-[#0A0A0A] mb-4">
-              Direct, structured, and&nbsp;production&#8209;ready.
+            <h2 className="mb-3 text-3xl font-semibold tracking-[-0.025em] text-[#0A0A0A] sm:text-4xl">
+              Clear process. Production bar.
             </h2>
-            <p className="text-base text-[#4B5563] leading-relaxed max-w-2xl">
-              From planning and interface design to development and launch, each stage is handled
-              with clarity, feedback, and production-level attention to detail. The goal is not
-              just to ship something good-looking, but to deliver something useful, stable, and
-              ready to support growth.
+            <p className="max-w-xl text-base leading-relaxed text-[#64748B]">
+              Plan → build → ship with tight feedback. Pretty is table stakes; stable and useful is the goal.
             </p>
           </motion.div>
 
@@ -233,13 +220,13 @@ export default function AboutPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.06, ease }}
-                  className="p-6 rounded-xl border border-[#E5E5E5] bg-white hover:shadow-md hover:border-[#D4D4D4] transition-all duration-300 group"
+                  className="rounded-2xl border border-[#E5E5E5] bg-white p-6 transition-all duration-300 hover:border-[#D4D4D4] hover:shadow-md"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-[#6366F1]/8 flex items-center justify-center mb-4">
-                    <Icon size={18} className="text-[#6366F1]" />
+                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[#6366F1]/8">
+                    <Icon size={20} className="text-[#6366F1]" strokeWidth={1.75} />
                   </div>
-                  <h3 className="text-base font-semibold text-[#0A0A0A] mb-2">{item.title}</h3>
-                  <p className="text-sm text-[#6B7280] leading-relaxed">{item.description}</p>
+                  <h3 className="mb-1.5 text-base font-semibold text-[#0A0A0A]">{item.title}</h3>
+                  <p className="text-sm leading-relaxed text-[#64748B]">{item.description}</p>
                 </motion.div>
               );
             })}
@@ -248,7 +235,7 @@ export default function AboutPage() {
       </section>
 
       {/* What Clients Can Expect */}
-      <section className="py-20 bg-white">
+      <section className="bg-page-white-soft py-20">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
             <motion.div
@@ -260,13 +247,11 @@ export default function AboutPage() {
               <span className="inline-block text-xs font-medium tracking-[0.2em] uppercase text-[#6366F1] mb-4">
                 Client Experience
               </span>
-              <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.025em] leading-[1.1] text-[#0A0A0A] mb-4">
+              <h2 className="mb-3 text-3xl font-semibold tracking-[-0.025em] text-[#0A0A0A] sm:text-4xl">
                 What you can expect.
               </h2>
-              <p className="text-sm lg:text-base text-[#4B5563] leading-relaxed">
-                Clients can expect thoughtful execution, honest communication, organized delivery,
-                and a strong focus on quality. We care about responsive behavior, visual consistency,
-                performance, usability, and long-term maintainability — not just first impressions.
+              <p className="text-base leading-relaxed text-[#64748B]">
+                Quality without the theatre — we care how it behaves in production, not just in a demo.
               </p>
             </motion.div>
 
@@ -286,8 +271,8 @@ export default function AboutPage() {
                     transition={{ duration: 0.3, delay: 0.15 + i * 0.04, ease }}
                     className="flex items-start gap-3"
                   >
-                    <CheckCircle2 size={16} className="text-[#6366F1] mt-0.5 shrink-0" />
-                    <span className="text-sm text-[#4B5563] leading-relaxed">{item}</span>
+                    <CheckCircle2 size={17} className="mt-0.5 shrink-0 text-[#6366F1]" strokeWidth={2} />
+                    <span className="text-sm leading-snug text-[#475569]">{item}</span>
                   </motion.li>
                 ))}
               </ul>
@@ -297,7 +282,7 @@ export default function AboutPage() {
       </section>
 
       {/* Why CodeAsters */}
-      <section className="py-20 bg-[#FAFAFB]">
+      <section className="bg-page-soft py-20">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -309,13 +294,11 @@ export default function AboutPage() {
             <span className="inline-block text-xs font-medium tracking-[0.2em] uppercase text-[#6366F1] mb-4">
               Why CodeAsters
             </span>
-            <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.025em] leading-[1.1] text-[#0A0A0A] mb-5">
-              Built for businesses that need serious technical execution.
+            <h2 className="mb-4 text-3xl font-semibold tracking-[-0.025em] text-[#0A0A0A] sm:text-4xl">
+              For teams that need real execution.
             </h2>
-            <p className="text-base text-[#4B5563] leading-relaxed">
-              We deliver production-grade software — from premium websites and mobile apps
-              to enterprise ERP systems and cloud infrastructure. Modern stack. Clean architecture.
-              Real results.
+            <p className="text-base leading-relaxed text-[#64748B]">
+              From polished marketing sites to heavy ERP and cloud work — modern stack, clear architecture, outcomes over slides.
             </p>
           </motion.div>
 
@@ -343,7 +326,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 bg-white">
+      <section className="bg-page-white-soft py-24">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -352,29 +335,36 @@ export default function AboutPage() {
             transition={{ duration: 0.5, ease }}
             className="max-w-2xl mx-auto text-center"
           >
-            <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.025em] leading-[1.1] text-[#0A0A0A] mb-4">
-              Have a project in mind?
+            <h2 className="mb-3 text-3xl font-semibold tracking-[-0.025em] text-[#0A0A0A] sm:text-4xl">
+              Have something in mind?
             </h2>
-            <p className="text-base text-[#4B5563] leading-relaxed mb-8">
-              Let&apos;s start the conversation. Tell us what you&apos;re building and we&apos;ll
-              outline how we can help — with a clear plan and timeline.
+            <p className="mb-8 text-base leading-relaxed text-[#64748B]">
+              Brief us for scope &amp; timeline, or browse work first — your pace.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <motion.div whileHover={canHover ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.97 }}>
                 <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#0A0A0A] hover:bg-[#1a1a1a] text-white font-medium rounded-full text-sm transition-colors duration-300 shadow-lg shadow-black/10"
+                  href="/start"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#0A0A0A] px-7 py-3.5 text-sm font-medium text-white shadow-lg shadow-black/10 transition-colors hover:bg-[#1a1a1a]"
                 >
-                  Start a Project
+                  Start a project
                   <ArrowRight size={16} />
                 </Link>
               </motion.div>
               <motion.div whileHover={canHover ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.97 }}>
                 <Link
                   href="/work"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 border border-[#E5E5E5] hover:border-[#6B7280]/40 hover:bg-[#FAFAFA] text-[#0A0A0A] font-medium rounded-full text-sm transition-all duration-300"
+                  className="inline-flex items-center gap-2 rounded-full border border-[#E5E5E5] px-7 py-3.5 text-sm font-medium text-[#0A0A0A] transition-all hover:border-[#6B7280]/40 hover:bg-[#FAFAFA]"
                 >
-                  View Our Work
+                  View work
+                </Link>
+              </motion.div>
+              <motion.div whileHover={canHover ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.97 }}>
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-2 rounded-full border border-transparent px-5 py-3.5 text-sm font-medium text-[#6366F1] hover:underline"
+                >
+                  Quick hello
                 </Link>
               </motion.div>
             </div>

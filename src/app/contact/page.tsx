@@ -4,7 +4,7 @@ import ContactPage from "@/components/pages/ContactPage";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with CodeAsters. Tell us about your project and we'll respond within 24 hours.",
+    "Say hello to CodeAsters — quick questions and introductions. For a full project brief, use Start a project.",
 };
 
 export default function Contact() {

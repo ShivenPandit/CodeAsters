@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import {
   ArrowRight,
   Globe,
+  ShoppingCart,
   Database,
   Palette,
   Zap,
@@ -24,7 +25,7 @@ import { useCanHover } from "@/lib/useCanHover";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-const iconMap = { Palette, Zap, Monitor, Layout, Database, BarChart3, Shield, Server, Package, Factory, TrendingUp, Settings } as const;
+const iconMap = { Palette, Zap, Monitor, Layout, Globe, Database, BarChart3, Shield, Server, Package, Factory, TrendingUp, Settings } as const;
 
 /* ---------- Mockup Components ---------- */
 
@@ -39,48 +40,27 @@ function DeepStudioMockup() {
         </div>
         <div className="flex-1 ml-4">
           <div className="h-5 rounded-md bg-white border border-[#E5E5E5] max-w-[200px] mx-auto flex items-center justify-center">
-            <span className="text-[9px] text-[#9CA3AF] font-mono">deep-studio.in</span>
+            <span className="text-[9px] text-[#9CA3AF] font-mono">deep-studio.vercel.app</span>
           </div>
         </div>
       </div>
-      <div className="p-5 space-y-4">
-        <div className="rounded-lg bg-[#0A0A0A] p-5 space-y-2.5">
-          <div className="flex items-center gap-2 mb-1">
-            <div className="h-3 w-3 rounded bg-[#6366F1]" />
-            <div className="h-2.5 w-16 rounded bg-white/15" />
-          </div>
-          <div className="h-5 w-4/5 rounded bg-white/20" />
-          <div className="h-5 w-3/5 rounded bg-white/20" />
-          <div className="h-3 w-full rounded bg-white/8 mt-1.5" />
-          <div className="h-3 w-4/5 rounded bg-white/8" />
-          <div className="flex gap-2.5 mt-3">
-            <div className="h-7 w-24 rounded-full bg-[#6366F1]" />
-            <div className="h-7 w-20 rounded-full bg-white/10 border border-white/15" />
-          </div>
-        </div>
-        <div className="grid grid-cols-3 gap-2.5">
-          {[
-            { color: "rgba(99,102,241,0.1)" },
-            { color: "rgba(249,115,22,0.1)" },
-            { color: "rgba(16,185,129,0.1)" },
-          ].map((item, i) => (
-            <div key={i} className="rounded-lg bg-[#FAFAFA] border border-[#F0F0F0] p-3 space-y-2">
-              <div className="w-6 h-6 rounded-md" style={{ backgroundColor: item.color }} />
-              <div className="h-2.5 w-full rounded bg-[#E5E5E5]" />
-              <div className="h-2 w-3/4 rounded bg-[#F0F0F0]" />
-            </div>
-          ))}
-        </div>
-        <div className="flex items-center justify-between pt-1">
-          <div className="flex gap-3">
-            {[0, 1, 2].map((i) => (
-              <div key={i}>
-                <div className="h-4 w-7 rounded bg-[#6366F1]/10 mb-0.5" />
-                <div className="h-2 w-10 rounded bg-[#F0F0F0]" />
-              </div>
-            ))}
-          </div>
-          <div className="h-6 w-14 rounded-full bg-[#0A0A0A]" />
+      <div className="relative w-full bg-gradient-to-b from-[#EBEBEB] to-[#E5E5E5]">
+        <img
+          src="/deepstudio-preview.png"
+          alt="DeepStudio website preview"
+          className="block w-full h-auto max-h-[min(70vh,520px)] object-contain object-top"
+          loading="lazy"
+        />
+      </div>
+      <div
+        className="flex items-center justify-between gap-3 border-t border-[#E0E0E0] bg-gradient-to-b from-[#FAFAFA] to-[#F0F0F0] px-4 py-2"
+        aria-hidden
+      >
+        <span className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#A1A1AA]">
+          Live preview
+        </span>
+        <div className="flex flex-1 justify-end">
+          <div className="h-1 w-12 rounded-full bg-[#D4D4D4]/90" />
         </div>
       </div>
     </div>
@@ -102,63 +82,61 @@ function AnthriloMockup() {
           </div>
         </div>
       </div>
-      <div className="p-4 flex gap-3">
-        <div className="w-14 space-y-2.5 shrink-0 border-r border-[#F0F0F0] pr-3">
-          <div className="w-9 h-9 rounded-lg bg-[#F97316]/10 mx-auto flex items-center justify-center">
-            <div className="w-4 h-4 rounded bg-[#F97316]/25" />
-          </div>
-          {[0, 1, 2, 3, 4].map((i) => (
-            <div
-              key={i}
-              className={`w-7 h-7 rounded-md mx-auto ${i === 0 ? "bg-[#F97316]/12" : "bg-[#F5F5F5]"}`}
-            />
-          ))}
+      <div className="relative w-full bg-gradient-to-b from-[#EBEBEB] to-[#E5E5E5]">
+        <img
+          src="/anthrilo-preview.png"
+          alt="Anthrilo Management System dashboard preview"
+          className="block w-full h-auto max-h-[min(70vh,520px)] object-contain object-top"
+          loading="lazy"
+        />
+      </div>
+      <div
+        className="flex items-center justify-between gap-3 border-t border-[#E0E0E0] bg-gradient-to-b from-[#FAFAFA] to-[#F0F0F0] px-4 py-2"
+        aria-hidden
+      >
+        <span className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#A1A1AA]">
+          Live preview
+        </span>
+        <div className="flex flex-1 justify-end">
+          <div className="h-1 w-12 rounded-full bg-[#D4D4D4]/90" />
         </div>
-        <div className="flex-1 space-y-3">
-          <div className="flex items-center justify-between">
-            <div className="h-3.5 w-28 rounded bg-[#0A0A0A]/8" />
-            <div className="flex gap-1.5">
-              <div className="w-6 h-6 rounded-md bg-[#F5F5F5]" />
-              <div className="w-6 h-6 rounded-md bg-[#F5F5F5]" />
-            </div>
+      </div>
+    </div>
+  );
+}
+
+function MyChoicesMockup() {
+  return (
+    <div className="rounded-xl border border-[#E5E5E5] bg-white shadow-md shadow-black/[0.04] overflow-hidden">
+      <div className="flex items-center gap-1.5 px-3 py-2.5 border-b border-[#F0F0F0] bg-[#FAFAFA]">
+        <div className="flex gap-1.5">
+          <div className="w-2.5 h-2.5 rounded-full bg-[#E5E5E5]" />
+          <div className="w-2.5 h-2.5 rounded-full bg-[#E5E5E5]" />
+          <div className="w-2.5 h-2.5 rounded-full bg-[#E5E5E5]" />
+        </div>
+        <div className="flex-1 ml-4">
+          <div className="h-5 rounded-md bg-white border border-[#E5E5E5] max-w-[210px] mx-auto flex items-center justify-center">
+            <span className="text-[9px] text-[#9CA3AF] font-mono">my-choices-lovat.vercel.app</span>
           </div>
-          <div className="grid grid-cols-4 gap-2">
-            {[
-              { color: "#F97316" },
-              { color: "#10B981" },
-              { color: "#6366F1" },
-              { color: "#EF4444" },
-            ].map((s, i) => (
-              <div key={i} className="rounded-lg border border-[#F0F0F0] p-2.5">
-                <div className="h-2 w-10 rounded bg-[#E5E5E5] mb-1.5" />
-                <div className="h-4 w-12 rounded" style={{ backgroundColor: `${s.color}15` }} />
-              </div>
-            ))}
-          </div>
-          <div className="rounded-lg border border-[#F0F0F0]">
-            <div className="px-3 py-2 border-b border-[#F0F0F0] bg-[#FAFAFA] flex gap-4">
-              <div className="h-2 w-20 rounded bg-[#D4D4D4]" />
-              <div className="h-2 w-14 rounded bg-[#D4D4D4]" />
-              <div className="h-2 w-16 rounded bg-[#D4D4D4]" />
-              <div className="h-2 w-12 rounded bg-[#D4D4D4]" />
-              <div className="h-2 w-10 rounded bg-[#D4D4D4]" />
-            </div>
-            {[0, 1, 2, 3, 4].map((i) => (
-              <div key={i} className="px-3 py-2 flex gap-4 border-b border-[#F0F0F0] last:border-0">
-                <div className="h-2 w-20 rounded bg-[#F5F5F5]" />
-                <div className="h-2 w-14 rounded bg-[#F5F5F5]" />
-                <div className="h-2 w-16 rounded bg-[#F5F5F5]" />
-                <div className="h-2 w-12 rounded bg-[#F5F5F5]" />
-                <div
-                  className="h-4 w-10 rounded-full"
-                  style={{
-                    backgroundColor:
-                      i % 3 === 0 ? "rgba(16,185,129,0.12)" : i % 3 === 1 ? "rgba(249,115,22,0.12)" : "rgba(99,102,241,0.12)",
-                  }}
-                />
-              </div>
-            ))}
-          </div>
+        </div>
+      </div>
+      <div className="relative w-full bg-gradient-to-b from-[#EBEBEB] to-[#E5E5E5]">
+        <img
+          src="/mychoices-preview.png"
+          alt="My Choices website preview"
+          className="block w-full h-auto max-h-[min(70vh,520px)] object-contain object-top"
+          loading="lazy"
+        />
+      </div>
+      <div
+        className="flex items-center justify-between gap-3 border-t border-[#E0E0E0] bg-gradient-to-b from-[#FAFAFA] to-[#F0F0F0] px-4 py-2"
+        aria-hidden
+      >
+        <span className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#A1A1AA]">
+          Live preview
+        </span>
+        <div className="flex flex-1 justify-end">
+          <div className="h-1 w-12 rounded-full bg-[#D4D4D4]/90" />
         </div>
       </div>
     </div>
@@ -169,7 +147,61 @@ function AnthriloMockup() {
 
 const projects = [
   {
-    id: "anthrilo",
+    id: "deepstudio",
+    name: "DeepStudio",
+    category: "Website Design & Development",
+    categoryIcon: Globe,
+    color: "#6366F1",
+    url: "https://deep-studio.vercel.app/",
+    summary:
+      "A premium studio website built to reflect a high-end creative identity. The project required fluid page transitions, performance-first architecture, and bold visual design — delivered with a modern frontend stack and strong attention to interaction quality and front-end polish.",
+    problem: null,
+    modules: null,
+    scope: [
+      "Full website design and front-end development",
+      "Responsive layouts across all breakpoints",
+      "Performance-optimized production build",
+      "Smooth scroll behavior and micro-interactions",
+      "SEO structure and metadata configuration",
+    ],
+    highlights: [
+      { icon: "Palette" as const, label: "Visual Design" },
+      { icon: "Zap" as const, label: "Performance-First" },
+      { icon: "Monitor" as const, label: "Fully Responsive" },
+      { icon: "Layout" as const, label: "Front-End Polish" },
+    ],
+    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
+    Mockup: DeepStudioMockup,
+  },
+  {
+    id: "mychoices",
+    name: "My Choices",
+    category: "E-commerce Website",
+    categoryIcon: ShoppingCart,
+    color: "#EC4899",
+    url: "https://my-choices-lovat.vercel.app/",
+    summary:
+      "A client e-commerce website built in Next.js with a clean shopping flow, category-driven browsing, and responsive product experiences across devices.",
+    problem: null,
+    modules: null,
+    scope: [
+      "Next.js storefront architecture and responsive layout",
+      "Product listing and category browsing flows",
+      "Clean visual hierarchy for commerce conversion",
+      "Performance-focused frontend implementation",
+      "Deployment-ready production setup",
+    ],
+    highlights: [
+      { icon: "Layout" as const, label: "Commerce UI" },
+      { icon: "Monitor" as const, label: "Mobile Ready" },
+      { icon: "Zap" as const, label: "Fast Frontend" },
+      { icon: "Globe" as const, label: "Live in Production" },
+    ],
+    stack: ["Next.js", "TypeScript", "Tailwind CSS", "E-commerce UX"],
+    Mockup: MyChoicesMockup,
+  },
+  {
+    id: "ams",
     name: "Anthrilo Management System",
     category: "Enterprise ERP / Business Platform",
     categoryIcon: Database,
@@ -213,33 +245,6 @@ const projects = [
     stack: ["Next.js", "TypeScript", "React", "FastAPI", "Python", "PostgreSQL", "Redis"],
     Mockup: AnthriloMockup,
   },
-  {
-    id: "deepstudio",
-    name: "DeepStudio",
-    category: "Website Design & Development",
-    categoryIcon: Globe,
-    color: "#6366F1",
-    url: "https://deep-studio.vercel.app/",
-    summary:
-      "A premium studio website built to reflect a high-end creative identity. The project required fluid page transitions, performance-first architecture, and bold visual design — delivered with a modern frontend stack and strong attention to interaction quality and front-end polish.",
-    problem: null,
-    modules: null,
-    scope: [
-      "Full website design and front-end development",
-      "Responsive layouts across all breakpoints",
-      "Performance-optimized production build",
-      "Smooth scroll behavior and micro-interactions",
-      "SEO structure and metadata configuration",
-    ],
-    highlights: [
-      { icon: "Palette" as const, label: "Visual Design" },
-      { icon: "Zap" as const, label: "Performance-First" },
-      { icon: "Monitor" as const, label: "Fully Responsive" },
-      { icon: "Layout" as const, label: "Front-End Polish" },
-    ],
-    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
-    Mockup: DeepStudioMockup,
-  },
 ];
 
 export default function WorkPage() {
@@ -253,7 +258,7 @@ export default function WorkPage() {
         description="From enterprise ERP platforms to high-performance websites — built from concept to deployment with hands-on execution."
       />
 
-      <section className="pb-24 bg-[#FAFAFB]">
+      <section className="bg-page-soft pb-24">
         <div className="max-w-5xl mx-auto px-6 lg:px-8">
           <div className="space-y-16">
             {projects.map((project, i) => {
@@ -273,7 +278,7 @@ export default function WorkPage() {
                     <motion.div
                       whileHover={canHover ? { y: -4 } : undefined}
                       transition={{ duration: 0.3, ease: "easeOut" }}
-                      className="max-w-lg mx-auto"
+                      className="w-full"
                     >
                       <Mockup />
                     </motion.div>
@@ -436,7 +441,7 @@ export default function WorkPage() {
             </p>
             <motion.div whileHover={canHover ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.97 }} className="inline-block">
               <Link
-                href="/contact"
+                href="/start"
                 className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#0A0A0A] hover:bg-[#1a1a1a] text-white font-medium rounded-full text-sm transition-colors duration-300 shadow-md"
               >
                 Start a Project

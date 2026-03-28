@@ -50,7 +50,7 @@ export default function ServicesPreview() {
   const canHover = useCanHover();
 
   return (
-    <section className="py-24 bg-white">
+    <section className="bg-page-white-soft py-24">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-5 gap-10 lg:gap-16 mb-12">
           <motion.div
@@ -120,7 +120,7 @@ export default function ServicesPreview() {
             href="/services"
             className="inline-flex items-center gap-2 text-sm font-medium text-[#6B7280] hover:text-[#0A0A0A] transition-colors duration-300 group/link"
           >
-            View all 11 services
+            Explore all services
             <ArrowRight size={14} className="transition-transform duration-300 group-hover/link:translate-x-1" />
           </Link>
         </motion.div>

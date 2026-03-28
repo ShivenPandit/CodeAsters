@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
+import SiteBackdrop from "@/components/SiteBackdrop";
+import PagePattern from "@/components/PagePattern";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,11 +47,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#FAFAFB] text-[#0A0A0A]`}
       >
+        <SiteBackdrop />
         <div className="noise-overlay" />
         <CustomCursor />
         <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <div className="page-shell relative z-10 isolate">
+          <PagePattern />
+          <main className="relative z-[1]">{children}</main>
+          <Footer />
+        </div>
       </body>
     </html>
   );

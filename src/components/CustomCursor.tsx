@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
 
 export default function CustomCursor() {
@@ -11,19 +11,15 @@ export default function CustomCursor() {
   const [label, setLabel] = useState("");
   const [isVisible, setIsVisible] = useState(true);
   const [isTouchDevice, setIsTouchDevice] = useState(true);
-  const rafRef = useRef<number>(0);
 
-  const springConfig = { damping: 25, stiffness: 500, mass: 0.35 };
+  const springConfig = { damping: 12, stiffness: 1400, mass: 0.12 };
   const smoothX = useSpring(cursorX, springConfig);
   const smoothY = useSpring(cursorY, springConfig);
 
   const moveCursor = useCallback(
     (e: MouseEvent) => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      rafRef.current = requestAnimationFrame(() => {
-        cursorX.set(e.clientX);
-        cursorY.set(e.clientY);
-      });
+      cursorX.set(e.clientX);
+      cursorY.set(e.clientY);
     },
     [cursorX, cursorY]
   );
@@ -95,7 +91,6 @@ export default function CustomCursor() {
         "mouseenter",
         handleMouseEnter
       );
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [moveCursor]);
 
@@ -114,7 +109,7 @@ export default function CustomCursor() {
         translateY: "-50%",
       }}
       animate={{ opacity: isVisible ? 1 : 0 }}
-      transition={{ duration: 0.15 }}
+      transition={{ duration: 0.1 }}
     >
       <motion.div
         className="rounded-full flex items-center justify-center"
@@ -131,9 +126,9 @@ export default function CustomCursor() {
         }}
         transition={{
           type: "spring",
-          damping: 20,
-          stiffness: 400,
-          mass: 0.35,
+          damping: 14,
+          stiffness: 620,
+          mass: 0.18,
         }}
       >
         <AnimatePresence>
