@@ -25,8 +25,8 @@ const footerLinks = {
 };
 
 const socials = [
-  { icon: Instagram, href: "#", label: "Instagram" },
-  { icon: Linkedin, href: "#", label: "LinkedIn" },
+  { icon: Instagram, href: "https://www.instagram.com/codeasters", label: "Instagram" },
+  { icon: Linkedin, href: "https://www.linkedin.com/company/codeasters", label: "LinkedIn" },
   { icon: Github, href: "https://github.com/CodeAsters", label: "GitHub" },
 ];
 
@@ -42,6 +42,7 @@ export default function Footer() {
       <div className="absolute top-0 left-0 right-0 h-px bg-[#E5E5E5]" />
 
       <div className="max-w-[88rem] mx-auto px-5 sm:px-6 lg:px-10">
+        <h2 className="sr-only">Footer links and company details</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-14">
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block mb-5">
@@ -60,30 +61,31 @@ export default function Footer() {
               <Mail size={14} />
               codeasters@gmail.com
             </a>
-            <div className="flex gap-3">
+            <ul className="flex gap-3" aria-label="Social links">
               {socials.map((social) => (
-                <motion.a
-                  key={social.label}
-                  href={social.href}
-                  aria-label={social.label}
-                  target={social.href.startsWith("http") ? "_blank" : undefined}
-                  rel={social.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  whileHover={canHover ? { y: -2, scale: 1.05 } : undefined}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                  className="w-9 h-9 rounded-lg bg-[#FAFAFA] border border-[#E5E5E5] hover:border-[#6366F1]/30 hover:text-[#6366F1] flex items-center justify-center transition-colors duration-300 text-[#6B7280]"
-                >
-                  <social.icon size={15} />
-                </motion.a>
+                <li key={social.label}>
+                  <motion.a
+                    href={social.href}
+                    aria-label={social.label}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={canHover ? { y: -2, scale: 1.05 } : undefined}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    className="w-9 h-9 rounded-lg bg-[#FAFAFA] border border-[#E5E5E5] hover:border-[#6366F1]/30 hover:text-[#6366F1] flex items-center justify-center transition-colors duration-300 text-[#6B7280]"
+                  >
+                    <social.icon size={15} />
+                  </motion.a>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
 
           {Object.entries(footerLinks).map(([category, links]) => (
-            <div key={category}>
-              <h4 className="font-medium text-xs tracking-widest uppercase text-[#6B7280] mb-5">
+            <nav key={category} aria-label={`${category} links`}>
+              <h3 className="font-medium text-xs tracking-widest uppercase text-[#6B7280] mb-5">
                 {category}
-              </h4>
+              </h3>
               <ul className="space-y-3">
                 {links.map((link) => (
                   <li key={link.name}>
@@ -96,7 +98,7 @@ export default function Footer() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </nav>
           ))}
         </div>
 

@@ -1,22 +1,50 @@
 import type { Metadata } from "next";
+import SEO, { createSEOMetadata } from "@/components/SEO";
+import {
+  buildStandardBreadcrumb,
+  buildWebPageSchema,
+} from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Terms of Service",
-};
+const termsTitle = "Terms of Service";
+const termsDescription =
+  "Review CodeAsters terms of service, including project scope, payment terms, intellectual property, and liability limitations.";
+const LAST_UPDATED = "March 28, 2026";
+
+export const metadata: Metadata = createSEOMetadata({
+  title: termsTitle,
+  description: termsDescription,
+  path: "/terms",
+  keywords: [
+    "terms of service",
+    "CodeAsters terms",
+    "software services agreement",
+  ],
+});
 
 export default function Terms() {
   return (
-    <div className="bg-page-soft pt-32 pb-20">
+    <article className="bg-page-soft pt-32 pb-20" aria-labelledby="terms-title">
+      <SEO
+        idPrefix="terms-schema"
+        schema={[
+          buildWebPageSchema({
+            title: termsTitle,
+            description: termsDescription,
+            path: "/terms",
+          }),
+          buildStandardBreadcrumb("Terms of Service", "/terms"),
+        ]}
+      />
       <div className="max-w-3xl mx-auto px-6 lg:px-8">
         <span className="inline-block text-xs font-medium tracking-[0.2em] uppercase text-[#6366F1] mb-4">
           Legal
         </span>
-        <h1 className="text-4xl sm:text-5xl font-semibold tracking-[-0.025em] leading-[1.1] text-[#0A0A0A] mb-8">
+        <h1 id="terms-title" className="text-4xl sm:text-5xl font-semibold tracking-[-0.025em] leading-[1.1] text-[#0A0A0A] mb-8">
           Terms of Service
         </h1>
 
         <div className="space-y-8 text-sm text-[#6B7280] leading-relaxed">
-          <p>Last updated: {new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</p>
+          <p>Last updated: {LAST_UPDATED}</p>
 
           <section>
             <h2 className="text-lg font-semibold text-[#0A0A0A] mb-3">Agreement</h2>
@@ -82,6 +110,6 @@ export default function Terms() {
           </section>
         </div>
       </div>
-    </div>
+    </article>
   );
 }

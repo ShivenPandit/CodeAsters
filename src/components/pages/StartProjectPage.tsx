@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { CheckCircle, Loader2, ArrowRight, ClipboardList, Sparkles, Mail, Send } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import emailjs from "@emailjs/browser";
+import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
 import { useCanHover } from "@/lib/useCanHover";
 
@@ -227,9 +228,9 @@ export default function StartProjectPage() {
                 className="px-1 text-center text-xs text-[#94A3B8] lg:text-left"
               >
                 Just saying hi?{" "}
-                <a href="/contact" className="font-medium text-[#6366F1] hover:underline">
+                <Link href="/contact" className="font-medium text-[#6366F1] hover:underline">
                   General contact
-                </a>
+                </Link>
               </motion.p>
             </aside>
 
@@ -496,9 +497,9 @@ export default function StartProjectPage() {
 
                     <p className="text-center text-xs text-[#6B7280]">
                       Prefer a lighter touch?{" "}
-                      <a href="/contact" className="font-medium text-[#6366F1] hover:underline">
+                      <Link href="/contact" className="font-medium text-[#6366F1] hover:underline">
                         General contact
-                      </a>
+                      </Link>
                     </p>
                   </motion.form>
                 </motion.div>

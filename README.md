@@ -1,5 +1,23 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## SEO & Domain Migration Setup
+
+Set the canonical domain through environment variables:
+
+```bash
+NEXT_PUBLIC_SITE_URL=https://codeasters.com
+```
+
+Use `.env.local` for local development and `.env.example` as reference.
+
+Key SEO files:
+
+- `src/lib/seo.ts` - dynamic canonical URL helpers, metadata builder, and schema builders
+- `src/components/SEO.tsx` - reusable JSON-LD renderer and metadata helper export
+- `src/app/sitemap.ts` - dynamic sitemap generation
+- `src/app/robots.ts` - dynamic robots policy and sitemap link
+- `next.config.ts` - host-based 301 migration redirects from `codeasters.vercel.app` to canonical domain
+
 ## Getting Started
 
 First, run the development server:
