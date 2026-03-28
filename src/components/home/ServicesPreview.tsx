@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Globe, Code2, Server, Layers, LayoutDashboard, Settings } from "lucide-react";
+import { ArrowRight, Globe, Code2, Server, Layers, LayoutDashboard, Settings, Bot } from "lucide-react";
 import Link from "next/link";
 import { useCanHover } from "@/lib/useCanHover";
 
@@ -43,6 +43,12 @@ const services = [
     title: "Cloud, APIs & Integrations",
     description: "REST APIs, third-party integrations, payment systems, deployment pipelines, and production infrastructure.",
     accent: "#0EA5E9",
+  },
+  {
+    icon: Bot,
+    title: "Automation & Workflows",
+    description: "Task automation, process orchestration, and smart workflow pipelines that reduce manual effort and improve operational speed.",
+    accent: "#14B8A6",
   },
 ];
 
@@ -120,7 +126,7 @@ export default function ServicesPreview() {
             href="/services"
             className="inline-flex items-center gap-2 text-sm font-medium text-[#6B7280] hover:text-[#0A0A0A] transition-colors duration-300 group/link"
           >
-            View all 11 services
+            View all 12 services
             <ArrowRight size={14} className="transition-transform duration-300 group-hover/link:translate-x-1" />
           </Link>
         </motion.div>

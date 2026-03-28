@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import {
   ArrowRight,
+  Bot,
   Check,
   Globe,
   Code2,
@@ -199,6 +200,22 @@ const services = [
     ideal: "Products moving to production or existing applications that need infrastructure and performance work.",
     tags: ["VPS", "Docker", "Nginx", "CI/CD", "SEO"],
   },
+  {
+    icon: Bot,
+    accent: "#06B6D4",
+    title: "Automation & Workflow Systems",
+    summary:
+      "Automation pipelines for repetitive tasks, approvals, notifications, and data movement across business tools. We design workflow systems that reduce manual operations, improve consistency, and keep teams focused on high-value work.",
+    includes: [
+      "Custom workflow and rules engine implementation",
+      "Trigger-based task automation across systems",
+      "Email, Slack, and webhook notification workflows",
+      "Approval routing and escalation logic",
+      "Monitoring, logging, and failure recovery handling",
+    ],
+    ideal: "Teams that want to replace repetitive manual work with reliable, measurable automation.",
+    tags: ["Automation", "Webhooks", "APIs", "Node.js", "FastAPI"],
+  },
 ];
 
 const techCategories = [
@@ -226,6 +243,7 @@ const buildTypes = [
   "Admin Dashboards",
   "ERP Systems",
   "E-commerce Platforms",
+  "Automation Workflows",
   "Backend Systems",
   "Cloud-Connected Platforms",
   "Mobile Applications",

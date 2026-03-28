@@ -1,50 +1,27 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, ExternalLink, Globe, Database } from "lucide-react";
+import { ArrowRight, ExternalLink, Globe, Database, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { useCanHover } from "@/lib/useCanHover";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-function DeepStudioMockup() {
+function StaticImagePreview({ src, label }: { src: string; label: string }) {
   return (
     <div className="rounded-xl border border-[#E5E5E5] bg-white shadow-sm overflow-hidden">
-      {/* Browser chrome */}
       <div className="flex items-center gap-1.5 px-3 py-2 border-b border-[#F0F0F0] bg-[#FAFAFA]">
         <div className="w-2 h-2 rounded-full bg-[#E5E5E5]" />
         <div className="w-2 h-2 rounded-full bg-[#E5E5E5]" />
         <div className="w-2 h-2 rounded-full bg-[#E5E5E5]" />
         <div className="flex-1 ml-3">
-          <div className="h-4 rounded bg-white border border-[#E5E5E5] max-w-[140px] mx-auto flex items-center justify-center">
-            <span className="text-[8px] text-[#9CA3AF] font-mono">deep-studio.in</span>
+          <div className="h-4 rounded bg-white border border-[#E5E5E5] max-w-[220px] mx-auto flex items-center justify-center px-2">
+            <span className="text-[8px] text-[#9CA3AF] font-mono truncate">{label}</span>
           </div>
         </div>
       </div>
-      {/* Page content */}
-      <div className="p-4 space-y-3">
-        {/* Dark hero block */}
-        <div className="rounded-lg bg-[#0A0A0A] p-4 space-y-2">
-          <div className="h-3 w-20 rounded bg-white/15" />
-          <div className="h-4 w-3/4 rounded bg-white/20" />
-          <div className="h-4 w-1/2 rounded bg-white/20" />
-          <div className="h-2.5 w-full rounded bg-white/8 mt-1" />
-          <div className="h-2.5 w-4/5 rounded bg-white/8" />
-          <div className="flex gap-2 mt-2">
-            <div className="h-6 w-20 rounded-full bg-[#6366F1]" />
-            <div className="h-6 w-16 rounded-full bg-white/10" />
-          </div>
-        </div>
-        {/* Feature cards */}
-        <div className="grid grid-cols-3 gap-2">
-          {[0, 1, 2].map((i) => (
-            <div key={i} className="rounded-md bg-[#FAFAFA] border border-[#F0F0F0] p-2 space-y-1.5">
-              <div className="w-5 h-5 rounded bg-[#6366F1]/10" />
-              <div className="h-2 w-full rounded bg-[#E5E5E5]" />
-              <div className="h-2 w-2/3 rounded bg-[#F0F0F0]" />
-            </div>
-          ))}
-        </div>
+      <div className="relative aspect-[16/9] bg-[#0A0A0A]">
+        <img src={src} alt={`${label} preview`} className="block w-full h-full object-cover object-top" loading="lazy" />
       </div>
     </div>
   );
@@ -109,17 +86,6 @@ function AnthriloMockup() {
 
 const projects = [
   {
-    name: "Anthrilo Management System",
-    category: "Enterprise ERP",
-    categoryIcon: Database,
-    color: "#F97316",
-    url: null,
-    summary:
-      "An enterprise-grade ERP system for textile manufacturing — managing raw materials, production workflows, garment inventory, multi-panel sales, and financial reporting across modular business operations.",
-    stack: ["Next.js", "FastAPI", "Python", "PostgreSQL", "Redis"],
-    Mockup: AnthriloMockup,
-  },
-  {
     name: "DeepStudio",
     category: "Website",
     categoryIcon: Globe,
@@ -128,7 +94,35 @@ const projects = [
     summary:
       "A premium studio website with fluid interactions, performance-first architecture, and bold visual design — built with modern frontend tooling.",
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
-    Mockup: DeepStudioMockup,
+    previewType: "image" as const,
+    previewLabel: "deep-studio.vercel.app",
+    imageSrc: "/deepstudio-preview.png",
+  },
+  {
+    name: "My Choices",
+    category: "E-commerce Website",
+    categoryIcon: ShoppingCart,
+    color: "#EC4899",
+    url: "https://my-choices-lovat.vercel.app/",
+    summary:
+      "A client e-commerce website built with Next.js, focused on product discovery, clean navigation, and responsive shopping experience.",
+    stack: ["Next.js", "TypeScript", "Tailwind CSS", "E-commerce UI"],
+    previewType: "image" as const,
+    previewLabel: "my-choices-lovat.vercel.app",
+    imageSrc: "/mychoices-preview.png",
+  },
+  {
+    name: "Anthrilo Management System",
+    category: "Enterprise ERP",
+    categoryIcon: Database,
+    color: "#F97316",
+    url: null,
+    summary:
+      "An enterprise-grade ERP system for textile manufacturing — managing raw materials, production workflows, garment inventory, multi-panel sales, and financial reporting across modular business operations.",
+    stack: ["Next.js", "FastAPI", "Python", "PostgreSQL", "Redis"],
+    previewType: "image" as const,
+    previewLabel: "anthrilo / management",
+    imageSrc: "/anthrilo-preview.png",
   },
 ];
 
@@ -156,7 +150,6 @@ export default function WorkPreview() {
         <div className="space-y-8 mb-10">
           {projects.map((project, i) => {
             const Icon = project.categoryIcon;
-            const Mockup = project.Mockup;
             return (
               <motion.div
                 key={project.name}
@@ -222,7 +215,11 @@ export default function WorkPreview() {
                       transition={{ duration: 0.3, ease: "easeOut" }}
                       className="w-full"
                     >
-                      <Mockup />
+                      {project.previewType === "image" && project.imageSrc ? (
+                        <StaticImagePreview src={project.imageSrc} label={project.previewLabel} />
+                      ) : (
+                        <AnthriloMockup />
+                      )}
                     </motion.div>
                   </div>
                 </div>
