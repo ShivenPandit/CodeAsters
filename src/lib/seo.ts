@@ -24,24 +24,45 @@ export const CORE_KEYWORDS = [
 const FALLBACK_LOCAL_URL = "http://localhost:3000";
 const PRIMARY_HOSTS = new Set(["codeasters.com", "www.codeasters.com"]);
 
-function ensureProtocol(url: string) {
-  if (/^https?:\/\//i.test(url)) return url;
-  const isLocal = /^localhost(?::\d+)?$/.test(url) || /^127\.0\.0\.1(?::\d+)?$/.test(url);
-  return `${isLocal ? "http" : "https"}://${url}`;
+function isLocalHost(value: string) {
+  return /^localhost(?::\d+)?$/i.test(value) || /^127\.0\.0\.1(?::\d+)?$/i.test(value);
 }
 
-function trimTrailingSlash(url: string) {
-  return url.replace(/\/$/, "");
+function ensureProtocol(url: string) {
+  const trimmed = url.trim();
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+
+  const hostPart = trimmed.split("/")[0] ?? "";
+  return `${isLocalHost(hostPart) ? "http" : "https"}://${trimmed}`;
+}
+
+function normalizeSiteUrl(value?: string | null) {
+  if (!value) return null;
+
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+
+  try {
+    return new URL(ensureProtocol(trimmed)).origin;
+  } catch {
+    return null;
+  }
 }
 
 export function getSiteUrl() {
-  const fromPublicEnv = process.env.NEXT_PUBLIC_SITE_URL;
-  const fromVercel = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : undefined;
+  const candidates = [
+    process.env.NEXT_PUBLIC_SITE_URL,
+    process.env.VERCEL_PROJECT_PRODUCTION_URL,
+    process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined,
+    FALLBACK_LOCAL_URL,
+  ];
 
-  const rawUrl = fromPublicEnv ?? fromVercel ?? FALLBACK_LOCAL_URL;
-  return trimTrailingSlash(ensureProtocol(rawUrl));
+  for (const candidate of candidates) {
+    const normalized = normalizeSiteUrl(candidate);
+    if (normalized) return normalized;
+  }
+
+  return FALLBACK_LOCAL_URL;
 }
 
 export function getSiteHost() {
