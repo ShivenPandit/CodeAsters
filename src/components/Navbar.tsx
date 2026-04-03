@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Users } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -77,6 +77,34 @@ export default function Navbar() {
               </Link>
             ))}
 
+            {/* Be a CodeAsters CTA */}
+            <motion.div
+              whileHover={canHover ? { scale: 1.02 } : undefined}
+              whileTap={{ scale: 0.97 }}
+              className="relative group"
+            >
+              <Link
+                href="/be-a-codeaster"
+                data-cursor="Join"
+                className={`inline-flex items-center gap-1.5 px-4 py-2 border text-sm font-medium rounded-full transition-all duration-300 ${
+                  pathname === "/be-a-codeaster"
+                    ? "border-[#6366F1] bg-[#6366F1]/5 text-[#6366F1]"
+                    : "border-[#6366F1]/30 text-[#6366F1] hover:border-[#6366F1] hover:bg-[#6366F1]/5"
+                }`}
+              >
+                <Users size={14} />
+                Be a CodeAster
+              </Link>
+              {/* Hover tooltip */}
+              <div className="pointer-events-none absolute left-1/2 top-full mt-2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-y-0 translate-y-1">
+                <div className="whitespace-nowrap rounded-xl border border-[#6366F1]/20 bg-white/95 px-4 py-2.5 text-xs font-medium text-[#4B5563] shadow-lg backdrop-blur-md">
+                  <span className="text-[#6366F1] font-semibold">Earn up to 30% commission</span>{" "}
+                  by closing deals with CodeAsters.
+                  <div className="absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 border-l border-t border-[#6366F1]/20 bg-white/95" />
+                </div>
+              </div>
+            </motion.div>
+
             <motion.div whileHover={canHover ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.97 }}>
               <Link
                 href="/start"
@@ -123,6 +151,17 @@ export default function Navbar() {
                   {link.name}
                 </Link>
               ))}
+              <Link
+                href="/be-a-codeaster"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-2 px-3 py-2.5 text-sm rounded-lg text-[#6366F1] font-medium hover:bg-[#6366F1]/5 transition-colors"
+              >
+                <Users size={14} />
+                Be a CodeAster
+                <span className="ml-auto text-[10px] font-medium bg-[#6366F1]/10 px-2 py-0.5 rounded-full">
+                  Earn 30%
+                </span>
+              </Link>
               <Link
                 href="/start"
                 onClick={() => setOpen(false)}

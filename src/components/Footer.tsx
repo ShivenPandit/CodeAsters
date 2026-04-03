@@ -10,6 +10,7 @@ const footerLinks = {
     { name: "About", href: "/about" },
     { name: "Work", href: "/work" },
     { name: "Start a project", href: "/start" },
+    { name: "Be a CodeAster", href: "/be-a-codeaster" },
     { name: "Contact", href: "/contact" },
   ],
   Services: [

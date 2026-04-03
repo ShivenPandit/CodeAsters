@@ -913,6 +913,29 @@ export default function Hero() {
                 </Link>
               </motion.div>
             </motion.div>
+
+            {/* Be a CodeAster CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5, ease }}
+              className="mt-4"
+            >
+              <Link
+                href="/be-a-codeaster"
+                data-cursor="Join"
+                className="group inline-flex items-center gap-2 text-sm text-[#6B7280] hover:text-[#6366F1] transition-colors duration-300"
+              >
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#6366F1]/10">
+                  <Sparkles size={10} className="text-[#6366F1]" />
+                </span>
+                <span>
+                  <span className="font-medium text-[#6366F1]">Be a CodeAster</span>
+                  {" "}— Earn up to 30% commission
+                </span>
+                <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            </motion.div>
           </motion.div>
 
           {/* Right — visual with cursor-reactive 3D depth (side card + below card need horizontal room) */}

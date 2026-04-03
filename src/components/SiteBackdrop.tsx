@@ -38,11 +38,10 @@ export default function SiteBackdrop() {
       {sideOrbs.map((orb, i) => (
         <motion.div
           key={i}
-          className={`absolute hidden rounded-full blur-[90px] md:block ${
-            orb.side === "left"
+          className={`absolute hidden rounded-full blur-[90px] md:block ${orb.side === "left"
               ? "bg-[#6366F1]/[0.11]"
               : "bg-[#8B5CF6]/[0.1]"
-          }`}
+            }`}
           style={{
             top: orb.top,
             width: orb.size,
@@ -55,10 +54,10 @@ export default function SiteBackdrop() {
             reduce
               ? undefined
               : {
-                  x: orb.side === "left" ? [0, 18, -8, 0] : [0, -16, 10, 0],
-                  y: [0, 32, -12, 0],
-                  opacity: [0.45, 0.75, 0.5, 0.45],
-                }
+                x: orb.side === "left" ? [0, 18, -8, 0] : [0, -16, 10, 0],
+                y: [0, 32, -12, 0],
+                opacity: [0.45, 0.75, 0.5, 0.45],
+              }
           }
           transition={{
             duration: orb.duration,
@@ -81,10 +80,10 @@ export default function SiteBackdrop() {
             reduce
               ? undefined
               : {
-                  y: [0, -14, 0],
-                  opacity: [0.2, 0.55, 0.2],
-                  scale: [1, 1.4, 1],
-                }
+                y: [0, -14, 0],
+                opacity: [0.2, 0.55, 0.2],
+                scale: [1, 1.4, 1],
+              }
           }
           transition={{
             duration: 5 + (i % 3),
@@ -95,18 +94,16 @@ export default function SiteBackdrop() {
         />
       ))}
 
-      {!reduce && (
-        <motion.div
-          className="absolute inset-0 opacity-[0.035]"
-          style={{
-            backgroundImage:
-              "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.5) 50%, transparent 60%)",
-            backgroundSize: "200% 100%",
-          }}
-          animate={{ backgroundPosition: ["200% 0", "-200% 0"] }}
-          transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
-        />
-      )}
+      <motion.div
+        className="absolute inset-0 opacity-[0.035]"
+        style={{
+          backgroundImage:
+            "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.5) 50%, transparent 60%)",
+          backgroundSize: "200% 100%",
+        }}
+        animate={reduce ? undefined : { backgroundPosition: ["200% 0", "-200% 0"] }}
+        transition={reduce ? undefined : { duration: 28, repeat: Infinity, ease: "linear" }}
+      />
     </div>
   );
 }
