@@ -9,6 +9,7 @@ import PagePattern from "@/components/PagePattern";
 import SEO from "@/components/SEO";
 import {
   CORE_KEYWORDS,
+  DEFAULT_OG_IMAGE_PATH,
   SITE_NAME,
   SITE_DESCRIPTION,
   absoluteUrl,
@@ -28,15 +29,28 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const googleVerificationToken = process.env.GOOGLE_SITE_VERIFICATION?.trim();
+const bingVerificationToken = process.env.BING_SITE_VERIFICATION?.trim();
+
+const metadataVerification: Metadata["verification"] = {
+  google: googleVerificationToken || undefined,
+  other: bingVerificationToken
+    ? { "msvalidate.01": bingVerificationToken }
+    : undefined,
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
   applicationName: SITE_NAME,
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
   title: {
     default: "CodeAsters | Full-Stack Software Development Agency",
     template: "%s | CodeAsters",
   },
   description: SITE_DESCRIPTION,
   keywords: CORE_KEYWORDS,
+  verification: metadataVerification,
   alternates: {
     canonical: absoluteUrl("/"),
   },
@@ -48,7 +62,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     images: [
       {
-        url: absoluteUrl("/deepstudio-preview.png"),
+        url: absoluteUrl(DEFAULT_OG_IMAGE_PATH),
         width: 1200,
         height: 630,
         alt: "CodeAsters preview",
@@ -59,7 +73,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "CodeAsters | Full-Stack Software Development Agency",
     description: SITE_DESCRIPTION,
-    images: [absoluteUrl("/deepstudio-preview.png")],
+    images: [absoluteUrl(DEFAULT_OG_IMAGE_PATH)],
   },
   robots: buildRobotsDirectives(),
 };

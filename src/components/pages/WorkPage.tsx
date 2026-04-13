@@ -30,123 +30,168 @@ const iconMap = { Palette, Zap, Monitor, Layout, Globe, Database, BarChart3, Shi
 
 /* ---------- Mockup Components ---------- */
 
-function DeepStudioMockup() {
+type FrameVariant = "minimal" | "balanced";
+
+function getFrameClasses(variant: FrameVariant) {
+  if (variant === "minimal") {
+    return {
+      wrapper: "ring-1 ring-[#E5E5E5]/45",
+      chrome: "bg-[#FBFCFF]",
+      url: "bg-white/75",
+      canvas: "bg-[#F3F6FB]",
+      footer: "bg-[#F9FAFD]",
+    } as const;
+  }
+
+  return {
+    wrapper: "ring-1 ring-[#E5E5E5]/70",
+    chrome: "bg-[#FAFAFA]",
+    url: "bg-white/90",
+    canvas: "bg-[#EEF1F6]",
+    footer: "bg-[#F6F7FB]",
+  } as const;
+}
+
+type BrowserFrameMockupProps = {
+  src: string;
+  alt: string;
+  label: string;
+  imageWidth: number;
+  imageHeight: number;
+  imageQuality?: number;
+  unoptimized?: boolean;
+  footerLabel?: string;
+  frameVariant?: FrameVariant;
+};
+
+function BrowserFrameMockup({
+  src,
+  alt,
+  label,
+  imageWidth,
+  imageHeight,
+  imageQuality = 95,
+  unoptimized = false,
+  footerLabel = "Live preview",
+  frameVariant = "balanced",
+}: BrowserFrameMockupProps) {
+  const frame = getFrameClasses(frameVariant);
+
   return (
-    <div className="rounded-xl border border-[#E5E5E5] bg-white shadow-md shadow-black/[0.04] overflow-hidden">
-      <div className="flex items-center gap-1.5 px-3 py-2.5 border-b border-[#F0F0F0] bg-[#FAFAFA]">
+    <div className={`rounded-xl bg-white shadow-md shadow-black/[0.04] overflow-hidden ${frame.wrapper}`}>
+      <div className={`flex items-center gap-1.5 px-3 py-2.5 ${frame.chrome}`}>
         <div className="flex gap-1.5">
           <div className="w-2.5 h-2.5 rounded-full bg-[#E5E5E5]" />
           <div className="w-2.5 h-2.5 rounded-full bg-[#E5E5E5]" />
           <div className="w-2.5 h-2.5 rounded-full bg-[#E5E5E5]" />
         </div>
         <div className="flex-1 ml-4">
-          <div className="h-5 rounded-md bg-white border border-[#E5E5E5] max-w-[200px] mx-auto flex items-center justify-center">
-            <span className="text-[9px] text-[#9CA3AF] font-mono">deep-studio.vercel.app</span>
+          <div className={`h-5 rounded-md max-w-[210px] mx-auto flex items-center justify-center ${frame.url}`}>
+            <span className="text-[9px] text-[#9CA3AF] font-mono">{label}</span>
           </div>
         </div>
       </div>
-      <div className="relative w-full bg-gradient-to-b from-[#EBEBEB] to-[#E5E5E5]">
+      <div className={`relative w-full ${frame.canvas}`}>
         <Image
-          src="/deepstudio-preview.png"
-          alt="DeepStudio website preview"
-          width={1600}
-          height={1000}
+          src={src}
+          alt={alt}
+          width={imageWidth}
+          height={imageHeight}
           sizes="(max-width: 1024px) 100vw, 60vw"
-          className="block w-full h-auto max-h-[min(70vh,520px)] object-contain object-top"
+          quality={imageQuality}
+          unoptimized={unoptimized}
+          className="block w-full h-auto max-h-[min(70vh,520px)] object-cover object-top"
         />
       </div>
       <div
-        className="flex items-center justify-between gap-3 border-t border-[#E0E0E0] bg-gradient-to-b from-[#FAFAFA] to-[#F0F0F0] px-4 py-2"
+        className={`flex items-center justify-between gap-3 px-4 py-2 ${frame.footer}`}
         aria-hidden
       >
         <span className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#A1A1AA]">
-          Live preview
+          {footerLabel}
         </span>
         <div className="flex flex-1 justify-end">
           <div className="h-1 w-12 rounded-full bg-[#D4D4D4]/90" />
         </div>
       </div>
     </div>
+  );
+}
+
+function DeepStudioMockup() {
+  return (
+    <BrowserFrameMockup
+      src="/deepstudio-preview.png"
+      alt="DeepStudio website preview"
+      label="deep-studio.vercel.app"
+      imageWidth={1280}
+      imageHeight={720}
+      imageQuality={100}
+      unoptimized
+      frameVariant="minimal"
+    />
   );
 }
 
 function AnthriloMockup() {
   return (
-    <div className="rounded-xl border border-[#E5E5E5] bg-white shadow-md shadow-black/[0.04] overflow-hidden">
-      <div className="flex items-center gap-1.5 px-3 py-2.5 border-b border-[#F0F0F0] bg-[#FAFAFA]">
-        <div className="flex gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-[#E5E5E5]" />
-          <div className="w-2.5 h-2.5 rounded-full bg-[#E5E5E5]" />
-          <div className="w-2.5 h-2.5 rounded-full bg-[#E5E5E5]" />
-        </div>
-        <div className="flex-1 ml-4">
-          <div className="h-5 rounded-md bg-white border border-[#E5E5E5] max-w-[200px] mx-auto flex items-center justify-center">
-            <span className="text-[9px] text-[#9CA3AF] font-mono">anthrilo / management</span>
-          </div>
-        </div>
-      </div>
-      <div className="relative w-full bg-gradient-to-b from-[#EBEBEB] to-[#E5E5E5]">
-        <Image
-          src="/anthrilo-preview.png"
-          alt="Anthrilo Management System dashboard preview"
-          width={1600}
-          height={1000}
-          sizes="(max-width: 1024px) 100vw, 60vw"
-          className="block w-full h-auto max-h-[min(70vh,520px)] object-contain object-top"
-        />
-      </div>
-      <div
-        className="flex items-center justify-between gap-3 border-t border-[#E0E0E0] bg-gradient-to-b from-[#FAFAFA] to-[#F0F0F0] px-4 py-2"
-        aria-hidden
-      >
-        <span className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#A1A1AA]">
-          Live preview
-        </span>
-        <div className="flex flex-1 justify-end">
-          <div className="h-1 w-12 rounded-full bg-[#D4D4D4]/90" />
-        </div>
-      </div>
-    </div>
+    <BrowserFrameMockup
+      src="/anthrilo-preview.png"
+      alt="Anthrilo Management System dashboard preview"
+      label="anthrilo / management"
+      imageWidth={1024}
+      imageHeight={464}
+      imageQuality={100}
+      unoptimized
+      frameVariant="balanced"
+    />
   );
 }
 
 function MyChoicesMockup() {
   return (
-    <div className="rounded-xl border border-[#E5E5E5] bg-white shadow-md shadow-black/[0.04] overflow-hidden">
-      <div className="flex items-center gap-1.5 px-3 py-2.5 border-b border-[#F0F0F0] bg-[#FAFAFA]">
-        <div className="flex gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-[#E5E5E5]" />
-          <div className="w-2.5 h-2.5 rounded-full bg-[#E5E5E5]" />
-          <div className="w-2.5 h-2.5 rounded-full bg-[#E5E5E5]" />
-        </div>
-        <div className="flex-1 ml-4">
-          <div className="h-5 rounded-md bg-white border border-[#E5E5E5] max-w-[210px] mx-auto flex items-center justify-center">
-            <span className="text-[9px] text-[#9CA3AF] font-mono">my-choices-lovat.vercel.app</span>
-          </div>
-        </div>
-      </div>
-      <div className="relative w-full bg-gradient-to-b from-[#EBEBEB] to-[#E5E5E5]">
-        <Image
-          src="/mychoices-preview.png"
-          alt="My Choices website preview"
-          width={1600}
-          height={1000}
-          sizes="(max-width: 1024px) 100vw, 60vw"
-          className="block w-full h-auto max-h-[min(70vh,520px)] object-contain object-top"
-        />
-      </div>
-      <div
-        className="flex items-center justify-between gap-3 border-t border-[#E0E0E0] bg-gradient-to-b from-[#FAFAFA] to-[#F0F0F0] px-4 py-2"
-        aria-hidden
-      >
-        <span className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#A1A1AA]">
-          Live preview
-        </span>
-        <div className="flex flex-1 justify-end">
-          <div className="h-1 w-12 rounded-full bg-[#D4D4D4]/90" />
-        </div>
-      </div>
-    </div>
+    <BrowserFrameMockup
+      src="/mychoices-preview.png"
+      alt="My Choices website preview"
+      label="my-choices-lovat.vercel.app"
+      imageWidth={1280}
+      imageHeight={720}
+      imageQuality={100}
+      unoptimized
+      frameVariant="minimal"
+    />
+  );
+}
+
+function LabelStudioMockup() {
+  return (
+    <BrowserFrameMockup
+      src="/label-studio-sjit.png"
+      alt="Label Studio desktop application preview"
+      label="label studio / sjit labels"
+      imageWidth={1908}
+      imageHeight={970}
+      imageQuality={100}
+      unoptimized
+      footerLabel="Product preview"
+      frameVariant="minimal"
+    />
+  );
+}
+
+function AICatalogGeneratorMockup() {
+  return (
+    <BrowserFrameMockup
+      src="/ai-catalog-generator-preview.png"
+      alt="AI Catalog Generator application preview"
+      label="ai catalog / generator"
+      imageWidth={1600}
+      imageHeight={900}
+      imageQuality={100}
+      unoptimized
+      footerLabel="AI workflow preview"
+      frameVariant="minimal"
+    />
   );
 }
 
@@ -251,6 +296,62 @@ const projects = [
     ],
     stack: ["Next.js", "TypeScript", "React", "FastAPI", "Python", "PostgreSQL", "Redis"],
     Mockup: AnthriloMockup,
+  },
+  {
+    id: "labelstudio",
+    name: "Label Studio",
+    category: "Desktop Utility / Internal Tool",
+    categoryIcon: Monitor,
+    color: "#12D2D2",
+    url: null,
+    summary:
+      "A unified barcode label generator desktop application combining FBA, SJIT, and Styli workflows into one tool with batch processing and PDF output.",
+    problem:
+      "Operations teams needed one reliable desktop utility to generate multiple barcode label formats from messy Excel inputs without manual template switching and repetitive formatting work.",
+    modules: null,
+    scope: [
+      "Unified UI for FBA, SJIT, and Styli label workflows",
+      "Excel/CSV ingestion with smart header detection",
+      "Batch PDF generation at 300 DPI for print readiness",
+      "Per-row quantity support and large dataset handling",
+      "PyInstaller packaging into a portable desktop executable",
+    ],
+    highlights: [
+      { icon: "Monitor" as const, label: "Desktop UX" },
+      { icon: "Zap" as const, label: "Batch Processing" },
+      { icon: "Settings" as const, label: "Workflow Modes" },
+      { icon: "Layout" as const, label: "Dark UI System" },
+    ],
+    stack: ["Python", "CustomTkinter", "Pandas", "ReportLab", "PyInstaller"],
+    Mockup: LabelStudioMockup,
+  },
+  {
+    id: "aicatalog",
+    name: "AI Catalog Generator",
+    category: "AI Product Imaging / Commerce Automation",
+    categoryIcon: Zap,
+    color: "#0EA5E9",
+    url: null,
+    summary:
+      "An AI-driven catalog workflow that transforms a single product photo into multiple clean, brand-consistent output views to accelerate listing and merchandising operations.",
+    problem:
+      "Catalog teams were manually creating product variants for each angle and marketplace format, resulting in slow turnaround times and inconsistent visual quality across listings.",
+    modules: null,
+    scope: [
+      "Single-image upload and guided generation workflow",
+      "Automated multi-view catalog output composition",
+      "Consistent background and layout styling for product cards",
+      "Batch-ready output panel for scalable merchandising",
+      "Operator-friendly UI optimized for quick handoff",
+    ],
+    highlights: [
+      { icon: "Zap" as const, label: "AI Generation" },
+      { icon: "Layout" as const, label: "Catalog Outputs" },
+      { icon: "Monitor" as const, label: "Operator UX" },
+      { icon: "TrendingUp" as const, label: "Faster Listing" },
+    ],
+    stack: ["Next.js", "TypeScript", "AI Image Processing", "Prompt Engineering", "Cloud Storage"],
+    Mockup: AICatalogGeneratorMockup,
   },
 ];
 

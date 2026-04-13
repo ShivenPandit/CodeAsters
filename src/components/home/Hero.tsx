@@ -791,7 +791,7 @@ export default function Hero() {
       onMouseMove={onMouseMove}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className="relative flex min-h-[90vh] items-center overflow-hidden bg-page-soft"
+      className="relative flex min-h-[90vh] items-start overflow-hidden bg-page-soft 2xl:items-center"
       aria-label="Hero"
     >
       {/* Cursor-follow glow */}
@@ -830,12 +830,12 @@ export default function Hero() {
       <div className="floating-dot w-2 h-2 top-[70%] left-[85%]" style={{ animationDelay: "-2s" }} />
       <div className="floating-dot w-2.5 h-2.5 top-[40%] left-[5%]" style={{ animationDelay: "-4s" }} />
 
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-16 md:py-24 lg:px-10 lg:py-0 xl:px-12">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-10 sm:py-12 md:py-24 lg:px-10 xl:px-12 xl:py-12 2xl:py-0">
         <div className="grid items-center gap-12 md:grid-cols-2 md:gap-14 lg:gap-20">
           {/* Left — text with subtle cursor parallax */}
           <motion.div
             style={isParallaxDisabled ? undefined : { x: textX, y: textY }}
-            className="pt-16 md:pt-0 will-change-transform"
+            className="pt-6 xl:pt-1 2xl:pt-0 will-change-transform"
           >
             <motion.div
               initial={{ opacity: 0, y: 12 }}

@@ -4,10 +4,19 @@ export const SITE_NAME = "CodeAsters";
 export const SITE_EMAIL = "codeasters@gmail.com";
 export const SITE_DESCRIPTION =
   "CodeAsters designs and builds production-grade websites, web applications, dashboards, ERP systems, mobile apps, and cloud-connected platforms.";
-export const DEFAULT_OG_IMAGE_PATH = "/deepstudio-preview.png";
+export const DEFAULT_OG_IMAGE_PATH = "/preview.png";
+export const BRAND_VARIANTS = [
+  "CodeAsters",
+  "codeasters",
+  "CodeAserts",
+  "codeasters.com",
+  "www.codeasters.com",
+] as const;
 
 export const CORE_KEYWORDS = [
-  "CodeAsters",
+  ...BRAND_VARIANTS,
+  "CodeAsters agency",
+  "CodeAsters software company",
   "software development company",
   "full-stack development",
   "web development",
@@ -22,6 +31,7 @@ export const CORE_KEYWORDS = [
 ];
 
 const FALLBACK_LOCAL_URL = "http://localhost:3000";
+const FALLBACK_PRODUCTION_URL = "https://codeasters.com";
 const PRIMARY_HOSTS = new Set(["codeasters.com", "www.codeasters.com"]);
 
 function isLocalHost(value: string) {
@@ -54,6 +64,7 @@ export function getSiteUrl() {
     process.env.NEXT_PUBLIC_SITE_URL,
     process.env.VERCEL_PROJECT_PRODUCTION_URL,
     process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined,
+    process.env.NODE_ENV === "production" ? FALLBACK_PRODUCTION_URL : undefined,
     FALLBACK_LOCAL_URL,
   ];
 
@@ -62,7 +73,9 @@ export function getSiteUrl() {
     if (normalized) return normalized;
   }
 
-  return FALLBACK_LOCAL_URL;
+  return process.env.NODE_ENV === "production"
+    ? FALLBACK_PRODUCTION_URL
+    : FALLBACK_LOCAL_URL;
 }
 
 export function getSiteHost() {
@@ -108,6 +121,11 @@ export function buildRobotsDirectives(noindex = false): Metadata["robots"] {
   };
 }
 
+function mergeKeywords(keywords?: string[]) {
+  if (!keywords?.length) return CORE_KEYWORDS;
+  return Array.from(new Set([...CORE_KEYWORDS, ...keywords]));
+}
+
 export interface SEOInput {
   title: string;
   description: string;
@@ -132,11 +150,14 @@ export function buildPageMetadata({
 
   return {
     metadataBase: new URL(getSiteUrl()),
+    applicationName: SITE_NAME,
+    creator: SITE_NAME,
+    publisher: SITE_NAME,
     title: {
       absolute: title,
     },
     description,
-    keywords: keywords?.length ? keywords : CORE_KEYWORDS,
+    keywords: mergeKeywords(keywords),
     alternates: {
       canonical,
     },
@@ -176,7 +197,10 @@ export function buildOrganizationSchema(): JsonLdNode {
     "@type": "Organization",
     "@id": `${siteUrl}#organization`,
     name: SITE_NAME,
+    alternateName: BRAND_VARIANTS.filter((variant) => variant !== SITE_NAME),
+    legalName: SITE_NAME,
     url: siteUrl,
+    logo: absoluteUrl(DEFAULT_OG_IMAGE_PATH),
     email: SITE_EMAIL,
     image: absoluteUrl(DEFAULT_OG_IMAGE_PATH),
     sameAs: ["https://github.com/CodeAsters"],
@@ -200,7 +224,9 @@ export function buildWebsiteSchema(): JsonLdNode {
     "@id": `${siteUrl}#website`,
     url: siteUrl,
     name: SITE_NAME,
+    alternateName: BRAND_VARIANTS.filter((variant) => variant !== SITE_NAME),
     description: SITE_DESCRIPTION,
+    keywords: CORE_KEYWORDS.join(", "),
     inLanguage: "en",
     publisher: {
       "@id": `${siteUrl}#organization`,

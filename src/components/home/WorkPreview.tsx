@@ -1,38 +1,80 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, ExternalLink, Globe, Database, ShoppingCart } from "lucide-react";
+import { ArrowRight, ExternalLink, Globe, Database, ShoppingCart, Monitor, Zap } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useCanHover } from "@/lib/useCanHover";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
-function StaticImagePreview({ src, label }: { src: string; label: string }) {
+type FrameVariant = "minimal" | "balanced";
+
+function getFrameClasses(variant: FrameVariant) {
+  if (variant === "minimal") {
+    return {
+      wrapper: "ring-1 ring-[#E5E5E5]/45",
+      chrome: "bg-[#FBFCFF]",
+      url: "bg-white/75",
+      canvas: "bg-[#F3F6FB]",
+      footer: "bg-[#F9FAFD]",
+    } as const;
+  }
+
+  return {
+    wrapper: "ring-1 ring-[#E5E5E5]/70",
+    chrome: "bg-[#FAFAFA]",
+    url: "bg-white/90",
+    canvas: "bg-[#EEF1F6]",
+    footer: "bg-[#F6F7FB]",
+  } as const;
+}
+
+function StaticImagePreview({
+  src,
+  label,
+  frameVariant = "balanced",
+  imageWidth,
+  imageHeight,
+  imageQuality = 95,
+  unoptimized = false,
+}: {
+  src: string;
+  label: string;
+  frameVariant?: FrameVariant;
+  imageWidth: number;
+  imageHeight: number;
+  imageQuality?: number;
+  unoptimized?: boolean;
+}) {
+  const frame = getFrameClasses(frameVariant);
+
   return (
-    <div className="rounded-xl border border-[#E5E5E5] bg-white shadow-sm overflow-hidden">
-      <div className="flex items-center gap-1.5 px-3 py-2 border-b border-[#F0F0F0] bg-[#FAFAFA]">
+    <div className={`rounded-xl bg-white shadow-sm overflow-hidden ${frame.wrapper}`}>
+      <div className={`flex items-center gap-1.5 px-3 py-2 ${frame.chrome}`}>
         <div className="w-2 h-2 rounded-full bg-[#E5E5E5]" />
         <div className="w-2 h-2 rounded-full bg-[#E5E5E5]" />
         <div className="w-2 h-2 rounded-full bg-[#E5E5E5]" />
         <div className="flex-1 ml-3">
-          <div className="h-4 rounded bg-white border border-[#E5E5E5] max-w-[220px] mx-auto flex items-center justify-center px-2">
+          <div className={`h-4 rounded max-w-[220px] mx-auto flex items-center justify-center px-2 ${frame.url}`}>
             <span className="text-[8px] text-[#9CA3AF] font-mono truncate">{label}</span>
           </div>
         </div>
       </div>
-      <div className="relative w-full bg-gradient-to-b from-[#EBEBEB] to-[#E5E5E5]">
+      <div className={`relative w-full ${frame.canvas}`}>
         <Image
           src={src}
           alt={`${label} preview`}
-          width={1600}
-          height={1000}
+          width={imageWidth}
+          height={imageHeight}
           sizes="(max-width: 768px) 100vw, 50vw"
-          className="block w-full h-auto max-h-[min(70vh,520px)] object-contain object-top"
+          quality={imageQuality}
+          unoptimized={unoptimized}
+          className="block w-full h-auto max-h-[min(70vh,520px)] object-cover object-top"
         />
       </div>
       <div
-        className="flex items-center justify-between gap-3 border-t border-[#E0E0E0] bg-gradient-to-b from-[#FAFAFA] to-[#F0F0F0] px-3 py-2"
+        className={`flex items-center justify-between gap-3 px-3 py-2 ${frame.footer}`}
         aria-hidden
       >
         <span className="text-[8px] font-semibold uppercase tracking-[0.14em] text-[#A1A1AA]">
@@ -116,6 +158,11 @@ const projects = [
     previewType: "image" as const,
     previewLabel: "deep-studio.vercel.app",
     imageSrc: "/deepstudio-preview.png",
+    imageWidth: 1280,
+    imageHeight: 720,
+    imageQuality: 100,
+    unoptimized: true,
+    frameVariant: "minimal" as const,
   },
   {
     name: "My Choices",
@@ -129,6 +176,11 @@ const projects = [
     previewType: "image" as const,
     previewLabel: "my-choices-lovat.vercel.app",
     imageSrc: "/mychoices-preview.png",
+    imageWidth: 1280,
+    imageHeight: 720,
+    imageQuality: 100,
+    unoptimized: true,
+    frameVariant: "minimal" as const,
   },
   {
     name: "Anthrilo Management System",
@@ -142,6 +194,47 @@ const projects = [
     previewType: "image" as const,
     previewLabel: "anthrilo / management",
     imageSrc: "/anthrilo-preview.png",
+    imageWidth: 1024,
+    imageHeight: 464,
+    imageQuality: 100,
+    unoptimized: true,
+    frameVariant: "balanced" as const,
+  },
+  {
+    name: "Label Studio",
+    category: "Desktop Utility",
+    categoryIcon: Monitor,
+    color: "#12D2D2",
+    url: null,
+    summary:
+      "A unified desktop barcode label generator for FBA, SJIT, and Styli workflows with Excel/CSV parsing, bulk PDF output, and memory-optimized processing.",
+    stack: ["Python", "CustomTkinter", "Pandas", "ReportLab", "PyInstaller"],
+    previewType: "image" as const,
+    previewLabel: "label-studio / sjit labels",
+    imageSrc: "/label-studio-sjit.png",
+    imageWidth: 1908,
+    imageHeight: 970,
+    imageQuality: 100,
+    unoptimized: true,
+    frameVariant: "minimal" as const,
+  },
+  {
+    name: "AI Catalog Generator",
+    category: "AI Product Imaging",
+    categoryIcon: Zap,
+    color: "#0EA5E9",
+    url: null,
+    summary:
+      "An AI-powered catalog generation tool that converts a single product photo into multiple clean catalog-ready output views for faster merchandising workflows.",
+    stack: ["Next.js", "TypeScript", "AI Image Processing", "Prompt Workflows", "Cloud Storage"],
+    previewType: "image" as const,
+    previewLabel: "ai catalog / generator",
+    imageSrc: "/ai-catalog-generator-preview.png",
+    imageWidth: 1600,
+    imageHeight: 900,
+    imageQuality: 100,
+    unoptimized: true,
+    frameVariant: "minimal" as const,
   },
 ];
 
@@ -235,7 +328,15 @@ export default function WorkPreview() {
                       className="w-full"
                     >
                       {project.previewType === "image" && project.imageSrc ? (
-                        <StaticImagePreview src={project.imageSrc} label={project.previewLabel} />
+                        <StaticImagePreview
+                          src={project.imageSrc}
+                          label={project.previewLabel}
+                          frameVariant={project.frameVariant}
+                          imageWidth={project.imageWidth}
+                          imageHeight={project.imageHeight}
+                          imageQuality={project.imageQuality}
+                          unoptimized={project.unoptimized}
+                        />
                       ) : (
                         <AnthriloMockup />
                       )}

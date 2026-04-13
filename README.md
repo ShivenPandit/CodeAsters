@@ -18,6 +18,25 @@ Key SEO files:
 - `src/app/robots.ts` - dynamic robots policy and sitemap link
 - `next.config.ts` - host-based 301 migration redirects from `codeasters.vercel.app` to canonical domain
 
+## Search Ownership Verification (Google + Bing)
+
+Environment variables already supported by metadata:
+
+```bash
+GOOGLE_SITE_VERIFICATION=your_google_token
+BING_SITE_VERIFICATION=your_bing_msvalidate_token
+```
+
+After deploying with these values:
+
+- Open Google Search Console and verify your property using the HTML tag method.
+- Open Bing Webmaster Tools and verify with the `msvalidate.01` meta value.
+
+Helpful URLs to submit and check:
+
+- `https://codeasters.com/sitemap.xml`
+- `https://codeasters.com/robots.txt`
+
 ## Getting Started
 
 First, run the development server:

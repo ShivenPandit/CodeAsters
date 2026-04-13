@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
-const FALLBACK_CANONICAL_URL = "http://localhost:3000";
+const FALLBACK_CANONICAL_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://codeasters.com"
+    : "http://localhost:3000";
 
 function isLocalHost(value: string) {
   return /^localhost(?::\d+)?$/i.test(value) || /^127\.0\.0\.1(?::\d+)?$/i.test(value);
@@ -48,24 +51,54 @@ const canonicalHost = new URL(canonicalSiteUrl).host.toLowerCase();
 const migrationHosts = ["codeasters.vercel.app", "www.codeasters.vercel.app"];
 const productionTargetHosts = new Set(["codeasters.com", "www.codeasters.com"]);
 const shouldRedirectFromVercelHost = productionTargetHosts.has(canonicalHost);
+const alternatePrimaryHost =
+  canonicalHost === "codeasters.com"
+    ? "www.codeasters.com"
+    : canonicalHost === "www.codeasters.com"
+      ? "codeasters.com"
+      : null;
 
 const nextConfig: NextConfig = {
   async redirects() {
-    if (!shouldRedirectFromVercelHost) {
-      return [];
+    const redirects: Array<{
+      source: string;
+      has: Array<{ type: "host"; value: string }>;
+      destination: string;
+      permanent: boolean;
+    }> = [];
+
+    if (alternatePrimaryHost) {
+      redirects.push({
+        source: "/:path*",
+        has: [
+          {
+            type: "host" as const,
+            value: alternatePrimaryHost,
+          },
+        ],
+        destination: `${canonicalSiteUrl}/:path*`,
+        permanent: true,
+      });
     }
 
-    return migrationHosts.map((host) => ({
-      source: "/:path*",
-      has: [
-        {
-          type: "host",
-          value: host,
-        },
-      ],
-      destination: `${canonicalSiteUrl}/:path*`,
-      permanent: true,
-    }));
+    if (!shouldRedirectFromVercelHost) {
+      return redirects;
+    }
+
+    return [
+      ...redirects,
+      ...migrationHosts.map((host) => ({
+        source: "/:path*",
+        has: [
+          {
+            type: "host" as const,
+            value: host,
+          },
+        ],
+        destination: `${canonicalSiteUrl}/:path*`,
+        permanent: true,
+      })),
+    ];
   },
 };
 
