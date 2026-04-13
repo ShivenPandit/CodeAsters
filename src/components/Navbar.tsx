@@ -19,6 +19,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const canHover = useCanHover();
+  const mobileMenuId = "mobile-primary-nav";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -35,11 +36,25 @@ export default function Navbar() {
     return () => document.body.classList.remove("menu-open");
   }, [open]);
 
+  useEffect(() => {
+    if (!open) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
+
   return (
     <motion.nav
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] as const }}
+      aria-label="Primary"
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
           ? "bg-white/80 backdrop-blur-xl shadow-sm border-b border-[#E5E5E5]"
@@ -60,6 +75,7 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
+                aria-current={pathname === link.href ? "page" : undefined}
                 className={`relative text-sm transition-colors duration-300 ${
                   pathname === link.href
                     ? "text-[#0A0A0A] font-medium"
@@ -86,6 +102,7 @@ export default function Navbar() {
               <Link
                 href="/be-a-codeaster"
                 data-cursor="Join"
+                aria-current={pathname === "/be-a-codeaster" ? "page" : undefined}
                 className={`inline-flex items-center gap-1.5 px-4 py-2 border text-sm font-medium rounded-full transition-all duration-300 ${
                   pathname === "/be-a-codeaster"
                     ? "border-[#6366F1] bg-[#6366F1]/5 text-[#6366F1]"
@@ -109,6 +126,7 @@ export default function Navbar() {
               <Link
                 href="/start"
                 data-cursor="Let's Talk"
+                aria-current={pathname === "/start" ? "page" : undefined}
                 className="px-5 py-2 bg-[#0A0A0A] hover:bg-[#1a1a1a] text-white text-sm font-medium rounded-full transition-colors duration-300 shadow-sm"
               >
                 Start a Project
@@ -121,6 +139,9 @@ export default function Navbar() {
             onClick={() => setOpen((prev) => !prev)}
             className="md:hidden w-9 h-9 flex items-center justify-center rounded-lg border border-[#E5E5E5] text-[#6B7280]"
             aria-label="Toggle menu"
+            aria-expanded={open}
+            aria-controls={mobileMenuId}
+            aria-haspopup="menu"
           >
             {open ? <X size={18} /> : <Menu size={18} />}
           </button>
@@ -134,6 +155,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.25 }}
+            id={mobileMenuId}
             className="md:hidden bg-white/95 backdrop-blur-xl border-b border-[#E5E5E5]"
           >
             <div className="max-w-6xl mx-auto px-6 py-4 space-y-1">
@@ -142,6 +164,7 @@ export default function Navbar() {
                   key={link.name}
                   href={link.href}
                   onClick={() => setOpen(false)}
+                  aria-current={pathname === link.href ? "page" : undefined}
                   className={`block px-3 py-2.5 text-sm rounded-lg transition-colors duration-200 ${
                     pathname === link.href
                       ? "text-[#0A0A0A] font-medium bg-[#FAFAFA]"
@@ -154,6 +177,7 @@ export default function Navbar() {
               <Link
                 href="/be-a-codeaster"
                 onClick={() => setOpen(false)}
+                aria-current={pathname === "/be-a-codeaster" ? "page" : undefined}
                 className="flex items-center gap-2 px-3 py-2.5 text-sm rounded-lg text-[#6366F1] font-medium hover:bg-[#6366F1]/5 transition-colors"
               >
                 <Users size={14} />
@@ -165,6 +189,7 @@ export default function Navbar() {
               <Link
                 href="/start"
                 onClick={() => setOpen(false)}
+                aria-current={pathname === "/start" ? "page" : undefined}
                 className="block mt-2 text-center px-5 py-2.5 bg-[#0A0A0A] text-white text-sm font-medium rounded-full"
               >
                 Start a Project

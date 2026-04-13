@@ -3,6 +3,7 @@ import { getSiteUrl, isPrimaryDomain } from "@/lib/seo";
 
 export default function robots(): MetadataRoute.Robots {
   const siteUrl = getSiteUrl();
+  const siteHost = new URL(siteUrl).host;
 
   if (!isPrimaryDomain()) {
     return {
@@ -11,7 +12,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: "/",
       },
       sitemap: `${siteUrl}/sitemap.xml`,
-      host: siteUrl,
+      host: siteHost,
     };
   }
 
@@ -24,6 +25,6 @@ export default function robots(): MetadataRoute.Robots {
       },
     ],
     sitemap: `${siteUrl}/sitemap.xml`,
-    host: siteUrl,
+    host: siteHost,
   };
 }

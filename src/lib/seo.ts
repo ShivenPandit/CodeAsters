@@ -4,7 +4,8 @@ export const SITE_NAME = "CodeAsters";
 export const SITE_EMAIL = "codeasters@gmail.com";
 export const SITE_DESCRIPTION =
   "CodeAsters designs and builds production-grade websites, web applications, dashboards, ERP systems, mobile apps, and cloud-connected platforms.";
-export const DEFAULT_OG_IMAGE_PATH = "/preview.png";
+export const BRAND_IMAGE_PATH = "/preview.png";
+export const DEFAULT_OG_IMAGE_PATH = "/opengraph-image.png";
 export const BRAND_VARIANTS = [
   "CodeAsters",
   "codeasters",
@@ -160,6 +161,10 @@ export function buildPageMetadata({
     keywords: mergeKeywords(keywords),
     alternates: {
       canonical,
+      languages: {
+        "en-US": canonical,
+        "x-default": canonical,
+      },
     },
     openGraph: {
       type,
@@ -200,9 +205,9 @@ export function buildOrganizationSchema(): JsonLdNode {
     alternateName: BRAND_VARIANTS.filter((variant) => variant !== SITE_NAME),
     legalName: SITE_NAME,
     url: siteUrl,
-    logo: absoluteUrl(DEFAULT_OG_IMAGE_PATH),
+    logo: absoluteUrl(BRAND_IMAGE_PATH),
     email: SITE_EMAIL,
-    image: absoluteUrl(DEFAULT_OG_IMAGE_PATH),
+    image: absoluteUrl(BRAND_IMAGE_PATH),
     sameAs: ["https://github.com/CodeAsters"],
     contactPoint: [
       {

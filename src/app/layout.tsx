@@ -44,6 +44,15 @@ export const metadata: Metadata = {
   applicationName: SITE_NAME,
   creator: SITE_NAME,
   publisher: SITE_NAME,
+  category: "technology",
+  classification: "Software Development Agency",
+  referrer: "origin-when-cross-origin",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  manifest: absoluteUrl("/manifest.webmanifest"),
   title: {
     default: "CodeAsters | Full-Stack Software Development Agency",
     template: "%s | CodeAsters",
@@ -53,9 +62,14 @@ export const metadata: Metadata = {
   verification: metadataVerification,
   alternates: {
     canonical: absoluteUrl("/"),
+    languages: {
+      "en-US": absoluteUrl("/"),
+      "x-default": absoluteUrl("/"),
+    },
   },
   openGraph: {
     type: "website",
+    locale: "en_US",
     title: "CodeAsters | Full-Stack Software Development Agency",
     description: SITE_DESCRIPTION,
     url: absoluteUrl("/"),
