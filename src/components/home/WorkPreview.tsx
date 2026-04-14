@@ -88,7 +88,7 @@ function StaticImagePreview({
   );
 }
 
-function AnthriloMockup() {
+function ManagementSystemMockup() {
   return (
     <div className="rounded-xl border border-[#E5E5E5] bg-white shadow-sm overflow-hidden">
       {/* Browser chrome */}
@@ -98,7 +98,7 @@ function AnthriloMockup() {
         <div className="w-2 h-2 rounded-full bg-[#E5E5E5]" />
         <div className="flex-1 ml-3">
           <div className="h-4 rounded bg-white border border-[#E5E5E5] max-w-[120px] mx-auto flex items-center justify-center">
-            <span className="text-[8px] text-[#9CA3AF] font-mono">anthrilo dashboard</span>
+            <span className="text-[8px] text-[#9CA3AF] font-mono">management dashboard</span>
           </div>
         </div>
       </div>
@@ -183,7 +183,7 @@ const projects = [
     frameVariant: "minimal" as const,
   },
   {
-    name: "Anthrilo Management System",
+    name: "Management System",
     category: "Enterprise ERP",
     categoryIcon: Database,
     color: "#F97316",
@@ -192,8 +192,8 @@ const projects = [
       "An enterprise-grade ERP system for textile manufacturing — managing raw materials, production workflows, garment inventory, multi-panel sales, and financial reporting across modular business operations.",
     stack: ["Next.js", "FastAPI", "Python", "PostgreSQL", "Redis"],
     previewType: "image" as const,
-    previewLabel: "anthrilo / management",
-    imageSrc: "/anthrilo-preview.png",
+    previewLabel: "management / dashboard",
+    imageSrc: "/management-system-preview.png",
     imageWidth: 1024,
     imageHeight: 464,
     imageQuality: 100,
@@ -338,7 +338,7 @@ export default function WorkPreview() {
                           unoptimized={project.unoptimized}
                         />
                       ) : (
-                        <AnthriloMockup />
+                        <ManagementSystemMockup />
                       )}
                     </motion.div>
                   </div>

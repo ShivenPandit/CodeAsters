@@ -4,6 +4,15 @@ import { getSiteUrl, isPrimaryDomain } from "@/lib/seo";
 export default function robots(): MetadataRoute.Robots {
   const siteUrl = getSiteUrl();
   const siteHost = new URL(siteUrl).host;
+  const alternatePrimaryHost =
+    siteHost === "codeasters.com"
+      ? "www.codeasters.com"
+      : siteHost === "www.codeasters.com"
+        ? "codeasters.com"
+        : null;
+  const sitemapUrls = alternatePrimaryHost
+    ? [`${siteUrl}/sitemap.xml`, `https://${alternatePrimaryHost}/sitemap.xml`]
+    : [`${siteUrl}/sitemap.xml`];
 
   if (!isPrimaryDomain()) {
     return {
@@ -11,7 +20,7 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "*",
         disallow: "/",
       },
-      sitemap: `${siteUrl}/sitemap.xml`,
+      sitemap: sitemapUrls,
       host: siteHost,
     };
   }
@@ -24,7 +33,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/api/*"],
       },
     ],
-    sitemap: `${siteUrl}/sitemap.xml`,
+    sitemap: sitemapUrls,
     host: siteHost,
   };
 }

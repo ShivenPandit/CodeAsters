@@ -133,12 +133,12 @@ function DeepStudioMockup() {
   );
 }
 
-function AnthriloMockup() {
+function ManagementSystemMockup() {
   return (
     <BrowserFrameMockup
-      src="/anthrilo-preview.png"
-      alt="Anthrilo Management System dashboard preview"
-      label="anthrilo / management"
+      src="/management-system-preview.png"
+      alt="Management System dashboard preview"
+      label="management / dashboard"
       imageWidth={1024}
       imageHeight={464}
       imageQuality={100}
@@ -254,7 +254,7 @@ const projects = [
   },
   {
     id: "ams",
-    name: "Anthrilo Management System",
+    name: "Management System",
     category: "Enterprise ERP / Business Platform",
     categoryIcon: Database,
     color: "#F97316",
@@ -262,7 +262,7 @@ const projects = [
     summary:
       "An enterprise-grade ERP system built for textile manufacturing and garment production management. The platform centralizes raw material tracking, production workflows, garment inventory, sales operations, and financial reporting into a unified, multi-module system — replacing fragmented spreadsheets and manual processes with structured, database-backed operations.",
     problem:
-      "Anthrilo needed a centralized platform to manage the full lifecycle of textile manufacturing — from raw yarn procurement through knitting, dyeing, and finishing processes, to garment production, inventory management, multi-panel sales tracking, and financial settlements. Manual workflows were causing data inconsistency, production delays, and limited visibility into operational performance.",
+      "The operations team needed a centralized platform to manage the full lifecycle of textile manufacturing — from raw yarn procurement through knitting, dyeing, and finishing processes, to garment production, inventory management, multi-panel sales tracking, and financial settlements. Manual workflows were causing data inconsistency, production delays, and limited visibility into operational performance.",
     modules: [
       {
         icon: "Package" as const,
@@ -295,7 +295,7 @@ const projects = [
       { icon: "Server" as const, label: "Production Architecture" },
     ],
     stack: ["Next.js", "TypeScript", "React", "FastAPI", "Python", "PostgreSQL", "Redis"],
-    Mockup: AnthriloMockup,
+    Mockup: ManagementSystemMockup,
   },
   {
     id: "labelstudio",
@@ -415,7 +415,7 @@ export default function WorkPage() {
                       {project.summary}
                     </p>
 
-                    {/* Problem statement for Anthrilo */}
+                    {/* Problem statement for Management System */}
                     {project.problem && (
                       <div className="mb-8 p-5 rounded-xl bg-[#FAFAFB] border border-[#E5E5E5]">
                         <div className="text-xs font-semibold text-[#0A0A0A] uppercase tracking-wider mb-3">
@@ -427,7 +427,7 @@ export default function WorkPage() {
                       </div>
                     )}
 
-                    {/* Module breakdown for Anthrilo */}
+                    {/* Module breakdown for Management System */}
                     {project.modules && (
                       <div className="mb-8">
                         <div className="text-xs font-semibold text-[#0A0A0A] uppercase tracking-wider mb-4">

@@ -1,8 +1,20 @@
 import type { MetadataRoute } from "next";
-import { absoluteUrl } from "@/lib/seo";
+import { absoluteUrl, BRAND_IMAGE_PATH, DEFAULT_OG_IMAGE_PATH } from "@/lib/seo";
 
-const routes = [
-  { path: "/", changeFrequency: "weekly", priority: 1 },
+type SitemapEntry = {
+  path: string;
+  changeFrequency: NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>;
+  priority: number;
+  imagePaths?: string[];
+};
+
+const routes: SitemapEntry[] = [
+  {
+    path: "/",
+    changeFrequency: "weekly",
+    priority: 1,
+    imagePaths: [DEFAULT_OG_IMAGE_PATH, BRAND_IMAGE_PATH],
+  },
   { path: "/services", changeFrequency: "weekly", priority: 0.9 },
   { path: "/work", changeFrequency: "weekly", priority: 0.9 },
   { path: "/start", changeFrequency: "weekly", priority: 0.9 },
@@ -16,10 +28,21 @@ const routes = [
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
 
-  return routes.map((route) => ({
-    url: absoluteUrl(route.path),
-    lastModified,
-    changeFrequency: route.changeFrequency,
-    priority: route.priority,
-  }));
+  return routes.map((route) => {
+    const url = absoluteUrl(route.path);
+
+    return {
+      url,
+      lastModified,
+      changeFrequency: route.changeFrequency,
+      priority: route.priority,
+      images: route.imagePaths?.map((path) => absoluteUrl(path)),
+      alternates: {
+        languages: {
+          "en-US": url,
+          "x-default": url,
+        },
+      },
+    };
+  });
 }
