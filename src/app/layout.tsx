@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -31,6 +32,7 @@ const geistMono = Geist_Mono({
 
 const googleVerificationToken = process.env.GOOGLE_SITE_VERIFICATION?.trim();
 const bingVerificationToken = process.env.BING_SITE_VERIFICATION?.trim();
+const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim();
 
 const metadataVerification: Metadata["verification"] = {
   google: googleVerificationToken || undefined,
@@ -53,6 +55,14 @@ export const metadata: Metadata = {
     telephone: false,
   },
   manifest: absoluteUrl("/manifest.webmanifest"),
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon", type: "image/png", sizes: "512x512" },
+    ],
+    shortcut: ["/favicon.ico"],
+    apple: [{ url: "/apple-icon", type: "image/png", sizes: "180x180" }],
+  },
   title: {
     default: "CodeAsters | Full-Stack Software Development Agency",
     template: "%s | CodeAsters",
@@ -97,11 +107,31 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const gaConfigScript = gaMeasurementId
+    ? `
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${gaMeasurementId}', { anonymize_ip: true });
+`
+    : null;
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#FAFAFB] text-[#0A0A0A]`}
       >
+        {gaMeasurementId ? (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {gaConfigScript}
+            </Script>
+          </>
+        ) : null}
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[10000] focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-[#0A0A0A] focus:shadow"

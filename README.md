@@ -37,6 +37,22 @@ Helpful URLs to submit and check:
 - `https://codeasters.com/sitemap.xml`
 - `https://codeasters.com/robots.txt`
 
+## Favicon And Google Analytics
+
+The app now ships explicit icon routes for browser and Apple touch icons:
+
+- `/favicon.ico` (legacy fallback)
+- `/icon` (generated branded PNG)
+- `/apple-icon` (generated branded Apple touch icon)
+
+Google Analytics 4 is supported via environment variable:
+
+```bash
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+```
+
+When the variable is set, the root layout injects `gtag.js` and enables page tracking automatically.
+
 ## Getting Started
 
 First, run the development server:
