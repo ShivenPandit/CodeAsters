@@ -1,7 +1,16 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { CheckCircle, Loader2, ArrowRight, ClipboardList, Sparkles, Mail, Send } from "lucide-react";
+import {
+  CheckCircle,
+  Loader2,
+  ArrowRight,
+  ClipboardList,
+  Sparkles,
+  Mail,
+  MessageCircle,
+  Send,
+} from "lucide-react";
 import { useState, type FormEvent } from "react";
 import emailjs from "@emailjs/browser";
 import Link from "next/link";
@@ -216,6 +225,18 @@ export default function StartProjectPage() {
                     <Mail className="h-3.5 w-3.5 shrink-0 text-[#6366F1]" />
                     <a href="mailto:codeasters@gmail.com" className="font-medium text-[#0A0A0A] hover:text-[#6366F1]">
                       codeasters@gmail.com
+                    </a>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <MessageCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-600" />
+                    <a
+                      href="https://wa.me/919888069497"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="leading-tight"
+                    >
+                      <span className="block text-sm font-semibold text-[#0A0A0A]">WhatsApp</span>
+                      <span className="block text-xs text-[#6B7280] hover:text-[#374151]">Chat with us</span>
                     </a>
                   </li>
                 </ul>

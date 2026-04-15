@@ -6,7 +6,6 @@ import {
   CheckCircle,
   Loader2,
   Sparkles,
-  Users,
   Clock,
   DollarSign,
   Globe,
@@ -42,11 +41,6 @@ const perks = [
     icon: Globe,
     title: "Open globally",
     description: "You can refer clients from any city or country.",
-  },
-  {
-    icon: Users,
-    title: "No backend needed",
-    description: "This form submits directly through our contact mechanism.",
   },
 ];
 
@@ -288,17 +282,24 @@ export default function BeACodeAsterPage() {
                   Need direct help?
                 </div>
                 <p className="text-sm leading-relaxed text-[#64748B]">
-                  You can also reach us on WhatsApp for faster coordination.
+                  You can also reach us directly for faster coordination.
                 </p>
-                <a
-                  href="https://wa.me/919888069497"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-[#6366F1] hover:underline"
-                >
-                  Message +91 98880 69497
-                  <ArrowRight size={14} />
-                </a>
+                <div className="mt-3 space-y-2">
+                  <a
+                    href="https://wa.me/919888069497"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex w-full items-center gap-2 rounded-xl border border-[#E5E5E5] bg-[#FAFAFA] px-3 py-2 transition-colors hover:bg-white"
+                  >
+                    <MessageCircle className="h-4 w-4 text-emerald-600" strokeWidth={2} />
+                    <span className="leading-tight">
+                      <span className="block text-sm font-semibold text-[#0A0A0A]">WhatsApp</span>
+                      <span className="block text-xs text-[#64748B] group-hover:text-[#374151]">
+                        Chat with us
+                      </span>
+                    </span>
+                  </a>
+                </div>
               </motion.div>
             </aside>
 
