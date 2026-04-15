@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <section className="relative overflow-hidden bg-page-soft pb-24 pt-36">
+    <section className="relative overflow-hidden bg-page-soft pb-12 pt-24 md:pb-16 md:pt-28 lg:pb-20 lg:pt-28">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div className="absolute -right-28 top-10 h-72 w-72 rounded-full bg-[#6366F1]/10 blur-3xl" />
         <div className="absolute -left-24 bottom-0 h-64 w-64 rounded-full bg-cyan-300/10 blur-3xl" />

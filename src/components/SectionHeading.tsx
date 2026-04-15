@@ -21,7 +21,7 @@ export default function SectionHeading({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as const }}
-      className="mb-10 lg:mb-12"
+      className="mb-8 lg:mb-10"
     >
       <span className="inline-block text-xs font-medium tracking-[0.2em] uppercase text-[#6366F1] mb-4">
         {label}

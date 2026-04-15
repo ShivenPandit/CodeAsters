@@ -237,7 +237,7 @@ export default function AffiliateDashboard() {
   ];
 
   return (
-    <section className="relative min-h-screen bg-page-soft pt-28 pb-20">
+    <section className="relative min-h-screen bg-page-soft pt-20 pb-12 md:pt-24 md:pb-16 lg:pt-28 lg:pb-20">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         {ambientOn && (
           <>

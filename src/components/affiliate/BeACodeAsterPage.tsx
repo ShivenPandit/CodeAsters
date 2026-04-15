@@ -153,7 +153,7 @@ export default function BeACodeAsterPage() {
         description="Share your details and network context. We will review your submission and get in touch soon."
       />
 
-      <section className="relative overflow-hidden bg-page-soft pb-24 pt-2">
+      <section className="relative overflow-hidden bg-page-soft section-space-bottom pt-3 md:pt-4">
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           {ambientOn && (
             <>

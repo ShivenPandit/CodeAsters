@@ -139,7 +139,7 @@ export default function StartProjectPage() {
         description={`Share goals, scope, and timing. We'll reply with a clear outline — scope, timeline, and how we'd work together.`}
       />
 
-      <section className="relative overflow-hidden bg-page-soft pb-24 pt-2">
+      <section className="relative overflow-hidden bg-page-soft section-space-bottom pt-3 md:pt-4">
         {/* Theme-aligned ambient — soft indigo / violet (same family as site), not a dark block */}
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           {ambientOn && (

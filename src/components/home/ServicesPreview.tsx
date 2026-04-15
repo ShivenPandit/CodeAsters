@@ -50,7 +50,7 @@ export default function ServicesPreview() {
   const canHover = useCanHover();
 
   return (
-    <section className="bg-page-white-soft py-24">
+    <section className="bg-page-white-soft section-space">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-5 gap-10 lg:gap-16 mb-12">
           <motion.div

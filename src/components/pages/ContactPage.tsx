@@ -74,7 +74,7 @@ export default function ContactPage() {
         description="Quick questions or introductions — we usually reply within a day. For a full project scope, use Start a project."
       />
 
-      <section className="bg-page-soft pb-24">
+      <section className="bg-page-soft section-space-bottom">
         <div className="mx-auto max-w-6xl px-6 lg:px-8">
           <div className="mx-auto grid max-w-5xl grid-cols-1 gap-10 lg:grid-cols-5 lg:gap-14">
             {/* Left — minimal, different from /start */}

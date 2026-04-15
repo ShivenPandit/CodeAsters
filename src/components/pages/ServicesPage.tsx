@@ -261,7 +261,7 @@ export default function ServicesPage() {
       />
 
       {/* Intro */}
-      <section className="bg-page-soft pb-16">
+      <section className="bg-page-soft section-space-bottom-compact">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -298,7 +298,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Service Cards */}
-      <section className="bg-page-soft pb-24">
+      <section className="bg-page-soft section-space-bottom">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="space-y-8 lg:space-y-10">
             {services.map((service, i) => {
@@ -367,7 +367,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Technology Stack */}
-      <section className="bg-page-white-soft py-20">
+      <section className="bg-page-white-soft section-space">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -417,7 +417,7 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-page-soft py-20">
+      <section className="bg-page-soft section-space">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

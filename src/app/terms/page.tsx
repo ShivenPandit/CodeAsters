@@ -23,7 +23,7 @@ export const metadata: Metadata = createSEOMetadata({
 
 export default function Terms() {
   return (
-    <article className="bg-page-soft pt-32 pb-20" aria-labelledby="terms-title">
+    <article className="bg-page-soft pt-20 pb-10 md:pt-24 md:pb-14 lg:pt-28 lg:pb-16" aria-labelledby="terms-title">
       <SEO
         idPrefix="terms-schema"
         schema={[

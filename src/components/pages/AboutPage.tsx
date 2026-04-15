@@ -88,7 +88,7 @@ export default function AboutPage() {
       />
 
       {/* Intro */}
-      <section className="bg-page-soft pb-20">
+      <section className="bg-page-soft section-space-bottom">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
             <motion.div
@@ -133,7 +133,7 @@ export default function AboutPage() {
       </section>
 
       {/* What We Do */}
-      <section className="bg-page-white-soft py-20">
+      <section className="bg-page-white-soft section-space">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-5 gap-12 lg:gap-16">
             <motion.div
@@ -190,7 +190,7 @@ export default function AboutPage() {
       </section>
 
       {/* How We Work */}
-      <section className="bg-page-soft py-20">
+      <section className="bg-page-soft section-space">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -235,7 +235,7 @@ export default function AboutPage() {
       </section>
 
       {/* What Clients Can Expect */}
-      <section className="bg-page-white-soft py-20">
+      <section className="bg-page-white-soft section-space">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
             <motion.div
@@ -282,7 +282,7 @@ export default function AboutPage() {
       </section>
 
       {/* Why CodeAsters */}
-      <section className="bg-page-soft py-20">
+      <section className="bg-page-soft section-space">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -326,7 +326,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-page-white-soft py-24">
+      <section className="bg-page-white-soft section-space">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

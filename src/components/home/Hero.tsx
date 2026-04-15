@@ -567,7 +567,7 @@ function HeroVisual({ mockup, float1, float2 }: VisualProps) {
     <motion.div
       initial={false}
       animate={{ opacity: 1 }}
-      className="relative mx-auto mt-4 w-full min-w-0 max-w-xl px-0 pb-8 pt-2 sm:mt-6 sm:max-w-2xl sm:pb-10 md:px-2 md:mt-8 lg:mt-12 lg:max-w-none lg:pb-32 xl:mt-14 xl:max-w-[min(100%,62rem)] 2xl:max-w-[min(100%,72rem)] [perspective:1000px]"
+      className="relative mx-auto mt-4 w-full min-w-0 max-w-xl px-0 pb-8 pt-2 sm:mt-6 sm:max-w-2xl sm:pb-10 md:px-2 md:mt-8 lg:mt-12 lg:max-w-none lg:pb-20 xl:mt-14 xl:max-w-[min(100%,62rem)] xl:pb-16 2xl:max-w-[min(100%,72rem)] 2xl:pb-8 [perspective:1000px]"
     >
       {/* Tilt container — reacts to cursor */}
       <motion.div
@@ -830,31 +830,13 @@ export default function Hero() {
       <div className="floating-dot w-2 h-2 top-[70%] left-[85%]" style={{ animationDelay: "-2s" }} />
       <div className="floating-dot w-2.5 h-2.5 top-[40%] left-[5%]" style={{ animationDelay: "-4s" }} />
 
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-10 sm:py-12 md:py-24 lg:px-10 xl:px-12 xl:py-12 2xl:py-0">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-8 sm:py-10 md:py-14 lg:px-10 lg:py-16 xl:px-12 xl:py-14 2xl:py-8">
         <div className="grid items-center gap-12 md:grid-cols-2 md:gap-14 lg:gap-20">
           {/* Left — text with subtle cursor parallax */}
           <motion.div
             style={isParallaxDisabled ? undefined : { x: textX, y: textY }}
-            className="pt-6 xl:pt-1 2xl:pt-0 will-change-transform"
+            className="pt-2 md:pt-0 will-change-transform"
           >
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease }}
-              className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#E5E5E5] bg-white px-3 py-1"
-            >
-              {reduceMotion ? (
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500 ring-2 ring-emerald-500/25" />
-              ) : (
-                <motion.span
-                  className="relative h-2 w-2 rounded-full bg-emerald-500 ring-2 ring-emerald-500/20"
-                  animate={{ opacity: [1, 0.55, 1], scale: [1, 0.92, 1] }}
-                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                />
-              )}
-              <span className="text-xs font-medium text-[#6B7280]">Available for new projects</span>
-            </motion.div>
-
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

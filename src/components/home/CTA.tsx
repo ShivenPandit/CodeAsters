@@ -11,7 +11,7 @@ export default function CTA() {
   const canHover = useCanHover();
 
   return (
-    <section className="bg-page-soft py-24">
+    <section className="bg-page-soft section-space">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

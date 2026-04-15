@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { Menu, X, Users } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -18,15 +18,49 @@ const links = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollYRef = useRef(0);
+  const tickingRef = useRef(false);
   const pathname = usePathname();
   const canHover = useCanHover();
   const mobileMenuId = "mobile-primary-nav";
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const updateFromScroll = () => {
+      const currentScrollY = window.scrollY;
+      const delta = currentScrollY - lastScrollYRef.current;
+
+      setScrolled(currentScrollY > 20);
+
+      if (open || currentScrollY <= 16) {
+        setIsVisible(true);
+        lastScrollYRef.current = currentScrollY;
+        return;
+      }
+
+      if (Math.abs(delta) > 6) {
+        setIsVisible(delta < 0);
+        lastScrollYRef.current = currentScrollY;
+      }
+    };
+
+    lastScrollYRef.current = window.scrollY;
+    updateFromScroll();
+
+    const onScroll = () => {
+      if (tickingRef.current) return;
+      tickingRef.current = true;
+
+      window.requestAnimationFrame(() => {
+        tickingRef.current = false;
+        updateFromScroll();
+      });
+    };
+
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [open]);
+
 
   useEffect(() => {
     if (open) {
@@ -53,8 +87,8 @@ export default function Navbar() {
   return (
     <motion.nav
       initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] as const }}
+      animate={{ y: isVisible ? "0%" : "-100%", opacity: 1 }}
+      transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] as const }}
       aria-label="Primary"
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
@@ -64,19 +98,24 @@ export default function Navbar() {
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2 group">
-            <span className="relative h-8 w-8 shrink-0 overflow-hidden">
+          <Link href="/" className="flex items-center gap-3 group leading-none">
+            <span className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden">
               <Image
                 src="/codeasters-logo.png"
                 alt="CodeAsters logo"
                 fill
-                sizes="32px"
-                className="object-contain scale-[1.35] -translate-y-px"
+                sizes="36px"
+                className="object-contain scale-[1.35]"
                 priority
               />
             </span>
-            <span className="text-base font-semibold tracking-tight leading-none text-[#0A0A0A]">
-              CodeAsters
+            <span className="flex flex-col items-start justify-center">
+              <span className="text-[1.3rem] sm:text-[1.55rem] font-extrabold tracking-[-0.02em] leading-[0.9] text-[#050505]">
+                CodeAsters
+              </span>
+              <span className="mt-1.5 ml-1 text-[10px] font-medium tracking-[0.12em] leading-none text-[#7A7F87]">
+                <span className="navbar-tagline-typewriter">Code to Unite</span>
+              </span>
             </span>
           </Link>
 
