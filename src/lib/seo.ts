@@ -4,7 +4,7 @@ export const SITE_NAME = "CodeAsters";
 export const SITE_EMAIL = "codeasters@gmail.com";
 export const SITE_DESCRIPTION =
   "CodeAsters designs and builds production-grade websites, web applications, dashboards, ERP systems, mobile apps, and cloud-connected platforms.";
-export const BRAND_IMAGE_PATH = "/preview.png";
+export const BRAND_IMAGE_PATH = "/codeasters-logo.png";
 export const DEFAULT_OG_IMAGE_PATH = "/opengraph-image.png";
 export const BRAND_VARIANTS = [
   "CodeAsters",

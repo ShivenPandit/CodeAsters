@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Github, Linkedin, Instagram, ArrowUp, Mail } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useCanHover } from "@/lib/useCanHover";
 
@@ -46,7 +47,14 @@ export default function Footer() {
         <h2 className="sr-only">Footer links and company details</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-14">
           <div className="lg:col-span-2">
-            <Link href="/" className="inline-block mb-5">
+            <Link href="/" className="inline-flex items-center gap-2.5 mb-5">
+              <Image
+                src="/codeasters-logo.png"
+                alt="CodeAsters logo"
+                width={28}
+                height={28}
+                className="h-7 w-7 object-contain"
+              />
               <span className="text-lg font-semibold tracking-tight">
                 CodeAsters
               </span>

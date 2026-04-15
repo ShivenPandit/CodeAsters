@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { ImageResponse } from "next/og";
 
 export const size = {
@@ -7,7 +9,15 @@ export const size = {
 
 export const contentType = "image/png";
 
-export default function Icon() {
+async function loadLogoDataUrl() {
+  const logoPath = path.join(process.cwd(), "public", "codeasters-logo.png");
+  const logo = await readFile(logoPath);
+  return `data:image/png;base64,${logo.toString("base64")}`;
+}
+
+export default async function Icon() {
+  const logoDataUrl = await loadLogoDataUrl();
+
   return new ImageResponse(
     (
       <div
@@ -17,28 +27,19 @@ export default function Icon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #0A0A0A 0%, #202020 100%)",
+          background: "#0A0A0A",
         }}
       >
         <div
           style={{
-            width: "78%",
-            height: "78%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: "120px",
-            border: "16px solid rgba(255,255,255,0.2)",
-            color: "#FFFFFF",
-            fontSize: 220,
-            fontWeight: 700,
-            letterSpacing: -8,
-            fontFamily:
-              "ui-sans-serif, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
+            width: "82%",
+            height: "82%",
+            backgroundImage: `url(${logoDataUrl})`,
+            backgroundPosition: "center",
+            backgroundSize: "contain",
+            backgroundRepeat: "no-repeat",
           }}
-        >
-          CA
-        </div>
+        />
       </div>
     ),
     {

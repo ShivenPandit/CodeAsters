@@ -3,6 +3,7 @@
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { Menu, X, Users } from "lucide-react";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCanHover } from "@/lib/useCanHover";
@@ -64,7 +65,17 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2 group">
-            <span className="text-base font-semibold tracking-tight text-[#0A0A0A]">
+            <span className="relative h-8 w-8 shrink-0 overflow-hidden">
+              <Image
+                src="/codeasters-logo.png"
+                alt="CodeAsters logo"
+                fill
+                sizes="32px"
+                className="object-contain scale-[1.35] -translate-y-px"
+                priority
+              />
+            </span>
+            <span className="text-base font-semibold tracking-tight leading-none text-[#0A0A0A]">
               CodeAsters
             </span>
           </Link>
