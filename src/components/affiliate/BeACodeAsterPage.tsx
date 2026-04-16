@@ -15,6 +15,10 @@ import {
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
+import {
+  CONTACT_WHATSAPP_DISPLAY,
+  buildWhatsAppUrl,
+} from "@/lib/contact";
 import { useCanHover } from "@/lib/useCanHover";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
@@ -68,6 +72,8 @@ const payoutTiers = [
   { tier: "Pro", rate: "25%", condition: "11 to 25 converted deals" },
   { tier: "Elite", rate: "30%", condition: "25+ converted deals" },
 ];
+
+const whatsappContactHref = buildWhatsAppUrl("");
 
 export default function BeACodeAsterPage() {
   const canHover = useCanHover();
@@ -293,7 +299,7 @@ export default function BeACodeAsterPage() {
                 </p>
                 <div className="mt-3 space-y-2">
                   <a
-                    href="https://wa.me/919888069497"
+                    href={whatsappContactHref}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group inline-flex w-full items-center gap-2 rounded-xl border border-[#E5E5E5] bg-[#FAFAFA] px-3 py-2 transition-colors hover:bg-white"
@@ -515,12 +521,12 @@ export default function BeACodeAsterPage() {
                         <p className="text-sm text-red-600">
                           {errorMessage || "Could not send right now."} Please message us at{" "}
                           <a
-                            href="https://wa.me/919888069497"
+                            href={whatsappContactHref}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="font-medium underline"
                           >
-                            +91 98880 69497
+                            {CONTACT_WHATSAPP_DISPLAY}
                           </a>
                           .
                         </p>

@@ -5,6 +5,7 @@ import { Mail, MessageCircle, CheckCircle, Loader2, ArrowRight } from "lucide-re
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import PageHeader from "@/components/PageHeader";
+import { CONTACT_EMAIL, buildWhatsAppUrl } from "@/lib/contact";
 import { useCanHover } from "@/lib/useCanHover";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
@@ -15,6 +16,8 @@ const topicOptions = [
   "Support on existing work",
   "Something else",
 ];
+
+const whatsappContactHref = buildWhatsAppUrl("");
 
 export default function ContactPage() {
   const canHover = useCanHover();
@@ -118,7 +121,7 @@ export default function ContactPage() {
               </div>
 
               <a
-                href="mailto:codeasters@gmail.com"
+                href={`mailto:${CONTACT_EMAIL}`}
                 className="group flex items-center gap-4 rounded-2xl border border-[#E5E5E5] bg-white p-4 transition-all hover:border-[#D4D4D4] hover:shadow-sm"
               >
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F0FDF4]">
@@ -127,13 +130,13 @@ export default function ContactPage() {
                 <div className="min-w-0">
                   <div className="text-sm font-semibold text-[#0A0A0A]">Email</div>
                   <div className="truncate text-sm text-[#6B7280] group-hover:text-[#374151]">
-                    codeasters@gmail.com
+                    {CONTACT_EMAIL}
                   </div>
                 </div>
               </a>
 
               <a
-                href="https://wa.me/919888069497"
+                href={whatsappContactHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 rounded-2xl border border-[#E5E5E5] bg-white p-4 transition-all hover:border-[#D4D4D4]"
@@ -290,8 +293,8 @@ export default function ContactPage() {
                     <div className="flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 p-4">
                       <p className="text-sm text-red-600">
                         {errorMessage || "Could not send your message right now."} Email us at{" "}
-                        <a href="mailto:codeasters@gmail.com" className="font-medium underline">
-                          codeasters@gmail.com
+                        <a href={`mailto:${CONTACT_EMAIL}`} className="font-medium underline">
+                          {CONTACT_EMAIL}
                         </a>
                       </p>
                     </div>

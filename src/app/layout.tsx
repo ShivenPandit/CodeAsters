@@ -7,6 +7,11 @@ import Footer from "@/components/Footer";
 import ClientEffects from "@/components/ClientEffects";
 import PagePattern from "@/components/PagePattern";
 import SEO from "@/components/SEO";
+import WhatsAppChatButton from "@/components/WhatsAppChatButton";
+import {
+  CONTACT_WHATSAPP_PHONE,
+  DEFAULT_WHATSAPP_MESSAGE,
+} from "@/lib/contact";
 import {
   CORE_KEYWORDS,
   DEFAULT_OG_IMAGE_PATH,
@@ -173,6 +178,10 @@ gtag('config', '${gaMeasurementId}', { anonymize_ip: true });
           </main>
           <Footer />
         </div>
+        <WhatsAppChatButton
+          phoneNumber={CONTACT_WHATSAPP_PHONE}
+          message={DEFAULT_WHATSAPP_MESSAGE}
+        />
       </body>
     </html>
   );

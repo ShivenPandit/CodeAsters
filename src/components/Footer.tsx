@@ -111,7 +111,7 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="pt-8 border-t border-[#E5E5E5] flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="pt-8 border-t border-[#E5E5E5] flex flex-col xl:flex-row items-center justify-between gap-4">
           <p className="text-xs text-[#6B7280]">
             © {new Date().getFullYear()} CodeAsters. All rights reserved.
           </p>

@@ -14,6 +14,7 @@ import {
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
+import { buildWhatsAppUrl } from "@/lib/contact";
 import { useCanHover } from "@/lib/useCanHover";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
@@ -43,6 +44,8 @@ const steps = [
   { n: "02", title: "We review", detail: "Usually within 24 hours with questions or a proposed direction." },
   { n: "03", title: "Next steps", detail: "Scope, timeline, and how we’d collaborate if it’s a fit." },
 ];
+
+const whatsappContactHref = buildWhatsAppUrl("");
 
 export default function StartProjectPage() {
   const canHover = useCanHover();
@@ -242,7 +245,7 @@ export default function StartProjectPage() {
                   <li className="flex items-start gap-2">
                     <MessageCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-600" />
                     <a
-                      href="https://wa.me/919888069497"
+                      href={whatsappContactHref}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="leading-tight"

@@ -53,6 +53,18 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 
 When the variable is set, the root layout injects `gtag.js` and enables page tracking automatically.
 
+## WhatsApp Floating Chat Button
+
+The reusable floating WhatsApp chat button is enabled globally and reads contact details from:
+
+- `src/lib/contact.ts`
+
+The component automatically opens links in this format:
+
+```txt
+https://wa.me/<phone_number>?text=<encoded_message>
+```
+
 ## Getting Started
 
 First, run the development server:

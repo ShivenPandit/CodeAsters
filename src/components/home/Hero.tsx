@@ -658,7 +658,7 @@ function HeroVisual({ mockup, float1, float2 }: VisualProps) {
         <div className="relative">
           {/* Primary creative halo */}
           <motion.div
-            className="pointer-events-none absolute -inset-[5%] -z-10 rounded-[2.35rem] blur-3xl sm:-inset-[7%] sm:rounded-[2.85rem]"
+            className="pointer-events-none absolute -inset-[3%] -z-10 rounded-[2.35rem] blur-3xl sm:-inset-[5%] sm:rounded-[2.85rem]"
             style={{
               background:
                 "conic-gradient(from 120deg at 50% 50%, rgba(168,85,247,0.26), rgba(99,102,241,0.2), rgba(6,182,212,0.22), rgba(236,72,153,0.2), rgba(251,191,36,0.16), rgba(168,85,247,0.26))",
@@ -669,7 +669,7 @@ function HeroVisual({ mockup, float1, float2 }: VisualProps) {
           />
           {/* Counter-rotating softer wash */}
           <motion.div
-            className="pointer-events-none absolute -inset-[12%] -z-10 rounded-[3rem] blur-[56px] sm:blur-[72px]"
+            className="pointer-events-none absolute -inset-[8%] -z-10 rounded-[3rem] blur-[56px] sm:-inset-[10%] sm:blur-[72px]"
             style={{
               background:
                 "conic-gradient(from 300deg at 40% 40%, rgba(6,182,212,0.12), rgba(168,85,247,0.1), rgba(251,191,36,0.08), rgba(236,72,153,0.1), rgba(6,182,212,0.12))",
@@ -679,11 +679,11 @@ function HeroVisual({ mockup, float1, float2 }: VisualProps) {
             aria-hidden
           />
           <div
-            className="pointer-events-none absolute -inset-8 rounded-[1.75rem] bg-gradient-to-br from-[#6366F1]/30 via-[#8B5CF6]/20 to-[#EC4899]/15 opacity-90 blur-3xl"
+            className="pointer-events-none absolute -inset-4 rounded-[1.75rem] bg-gradient-to-br from-[#6366F1]/30 via-[#8B5CF6]/20 to-[#EC4899]/15 opacity-90 blur-3xl"
             aria-hidden
           />
           <div
-            className="pointer-events-none absolute -inset-4 rounded-[1.5rem] bg-gradient-to-tr from-cyan-400/12 via-transparent to-[#6366F1]/18 blur-2xl"
+            className="pointer-events-none absolute -inset-2 rounded-[1.5rem] bg-gradient-to-tr from-cyan-400/12 via-transparent to-[#6366F1]/18 blur-2xl"
             aria-hidden
           />
 
@@ -896,7 +896,7 @@ export default function Hero() {
         )}
       </AnimatePresence>
 
-      <div className="ambient-glow top-[-200px] right-[-100px] opacity-60" />
+      <div className="ambient-glow top-[-200px] right-[-48px] opacity-60" />
       <div
         className="ambient-glow bottom-[-200px] left-[-150px] opacity-40"
         style={{ animationDelay: "-10s" }}
