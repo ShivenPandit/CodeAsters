@@ -23,29 +23,105 @@ function useHeroParallax(isParallaxDisabled: boolean) {
   const ref = useRef<HTMLElement>(null);
   const rawX = useMotionValue(0);
   const rawY = useMotionValue(0);
+  const boundsRef = useRef<{
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+  } | null>(null);
+  const pointerRef = useRef({ x: 0, y: 0 });
+  const rafRef = useRef<number | null>(null);
+  const hoverRef = useRef(false);
   const [isHovered, setIsHovered] = useState(false);
+
+  const updateBounds = useCallback(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const rect = el.getBoundingClientRect();
+    boundsRef.current = {
+      left: rect.left,
+      top: rect.top,
+      width: rect.width,
+      height: rect.height,
+    };
+  }, []);
+
+  const flushPointerUpdate = useCallback(() => {
+    rafRef.current = null;
+
+    if (isParallaxDisabled) return;
+
+    const bounds = boundsRef.current;
+    if (!bounds || bounds.width === 0 || bounds.height === 0) return;
+
+    const normalizedX = ((pointerRef.current.x - bounds.left) / bounds.width) * 2 - 1;
+    const normalizedY = ((pointerRef.current.y - bounds.top) / bounds.height) * 2 - 1;
+
+    rawX.set(Math.max(-1, Math.min(1, normalizedX)));
+    rawY.set(Math.max(-1, Math.min(1, normalizedY)));
+  }, [isParallaxDisabled, rawX, rawY]);
+
+  const queuePointerUpdate = useCallback(() => {
+    if (rafRef.current !== null) return;
+    rafRef.current = window.requestAnimationFrame(flushPointerUpdate);
+  }, [flushPointerUpdate]);
 
   const onMouseMove = useCallback(
     (e: React.MouseEvent<HTMLElement>) => {
       if (isParallaxDisabled) return;
-      const el = ref.current;
-      if (!el) return;
-      const { left, top, width, height } = el.getBoundingClientRect();
-      rawX.set(((e.clientX - left) / width) * 2 - 1);
-      rawY.set(((e.clientY - top) / height) * 2 - 1);
+      pointerRef.current = { x: e.clientX, y: e.clientY };
+      queuePointerUpdate();
     },
-    [isParallaxDisabled, rawX, rawY]
+    [isParallaxDisabled, queuePointerUpdate]
   );
 
   const onMouseEnter = useCallback(() => {
-    if (!isParallaxDisabled) setIsHovered(true);
-  }, [isParallaxDisabled]);
+    if (isParallaxDisabled) return;
+    hoverRef.current = true;
+    setIsHovered(true);
+    updateBounds();
+  }, [isParallaxDisabled, updateBounds]);
 
   const onMouseLeave = useCallback(() => {
+    hoverRef.current = false;
     setIsHovered(false);
+
+    if (rafRef.current !== null) {
+      window.cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+
+    boundsRef.current = null;
     rawX.set(0);
     rawY.set(0);
   }, [rawX, rawY]);
+
+  useEffect(() => {
+    if (isParallaxDisabled) return;
+
+    const handleViewportChange = () => {
+      if (!hoverRef.current) return;
+      updateBounds();
+      queuePointerUpdate();
+    };
+
+    window.addEventListener("resize", handleViewportChange, { passive: true });
+    window.addEventListener("scroll", handleViewportChange, { passive: true });
+
+    return () => {
+      window.removeEventListener("resize", handleViewportChange);
+      window.removeEventListener("scroll", handleViewportChange);
+    };
+  }, [isParallaxDisabled, updateBounds, queuePointerUpdate]);
+
+  useEffect(() => {
+    return () => {
+      if (rafRef.current !== null) {
+        window.cancelAnimationFrame(rafRef.current);
+      }
+    };
+  }, []);
 
   /* Layer springs — different mass/damping for depth separation */
 
@@ -567,7 +643,7 @@ function HeroVisual({ mockup, float1, float2 }: VisualProps) {
     <motion.div
       initial={false}
       animate={{ opacity: 1 }}
-      className="relative mx-auto mt-4 w-full min-w-0 max-w-xl px-0 pb-8 pt-2 sm:mt-6 sm:max-w-2xl sm:pb-10 md:px-2 md:mt-8 lg:mt-12 lg:max-w-none lg:pb-20 xl:mt-14 xl:max-w-[min(100%,62rem)] xl:pb-16 2xl:max-w-[min(100%,72rem)] 2xl:pb-8 [perspective:1000px]"
+      className="relative mx-auto mt-4 w-full min-w-0 max-w-xl px-0 pb-8 pt-2 sm:mt-6 sm:max-w-2xl sm:pb-10 md:mt-8 md:px-2 lg:mt-10 lg:max-w-none lg:pb-14 xl:mt-12 xl:max-w-[min(100%,62rem)] xl:pb-12 2xl:max-w-[min(100%,72rem)] 2xl:pb-8 [perspective:1000px]"
     >
       {/* Tilt container — reacts to cursor */}
       <motion.div
@@ -830,8 +906,8 @@ export default function Hero() {
       <div className="floating-dot w-2 h-2 top-[70%] left-[85%]" style={{ animationDelay: "-2s" }} />
       <div className="floating-dot w-2.5 h-2.5 top-[40%] left-[5%]" style={{ animationDelay: "-4s" }} />
 
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-8 sm:py-10 md:py-14 lg:px-10 lg:py-16 xl:px-12 xl:py-14 2xl:py-8">
-        <div className="grid items-center gap-12 md:grid-cols-2 md:gap-14 lg:gap-20">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-8 sm:py-10 md:py-12 lg:px-10 lg:py-14 xl:px-12 xl:py-12 2xl:py-8">
+        <div className="grid items-center gap-10 md:grid-cols-2 md:gap-12 lg:gap-14">
           {/* Left — text with subtle cursor parallax */}
           <motion.div
             style={isParallaxDisabled ? undefined : { x: textX, y: textY }}
@@ -862,7 +938,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2, ease }}
-              className="text-base lg:text-lg text-[#4B5563] max-w-lg leading-relaxed mb-10"
+              className="mb-6 max-w-lg text-base leading-relaxed text-[#4B5563] lg:text-lg"
             >
               CodeAsters designs and develops high-quality websites, web applications, dashboards,
               ERP systems, and mobile apps — with modern architecture and production-grade&nbsp;execution.

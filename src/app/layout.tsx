@@ -4,8 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import CustomCursor from "@/components/CustomCursor";
-import SiteBackdrop from "@/components/SiteBackdrop";
+import ClientEffects from "@/components/ClientEffects";
 import PagePattern from "@/components/PagePattern";
 import SEO from "@/components/SEO";
 import {
@@ -130,7 +129,7 @@ gtag('config', '${gaMeasurementId}', { anonymize_ip: true });
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#FAFAFB] text-[#0A0A0A]`}
       >
-        <Script id="google-tag-manager" strategy="beforeInteractive">
+        <Script id="google-tag-manager" strategy="afterInteractive">
           {gtmBootstrapScript}
         </Script>
         <noscript>
@@ -162,9 +161,8 @@ gtag('config', '${gaMeasurementId}', { anonymize_ip: true });
           schema={[buildOrganizationSchema(), buildWebsiteSchema()]}
           idPrefix="global-schema"
         />
-        <SiteBackdrop />
+        <ClientEffects />
         <div className="noise-overlay" />
-        <CustomCursor />
         <header>
           <Navbar />
         </header>

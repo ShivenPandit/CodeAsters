@@ -90,7 +90,7 @@ export default function AboutPage() {
       {/* Intro */}
       <section className="bg-page-soft section-space-bottom">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
+          <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -135,7 +135,7 @@ export default function AboutPage() {
       {/* What We Do */}
       <section className="bg-page-white-soft section-space">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="grid lg:grid-cols-5 gap-12 lg:gap-16">
+          <div className="grid gap-8 lg:grid-cols-5 lg:gap-12">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -172,7 +172,7 @@ export default function AboutPage() {
                 </li>
               </ul>
 
-              <div className="flex flex-wrap gap-3 mt-8">
+              <div className="mt-6 flex flex-wrap gap-3">
                 {["Websites", "Web Apps", "Dashboards", "ERP Systems", "Backend Services", "Mobile Apps", "Cloud Platforms"].map(
                   (item) => (
                     <span
@@ -197,7 +197,7 @@ export default function AboutPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.5, ease }}
-            className="mb-12"
+            className="mb-8"
           >
             <span className="inline-block text-xs font-medium tracking-[0.2em] uppercase text-[#6366F1] mb-4">
               Our Approach
@@ -237,7 +237,7 @@ export default function AboutPage() {
       {/* What Clients Can Expect */}
       <section className="bg-page-white-soft section-space">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
+          <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -289,7 +289,7 @@ export default function AboutPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease }}
-            className="max-w-3xl mx-auto text-center mb-12"
+            className="mx-auto mb-8 max-w-3xl text-center"
           >
             <span className="inline-block text-xs font-medium tracking-[0.2em] uppercase text-[#6366F1] mb-4">
               Why CodeAsters
@@ -338,7 +338,7 @@ export default function AboutPage() {
             <h2 className="mb-3 text-3xl font-semibold tracking-[-0.025em] text-[#0A0A0A] sm:text-4xl">
               Have something in mind?
             </h2>
-            <p className="mb-8 text-base leading-relaxed text-[#64748B]">
+            <p className="mb-6 text-base leading-relaxed text-[#64748B]">
               Brief us for scope &amp; timeline, or browse work first — your pace.
             </p>
             <div className="flex flex-wrap justify-center gap-3">

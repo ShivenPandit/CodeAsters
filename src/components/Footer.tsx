@@ -40,12 +40,12 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative z-[1] border-t border-[#E5E5E5]/80 bg-page-white-soft py-16 text-[#0A0A0A] backdrop-blur-sm" role="contentinfo">
+    <footer className="relative z-[1] border-t border-[#E5E5E5]/80 bg-page-white-soft py-12 text-[#0A0A0A] backdrop-blur-sm" role="contentinfo">
       <div className="absolute top-0 left-0 right-0 h-px bg-[#E5E5E5]" />
 
       <div className="max-w-[88rem] mx-auto px-5 sm:px-6 lg:px-10">
         <h2 className="sr-only">Footer links and company details</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-14">
+        <div className="mb-10 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <Link href="/" className="inline-flex items-center gap-2.5 mb-5">
               <Image

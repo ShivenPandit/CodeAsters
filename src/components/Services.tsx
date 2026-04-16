@@ -154,7 +154,7 @@ export default function Services() {
           description="End-to-end digital solutions, from concept to launch."
         />
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
+        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
           {/* Left: text list */}
           <div className="space-y-1">
             {services.map((service, i) => (

@@ -1,24 +1,21 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
-import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
+import { useEffect, useState, useCallback, useRef } from "react";
+import { motion, useMotionValue, AnimatePresence } from "framer-motion";
 import { useCanHover } from "@/lib/useCanHover";
 
 export default function CustomCursor() {
   const canHover = useCanHover();
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
+  const hoverTargetRef = useRef<HTMLElement | null>(null);
   const [isHovering, setIsHovering] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
   const [label, setLabel] = useState("");
   const [isVisible, setIsVisible] = useState(true);
 
-  const springConfig = { damping: 12, stiffness: 1400, mass: 0.12 };
-  const smoothX = useSpring(cursorX, springConfig);
-  const smoothY = useSpring(cursorY, springConfig);
-
   const moveCursor = useCallback(
-    (e: MouseEvent) => {
+    (e: PointerEvent) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
     },
@@ -38,28 +35,30 @@ export default function CustomCursor() {
         target.closest("input") ||
         target.closest("textarea");
 
-      if (interactive) {
-        setIsHovering(true);
-        const el = interactive as HTMLElement;
-        const cursorLabel =
-          el.getAttribute("data-cursor") || "";
-        setLabel(cursorLabel);
-      }
+      if (!interactive) return;
+
+      const nextTarget = interactive as HTMLElement;
+      if (hoverTargetRef.current === nextTarget) return;
+
+      hoverTargetRef.current = nextTarget;
+      setIsHovering(true);
+      setLabel(nextTarget.getAttribute("data-cursor") || "");
     };
 
     const handleMouseOut = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
+      const relatedTarget = e.relatedTarget as HTMLElement | null;
+
       if (
-        target.closest("a") ||
-        target.closest("button") ||
-        target.closest("[role='button']") ||
-        target.closest("[data-cursor]") ||
-        target.closest("input") ||
-        target.closest("textarea")
+        hoverTargetRef.current &&
+        relatedTarget &&
+        hoverTargetRef.current.contains(relatedTarget)
       ) {
-        setIsHovering(false);
-        setLabel("");
+        return;
       }
+
+      hoverTargetRef.current = null;
+      setIsHovering(false);
+      setLabel("");
     };
 
     const handleMouseDown = () => setIsPressed(true);
@@ -67,7 +66,7 @@ export default function CustomCursor() {
     const handleMouseLeave = () => setIsVisible(false);
     const handleMouseEnter = () => setIsVisible(true);
 
-    window.addEventListener("mousemove", moveCursor);
+    window.addEventListener("pointermove", moveCursor, { passive: true });
     document.addEventListener("mouseover", handleMouseOver);
     document.addEventListener("mouseout", handleMouseOut);
     document.addEventListener("mousedown", handleMouseDown);
@@ -76,7 +75,7 @@ export default function CustomCursor() {
     document.documentElement.addEventListener("mouseenter", handleMouseEnter);
 
     return () => {
-      window.removeEventListener("mousemove", moveCursor);
+      window.removeEventListener("pointermove", moveCursor);
       document.removeEventListener("mouseover", handleMouseOver);
       document.removeEventListener("mouseout", handleMouseOut);
       document.removeEventListener("mousedown", handleMouseDown);
@@ -101,8 +100,8 @@ export default function CustomCursor() {
     <motion.div
       className="fixed top-0 left-0 pointer-events-none z-[9999]"
       style={{
-        x: smoothX,
-        y: smoothY,
+        x: cursorX,
+        y: cursorY,
         translateX: "-50%",
         translateY: "-50%",
       }}

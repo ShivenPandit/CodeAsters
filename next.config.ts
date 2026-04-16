@@ -58,6 +58,21 @@ const alternatePrimaryHost =
       ? "codeasters.com"
       : null;
 
+const cspReportOnly = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "frame-ancestors 'self'",
+  "form-action 'self'",
+  "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: https:",
+  "font-src 'self' https://fonts.gstatic.com",
+  "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com",
+  "frame-src https://www.googletagmanager.com",
+  "upgrade-insecure-requests",
+].join("; ");
+
 const nextConfig: NextConfig = {
   async redirects() {
     const redirects: Array<{
@@ -110,8 +125,20 @@ const nextConfig: NextConfig = {
             value: "max-age=63072000; includeSubDomains; preload",
           },
           {
+            key: "Content-Security-Policy-Report-Only",
+            value: cspReportOnly,
+          },
+          {
             key: "X-Content-Type-Options",
             value: "nosniff",
+          },
+          {
+            key: "Cross-Origin-Opener-Policy",
+            value: "same-origin",
+          },
+          {
+            key: "Cross-Origin-Resource-Policy",
+            value: "same-origin",
           },
           {
             key: "X-Frame-Options",
@@ -128,6 +155,10 @@ const nextConfig: NextConfig = {
           {
             key: "X-DNS-Prefetch-Control",
             value: "on",
+          },
+          {
+            key: "X-Permitted-Cross-Domain-Policies",
+            value: "none",
           },
         ],
       },

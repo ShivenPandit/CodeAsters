@@ -29,17 +29,19 @@ export default function Navbar() {
     const updateFromScroll = () => {
       const currentScrollY = window.scrollY;
       const delta = currentScrollY - lastScrollYRef.current;
+      const shouldBeScrolled = currentScrollY > 20;
 
-      setScrolled(currentScrollY > 20);
+      setScrolled((prev) => (prev === shouldBeScrolled ? prev : shouldBeScrolled));
 
       if (open || currentScrollY <= 16) {
-        setIsVisible(true);
+        setIsVisible((prev) => (prev ? prev : true));
         lastScrollYRef.current = currentScrollY;
         return;
       }
 
       if (Math.abs(delta) > 6) {
-        setIsVisible(delta < 0);
+        const shouldBeVisible = delta < 0;
+        setIsVisible((prev) => (prev === shouldBeVisible ? prev : shouldBeVisible));
         lastScrollYRef.current = currentScrollY;
       }
     };
@@ -113,7 +115,7 @@ export default function Navbar() {
               <span className="text-[1.3rem] sm:text-[1.55rem] font-extrabold tracking-[-0.02em] leading-[0.9] text-[#050505]">
                 CodeAsters
               </span>
-              <span className="mt-1.5 ml-1 text-[10px] font-medium tracking-[0.12em] leading-none text-[#7A7F87]">
+              <span className="mt-1.5 ml-1 text-[10px] leading-none">
                 <span className="navbar-tagline-typewriter">Code to Unite</span>
               </span>
             </span>

@@ -4,15 +4,10 @@ import { motion } from "framer-motion";
 import { Mail, MessageCircle, CheckCircle, Loader2, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
-import emailjs from "@emailjs/browser";
 import PageHeader from "@/components/PageHeader";
 import { useCanHover } from "@/lib/useCanHover";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
-
-const EMAILJS_SERVICE_ID = "service_3zcdde9";
-const EMAILJS_TEMPLATE_CONTACT = "template_vbd0nmv";
-const EMAILJS_PUBLIC_KEY = "Tp5Pjp94y14gtbUti";
 
 const topicOptions = [
   "General question",
@@ -31,7 +26,9 @@ export default function ContactPage() {
     message: "",
   });
   const [honeypot, setHoneypot] = useState("");
+  const [submittedAt, setSubmittedAt] = useState(() => Date.now());
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const update = (field: string, value: string) =>
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -42,23 +39,45 @@ export default function ContactPage() {
     if (honeypot) return;
 
     setStatus("sending");
+    setErrorMessage("");
 
     try {
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_CONTACT,
-        {
+      const response = await fetch("/api/forms", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          formType: "contact",
+          submittedAt,
+          website: honeypot,
           name: form.name,
           email: form.email,
-          phone: form.phone || "—",
-          service: form.topic || "General contact",
+          phone: form.phone,
+          topic: form.topic,
           message: form.message,
-        },
-        EMAILJS_PUBLIC_KEY
-      );
+        }),
+      });
+
+      if (!response.ok) {
+        const responseBody = (await response.json().catch(() => null)) as
+          | { error?: string }
+          | null;
+        throw new Error(
+          responseBody?.error || "Could not send your message right now."
+        );
+      }
+
       setStatus("sent");
       setForm({ name: "", email: "", phone: "", topic: "", message: "" });
-    } catch {
+      setHoneypot("");
+      setSubmittedAt(Date.now());
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Could not send your message right now.";
+      setErrorMessage(message);
       setStatus("error");
     }
   };
@@ -76,7 +95,7 @@ export default function ContactPage() {
 
       <section className="bg-page-soft section-space-bottom">
         <div className="mx-auto max-w-6xl px-6 lg:px-8">
-          <div className="mx-auto grid max-w-5xl grid-cols-1 gap-10 lg:grid-cols-5 lg:gap-14">
+          <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 lg:grid-cols-5 lg:gap-10">
             {/* Left — minimal, different from /start */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
@@ -149,7 +168,11 @@ export default function ContactPage() {
                   <p className="mb-6 text-sm text-[#4B5563]">We&apos;ll reply soon. Watch your inbox (and spam, just in case).</p>
                   <button
                     type="button"
-                    onClick={() => setStatus("idle")}
+                    onClick={() => {
+                      setStatus("idle");
+                      setErrorMessage("");
+                      setSubmittedAt(Date.now());
+                    }}
                     className="text-sm font-medium text-emerald-700 hover:underline"
                   >
                     Send another note
@@ -180,6 +203,8 @@ export default function ContactPage() {
                         id="name"
                         type="text"
                         required
+                        minLength={2}
+                        maxLength={80}
                         value={form.name}
                         onChange={(e) => update("name", e.target.value)}
                         className={inputBase}
@@ -194,6 +219,7 @@ export default function ContactPage() {
                         id="email"
                         type="email"
                         required
+                        maxLength={254}
                         value={form.email}
                         onChange={(e) => update("email", e.target.value)}
                         className={inputBase}
@@ -209,6 +235,7 @@ export default function ContactPage() {
                     <input
                       id="phone"
                       type="tel"
+                      maxLength={32}
                       value={form.phone}
                       onChange={(e) => update("phone", e.target.value)}
                       className={inputBase}
@@ -250,6 +277,8 @@ export default function ContactPage() {
                       id="message"
                       required
                       rows={5}
+                      minLength={10}
+                      maxLength={5000}
                       value={form.message}
                       onChange={(e) => update("message", e.target.value)}
                       className={`${inputBase} resize-none leading-relaxed`}
@@ -260,7 +289,7 @@ export default function ContactPage() {
                   {status === "error" && (
                     <div className="flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 p-4">
                       <p className="text-sm text-red-600">
-                        Couldn&apos;t send. Email us at{" "}
+                        {errorMessage || "Could not send your message right now."} Email us at{" "}
                         <a href="mailto:codeasters@gmail.com" className="font-medium underline">
                           codeasters@gmail.com
                         </a>

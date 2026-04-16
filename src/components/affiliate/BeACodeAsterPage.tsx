@@ -13,16 +13,11 @@ import {
   Send,
 } from "lucide-react";
 import { useState, type FormEvent } from "react";
-import emailjs from "@emailjs/browser";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
 import { useCanHover } from "@/lib/useCanHover";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
-
-const EMAILJS_SERVICE_ID = "service_3zcdde9";
-const EMAILJS_TEMPLATE_CONTACT = "template_vbd0nmv";
-const EMAILJS_PUBLIC_KEY = "Tp5Pjp94y14gtbUti";
 
 const experienceOptions = ["Beginner", "Intermediate", "Expert"];
 
@@ -89,7 +84,9 @@ export default function BeACodeAsterPage() {
     message: "",
   });
   const [honeypot, setHoneypot] = useState("");
+  const [submittedAt, setSubmittedAt] = useState(() => Date.now());
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const update = (field: string, value: string) =>
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -99,33 +96,36 @@ export default function BeACodeAsterPage() {
     if (status === "sending" || honeypot) return;
 
     setStatus("sending");
-
-    const detail = [
-      "Affiliate Interest Form",
-      `Name: ${form.fullName}`,
-      `Email: ${form.email}`,
-      `Phone: ${form.phone || "-"}`,
-      `City: ${form.city}`,
-      `Experience: ${form.experience || "-"}`,
-      `LinkedIn/Portfolio: ${form.linkedin || "-"}`,
-      "",
-      "Notes:",
-      form.message,
-    ].join("\n");
+    setErrorMessage("");
 
     try {
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_CONTACT,
-        {
-          name: form.fullName,
-          email: form.email,
-          phone: form.phone || "-",
-          service: "Be a CodeAster Form",
-          message: detail,
+      const response = await fetch("/api/forms", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        EMAILJS_PUBLIC_KEY
-      );
+        body: JSON.stringify({
+          formType: "affiliate",
+          submittedAt,
+          website: honeypot,
+          fullName: form.fullName,
+          email: form.email,
+          phone: form.phone,
+          city: form.city,
+          experience: form.experience,
+          linkedin: form.linkedin,
+          message: form.message,
+        }),
+      });
+
+      if (!response.ok) {
+        const responseBody = (await response.json().catch(() => null)) as
+          | { error?: string }
+          | null;
+        throw new Error(
+          responseBody?.error || "Could not send your details right now."
+        );
+      }
 
       setStatus("sent");
       setForm({
@@ -137,7 +137,14 @@ export default function BeACodeAsterPage() {
         linkedin: "",
         message: "",
       });
-    } catch {
+      setHoneypot("");
+      setSubmittedAt(Date.now());
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Could not send your details right now.";
+      setErrorMessage(message);
       setStatus("error");
     }
   };
@@ -178,7 +185,7 @@ export default function BeACodeAsterPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.5, ease }}
-            className="mb-10"
+            className="mb-8"
           >
             <h2 className="mb-6 text-2xl font-semibold tracking-[-0.02em] text-[#0A0A0A] sm:text-3xl">
               How this program works
@@ -208,7 +215,7 @@ export default function BeACodeAsterPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.45, delay: 0.05, ease }}
-            className="mb-10 rounded-2xl border border-[#E5E5E5] bg-white/80 p-6 shadow-sm backdrop-blur-sm"
+            className="mb-8 rounded-2xl border border-[#E5E5E5] bg-white/80 p-6 shadow-sm backdrop-blur-sm"
           >
             <div className="mb-4 flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-[#6366F1]" strokeWidth={2} />
@@ -234,7 +241,7 @@ export default function BeACodeAsterPage() {
             </div>
           </motion.div>
 
-          <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-14">
+          <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-10">
             <aside className="space-y-6 lg:col-span-4">
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
@@ -325,7 +332,11 @@ export default function BeACodeAsterPage() {
                   </p>
                   <button
                     type="button"
-                    onClick={() => setStatus("idle")}
+                    onClick={() => {
+                      setStatus("idle");
+                      setErrorMessage("");
+                      setSubmittedAt(Date.now());
+                    }}
                     className="text-sm font-medium text-[#6366F1] hover:underline"
                   >
                     Submit another response
@@ -381,6 +392,8 @@ export default function BeACodeAsterPage() {
                         <input
                           id="ca-name"
                           required
+                          minLength={2}
+                          maxLength={80}
                           value={form.fullName}
                           onChange={(e) => update("fullName", e.target.value)}
                           className={inputBase}
@@ -395,6 +408,7 @@ export default function BeACodeAsterPage() {
                           id="ca-email"
                           type="email"
                           required
+                          maxLength={254}
                           value={form.email}
                           onChange={(e) => update("email", e.target.value)}
                           className={inputBase}
@@ -412,6 +426,7 @@ export default function BeACodeAsterPage() {
                           id="ca-phone"
                           type="tel"
                           required
+                          maxLength={32}
                           value={form.phone}
                           onChange={(e) => update("phone", e.target.value)}
                           className={inputBase}
@@ -425,6 +440,7 @@ export default function BeACodeAsterPage() {
                         <input
                           id="ca-city"
                           required
+                          maxLength={80}
                           value={form.city}
                           onChange={(e) => update("city", e.target.value)}
                           className={inputBase}
@@ -468,6 +484,7 @@ export default function BeACodeAsterPage() {
                         </label>
                         <input
                           id="ca-linkedin"
+                          maxLength={160}
                           value={form.linkedin}
                           onChange={(e) => update("linkedin", e.target.value)}
                           className={inputBase}
@@ -484,6 +501,8 @@ export default function BeACodeAsterPage() {
                         id="ca-message"
                         required
                         rows={6}
+                        minLength={10}
+                        maxLength={5000}
                         value={form.message}
                         onChange={(e) => update("message", e.target.value)}
                         className={`${inputBase} resize-none leading-relaxed`}
@@ -494,7 +513,7 @@ export default function BeACodeAsterPage() {
                     {status === "error" && (
                       <div className="flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 p-4">
                         <p className="text-sm text-red-600">
-                          Couldn&apos;t send right now. Please message us at{" "}
+                          {errorMessage || "Could not send right now."} Please message us at{" "}
                           <a
                             href="https://wa.me/919888069497"
                             target="_blank"

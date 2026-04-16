@@ -249,7 +249,7 @@ export default function WorkPreview() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.5, ease }}
-          className="mb-12"
+          className="mb-8"
         >
           <span className="inline-block text-xs font-medium tracking-[0.2em] uppercase text-[#6366F1] mb-4">
             Selected Work
@@ -259,7 +259,7 @@ export default function WorkPreview() {
           </h2>
         </motion.div>
 
-        <div className="space-y-8 mb-10">
+        <div className="mb-8 space-y-6">
           {projects.map((project, i) => {
             const Icon = project.categoryIcon;
             return (

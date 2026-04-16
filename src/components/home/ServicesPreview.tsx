@@ -52,7 +52,7 @@ export default function ServicesPreview() {
   return (
     <section className="bg-page-white-soft section-space">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
-        <div className="grid lg:grid-cols-5 gap-10 lg:gap-16 mb-12">
+        <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 mb-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -80,7 +80,7 @@ export default function ServicesPreview() {
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
           {services.map((service, i) => {
             const Icon = service.icon;
             return (

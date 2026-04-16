@@ -368,7 +368,7 @@ export default function WorkPage() {
 
       <section className="bg-page-soft section-space-bottom">
         <div className="max-w-5xl mx-auto px-6 lg:px-8">
-          <div className="space-y-10 md:space-y-12 lg:space-y-14">
+          <div className="space-y-8 md:space-y-10 lg:space-y-12">
             {projects.map((project, i) => {
               const CategoryIcon = project.categoryIcon;
               const Mockup = project.Mockup;
@@ -539,7 +539,7 @@ export default function WorkPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.2, ease }}
-            className="mt-10 text-center md:mt-12 lg:mt-16"
+            className="mt-8 text-center md:mt-10 lg:mt-12"
           >
             <h3 className="text-2xl font-semibold text-[#0A0A0A] tracking-tight mb-3">
               Have a project in mind?

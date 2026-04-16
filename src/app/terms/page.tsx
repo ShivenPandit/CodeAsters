@@ -23,7 +23,7 @@ export const metadata: Metadata = createSEOMetadata({
 
 export default function Terms() {
   return (
-    <article className="bg-page-soft pt-20 pb-10 md:pt-24 md:pb-14 lg:pt-28 lg:pb-16" aria-labelledby="terms-title">
+    <article className="bg-page-soft section-header-space" aria-labelledby="terms-title">
       <SEO
         idPrefix="terms-schema"
         schema={[
@@ -39,7 +39,7 @@ export default function Terms() {
         <span className="inline-block text-xs font-medium tracking-[0.2em] uppercase text-[#6366F1] mb-4">
           Legal
         </span>
-        <h1 id="terms-title" className="text-4xl sm:text-5xl font-semibold tracking-[-0.025em] leading-[1.1] text-[#0A0A0A] mb-8">
+        <h1 id="terms-title" className="text-4xl sm:text-5xl font-semibold tracking-[-0.025em] leading-[1.1] text-[#0A0A0A] mb-6">
           Terms of Service
         </h1>
 

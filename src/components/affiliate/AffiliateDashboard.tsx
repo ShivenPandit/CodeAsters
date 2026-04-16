@@ -237,7 +237,7 @@ export default function AffiliateDashboard() {
   ];
 
   return (
-    <section className="relative min-h-screen bg-page-soft pt-20 pb-12 md:pt-24 md:pb-16 lg:pt-28 lg:pb-20">
+    <section className="relative min-h-screen bg-page-soft section-header-space">
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         {ambientOn && (
           <>
@@ -393,7 +393,7 @@ export default function AffiliateDashboard() {
           </div>
 
           {leads.length === 0 ? (
-            <div className="flex flex-col items-center gap-3 py-16 text-center">
+            <div className="flex flex-col items-center gap-3 py-12 text-center">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FAFAFA]">
                 <Send className="h-5 w-5 text-[#94A3B8]" />
               </div>

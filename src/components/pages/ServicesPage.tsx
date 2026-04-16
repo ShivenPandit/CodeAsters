@@ -268,7 +268,7 @@ export default function ServicesPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease }}
-            className="grid lg:grid-cols-5 gap-12 lg:gap-16"
+            className="grid gap-8 lg:grid-cols-5 lg:gap-12"
           >
             <div className="lg:col-span-2">
               <span className="inline-block text-xs font-medium tracking-[0.2em] uppercase text-[#6366F1] mb-4">
@@ -300,7 +300,7 @@ export default function ServicesPage() {
       {/* Service Cards */}
       <section className="bg-page-soft section-space-bottom">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="space-y-8 lg:space-y-10">
+          <div className="space-y-6 lg:space-y-8">
             {services.map((service, i) => {
               const Icon = service.icon;
               return (
@@ -374,7 +374,7 @@ export default function ServicesPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease }}
-            className="text-center mb-12"
+            className="mb-8 text-center"
           >
             <span className="inline-block text-xs font-medium tracking-[0.2em] uppercase text-[#6366F1] mb-4">
               How We Build
@@ -429,7 +429,7 @@ export default function ServicesPage() {
             <h3 className="mb-2 text-2xl font-semibold tracking-tight text-[#0A0A0A]">
               Ready when you are.
             </h3>
-            <p className="mx-auto mb-8 max-w-md text-base text-[#64748B]">
+            <p className="mx-auto mb-6 max-w-md text-base text-[#64748B]">
               Send a project brief for scope &amp; timeline, or a short note if you&apos;re still exploring.
             </p>
             <div className="flex flex-wrap justify-center gap-3">

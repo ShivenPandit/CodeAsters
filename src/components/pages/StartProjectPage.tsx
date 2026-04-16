@@ -12,16 +12,11 @@ import {
   Send,
 } from "lucide-react";
 import { useState, type FormEvent } from "react";
-import emailjs from "@emailjs/browser";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
 import { useCanHover } from "@/lib/useCanHover";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
-
-const EMAILJS_SERVICE_ID = "service_3zcdde9";
-const EMAILJS_TEMPLATE_CONTACT = "template_vbd0nmv";
-const EMAILJS_PUBLIC_KEY = "Tp5Pjp94y14gtbUti";
 
 const serviceOptions = [
   "Web Design & Development",
@@ -63,7 +58,9 @@ export default function StartProjectPage() {
     message: "",
   });
   const [honeypot, setHoneypot] = useState("");
+  const [submittedAt, setSubmittedAt] = useState(() => Date.now());
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const setThankYouParam = (enabled: boolean) => {
     if (typeof window === "undefined") return;
@@ -85,30 +82,38 @@ export default function StartProjectPage() {
     e.preventDefault();
     if (status === "sending" || honeypot) return;
     setStatus("sending");
-
-    const detail = [
-      form.company && `Company: ${form.company}`,
-      form.budget && `Budget: ${form.budget}`,
-      form.timeline && `Timeline: ${form.timeline}`,
-      "",
-      form.message,
-    ]
-      .filter(Boolean)
-      .join("\n");
+    setErrorMessage("");
 
     try {
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_CONTACT,
-        {
+      const response = await fetch("/api/forms", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          formType: "project",
+          submittedAt,
+          website: honeypot,
           name: form.name,
           email: form.email,
-          phone: form.phone || "—",
-          service: form.service || "Project brief",
-          message: detail,
-        },
-        EMAILJS_PUBLIC_KEY
-      );
+          phone: form.phone,
+          company: form.company,
+          service: form.service,
+          budget: form.budget,
+          timeline: form.timeline,
+          message: form.message,
+        }),
+      });
+
+      if (!response.ok) {
+        const responseBody = (await response.json().catch(() => null)) as
+          | { error?: string }
+          | null;
+        throw new Error(
+          responseBody?.error || "Could not send your project brief right now."
+        );
+      }
+
       setThankYouParam(true);
       setStatus("sent");
       setForm({
@@ -121,7 +126,14 @@ export default function StartProjectPage() {
         timeline: "",
         message: "",
       });
-    } catch {
+      setHoneypot("");
+      setSubmittedAt(Date.now());
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Could not send your project brief right now.";
+      setErrorMessage(message);
       setStatus("error");
     }
   };
@@ -165,7 +177,7 @@ export default function StartProjectPage() {
         </div>
 
         <div className="relative z-[1] mx-auto max-w-6xl px-6 lg:px-8">
-          <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-14">
+          <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-10">
             {/* Aside — scannable, light UI */}
             <aside className="space-y-6 lg:col-span-4">
               <motion.div
@@ -280,6 +292,8 @@ export default function StartProjectPage() {
                     type="button"
                     onClick={() => {
                       setStatus("idle");
+                      setErrorMessage("");
+                      setSubmittedAt(Date.now());
                       setThankYouParam(false);
                     }}
                     className="text-sm font-medium text-[#6366F1] hover:underline"
@@ -337,6 +351,8 @@ export default function StartProjectPage() {
                         <input
                           id="sp-name"
                           required
+                          minLength={2}
+                          maxLength={80}
                           value={form.name}
                           onChange={(e) => update("name", e.target.value)}
                           className={inputBase}
@@ -351,6 +367,7 @@ export default function StartProjectPage() {
                           id="sp-email"
                           type="email"
                           required
+                          maxLength={254}
                           value={form.email}
                           onChange={(e) => update("email", e.target.value)}
                           className={inputBase}
@@ -367,6 +384,7 @@ export default function StartProjectPage() {
                         <input
                           id="sp-phone"
                           type="tel"
+                          maxLength={32}
                           value={form.phone}
                           onChange={(e) => update("phone", e.target.value)}
                           className={inputBase}
@@ -379,6 +397,7 @@ export default function StartProjectPage() {
                         </label>
                         <input
                           id="sp-company"
+                          maxLength={120}
                           value={form.company}
                           onChange={(e) => update("company", e.target.value)}
                           className={inputBase}
@@ -477,6 +496,8 @@ export default function StartProjectPage() {
                         id="sp-message"
                         required
                         rows={6}
+                        minLength={20}
+                        maxLength={8000}
                         value={form.message}
                         onChange={(e) => update("message", e.target.value)}
                         className={`${inputBase} resize-none leading-relaxed`}
@@ -487,7 +508,7 @@ export default function StartProjectPage() {
                     {status === "error" && (
                       <div className="flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 p-4">
                         <p className="text-sm text-red-600">
-                          Something went wrong. Email{" "}
+                          {errorMessage || "Something went wrong."} Email{" "}
                           <a href="mailto:codeasters@gmail.com" className="font-medium underline">
                             codeasters@gmail.com
                           </a>{" "}

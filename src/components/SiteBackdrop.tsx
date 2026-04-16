@@ -1,6 +1,8 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { useCanHover } from "@/lib/useCanHover";
 
 const sideOrbs = [
   { side: "left" as const, top: "10%", left: "-8%", size: 280, delay: 0, duration: 22 },
@@ -20,6 +22,20 @@ const sparkles = [
 
 export default function SiteBackdrop() {
   const reduce = useReducedMotion();
+  const canHover = useCanHover();
+  const [isDocumentVisible, setIsDocumentVisible] = useState(true);
+
+  useEffect(() => {
+    const onVisibilityChange = () => {
+      setIsDocumentVisible(document.visibilityState !== "hidden");
+    };
+
+    onVisibilityChange();
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", onVisibilityChange);
+  }, []);
+
+  const enableMotion = !reduce && canHover && isDocumentVisible;
 
   return (
     <div
@@ -51,20 +67,24 @@ export default function SiteBackdrop() {
               : { right: orb.right }),
           }}
           animate={
-            reduce
-              ? undefined
-              : {
+            enableMotion
+              ? {
                 x: orb.side === "left" ? [0, 18, -8, 0] : [0, -16, 10, 0],
                 y: [0, 32, -12, 0],
                 opacity: [0.45, 0.75, 0.5, 0.45],
               }
+              : undefined
           }
-          transition={{
-            duration: orb.duration,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: orb.delay,
-          }}
+          transition={
+            enableMotion
+              ? {
+                duration: orb.duration,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: orb.delay,
+              }
+              : undefined
+          }
         />
       ))}
 
@@ -77,20 +97,24 @@ export default function SiteBackdrop() {
             ...(s.side === "left" ? { left: s.offset } : { right: s.offset }),
           }}
           animate={
-            reduce
-              ? undefined
-              : {
+            enableMotion
+              ? {
                 y: [0, -14, 0],
                 opacity: [0.2, 0.55, 0.2],
                 scale: [1, 1.4, 1],
               }
+              : undefined
           }
-          transition={{
-            duration: 5 + (i % 3),
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: s.delay,
-          }}
+          transition={
+            enableMotion
+              ? {
+                duration: 5 + (i % 3),
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: s.delay,
+              }
+              : undefined
+          }
         />
       ))}
 
@@ -101,8 +125,10 @@ export default function SiteBackdrop() {
             "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.5) 50%, transparent 60%)",
           backgroundSize: "200% 100%",
         }}
-        animate={reduce ? undefined : { backgroundPosition: ["200% 0", "-200% 0"] }}
-        transition={reduce ? undefined : { duration: 28, repeat: Infinity, ease: "linear" }}
+        animate={enableMotion ? { backgroundPosition: ["200% 0", "-200% 0"] } : undefined}
+        transition={
+          enableMotion ? { duration: 28, repeat: Infinity, ease: "linear" } : undefined
+        }
       />
     </div>
   );
