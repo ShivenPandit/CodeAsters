@@ -14,6 +14,7 @@ import { Activity, ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useRef, useCallback, useEffect, useState } from "react";
 import { useCanHover } from "@/lib/useCanHover";
+import { useLowPerformanceDevice } from "@/lib/useLowPerformanceDevice";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -839,7 +840,8 @@ function HeroVisual({ mockup, float1, float2 }: VisualProps) {
 export default function Hero() {
   const canHover = useCanHover();
   const reduceMotion = useReducedMotion();
-  const isParallaxDisabled = !canHover || !!reduceMotion;
+  const isLowPerformanceDevice = useLowPerformanceDevice();
+  const isParallaxDisabled = !canHover || !!reduceMotion || isLowPerformanceDevice;
 
   const {
     sectionRef,
@@ -906,7 +908,7 @@ export default function Hero() {
       <div className="floating-dot w-2 h-2 top-[70%] left-[85%]" style={{ animationDelay: "-2s" }} />
       <div className="floating-dot w-2.5 h-2.5 top-[40%] left-[5%]" style={{ animationDelay: "-4s" }} />
 
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-8 sm:py-10 md:py-12 lg:px-10 lg:py-14 xl:px-12 xl:py-12 2xl:py-8">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-8 pt-20 sm:pb-10 sm:pt-24 md:px-0 md:pt-12 md:pb-12 lg:px-10 lg:py-14 xl:px-12 xl:py-12 2xl:py-8">
         <div className="grid items-center gap-10 md:grid-cols-2 md:gap-12 lg:gap-14">
           {/* Left — text with subtle cursor parallax */}
           <motion.div

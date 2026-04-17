@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useReducedMotion } from "framer-motion";
+import { useLowPerformanceDevice } from "@/lib/useLowPerformanceDevice";
 
 /**
  * Must live inside the same stacking context as page sections so translucent
@@ -9,6 +10,7 @@ import { useReducedMotion } from "framer-motion";
  */
 export default function PagePattern() {
   const reduce = useReducedMotion();
+  const isLowPerformanceDevice = useLowPerformanceDevice();
   const [isDocumentVisible, setIsDocumentVisible] = useState(true);
 
   useEffect(() => {
@@ -24,7 +26,7 @@ export default function PagePattern() {
   return (
     <div
       className={`page-pattern-tiles pointer-events-none ${
-        reduce || !isDocumentVisible ? "" : "page-pattern-tiles--animate"
+        reduce || isLowPerformanceDevice || !isDocumentVisible ? "" : "page-pattern-tiles--animate"
       }`}
       aria-hidden
     />
