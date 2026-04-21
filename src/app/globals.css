@@ -50,19 +50,26 @@ body {
   inset: 0;
   z-index: 0;
   pointer-events: none;
+  overflow: hidden;
+}
+
+.page-pattern-layer {
+  position: absolute;
+  inset: -420px;
   background-image: url("/dev-pattern.svg");
   background-size: 400px 400px;
   background-repeat: repeat;
+  transform: translate3d(0, 0, 0);
 }
 
 @media (hover: hover) {
-  .page-pattern-tiles {
-    will-change: background-position;
+  .page-pattern-layer {
+    will-change: transform;
   }
 }
 
-.page-pattern-tiles--animate {
-  animation: site-pattern-drift 100s linear infinite;
+.page-pattern-layer--animate {
+  animation: site-pattern-drift-transform 100s linear infinite;
 }
 
 /* ─── Navbar: CSS-only show/hide (compositor thread, no Framer Motion) ─── */
@@ -159,6 +166,45 @@ html {
   }
 }
 
+.ambient-blob-loop {
+  opacity: var(--ambient-o-min, 0.35);
+  transform: translate3d(0, 0, 0) scale(1);
+  animation: ambient-blob-loop var(--ambient-duration, 12s) ease-in-out var(--ambient-delay, 0s) infinite;
+}
+
+@media (hover: hover) {
+  .ambient-blob-loop {
+    will-change: transform, opacity;
+  }
+}
+
+@keyframes ambient-blob-loop {
+  0%,
+  100% {
+    opacity: var(--ambient-o-min, 0.35);
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    opacity: var(--ambient-o-max, 0.65);
+    transform: translate3d(0, 0, 0) scale(var(--ambient-scale, 1.04));
+  }
+}
+
+.ambient-icon-pulse {
+  transform: translate3d(0, 0, 0) scale(1);
+  animation: ambient-icon-pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes ambient-icon-pulse {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, 0, 0) scale(1.08);
+  }
+}
+
 /* Floating dots background */
 @keyframes float-slow {
   0%, 100% { transform: translateY(0); }
@@ -189,18 +235,14 @@ html {
   scrollbar-width: none;
 }
 
-/* Tiled dev-tool stamps — slow drift (WhatsApp-style wallpaper) */
-@keyframes site-pattern-drift {
+/* Tiled dev-tool stamps — slow drift (transform-based for compositor rendering) */
+@keyframes site-pattern-drift-transform {
   from {
-    background-position: 0 0;
+    transform: translate3d(0, 0, 0);
   }
   to {
-    background-position: 400px 400px;
+    transform: translate3d(400px, 400px, 0);
   }
-}
-
-.site-pattern-drift {
-  animation: site-pattern-drift 100s linear infinite;
 }
 
 /* Noise texture overlay */
@@ -213,6 +255,369 @@ html {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 256px 256px;
+}
+
+.backdrop-sheen {
+  overflow: hidden;
+}
+
+.backdrop-sheen-layer {
+  position: absolute;
+  inset: -20%;
+  background-image: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.5) 50%,
+    transparent 60%
+  );
+  transform: translate3d(120%, 0, 0);
+}
+
+.backdrop-sheen--animate .backdrop-sheen-layer {
+  animation: backdrop-sheen-slide 28s linear infinite;
+}
+
+.site-backdrop-orb,
+.site-backdrop-sparkle {
+  transform: translate3d(0, 0, 0);
+}
+
+@media (hover: hover) {
+  .site-backdrop-orb,
+  .site-backdrop-sparkle {
+    will-change: transform, opacity;
+  }
+}
+
+.site-backdrop-orb--left {
+  animation: site-backdrop-orb-left var(--orb-duration, 22s) ease-in-out var(--orb-delay, 0s) infinite;
+}
+
+.site-backdrop-orb--right {
+  animation: site-backdrop-orb-right var(--orb-duration, 22s) ease-in-out var(--orb-delay, 0s) infinite;
+}
+
+@keyframes site-backdrop-orb-left {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.45;
+  }
+  40% {
+    transform: translate3d(18px, 32px, 0);
+    opacity: 0.75;
+  }
+  70% {
+    transform: translate3d(-8px, -12px, 0);
+    opacity: 0.5;
+  }
+}
+
+@keyframes site-backdrop-orb-right {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.45;
+  }
+  40% {
+    transform: translate3d(-16px, 32px, 0);
+    opacity: 0.75;
+  }
+  70% {
+    transform: translate3d(10px, -12px, 0);
+    opacity: 0.5;
+  }
+}
+
+.site-backdrop-sparkle--animate {
+  animation: site-backdrop-sparkle-float var(--sparkle-duration, 5s) ease-in-out var(--sparkle-delay, 0s) infinite;
+}
+
+@keyframes site-backdrop-sparkle-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) scale(1.4);
+    opacity: 0.55;
+  }
+}
+
+@keyframes backdrop-sheen-slide {
+  from {
+    transform: translate3d(120%, 0, 0);
+  }
+  to {
+    transform: translate3d(-120%, 0, 0);
+  }
+}
+
+.hero-status-dot {
+  animation: hero-status-dot-pulse 2s ease-in-out infinite;
+}
+
+.hero-code-pane-glow {
+  animation: hero-code-pane-glow 5s ease-in-out infinite;
+}
+
+.hero-code-footer-breathe {
+  animation: hero-code-footer-breathe 3s ease-in-out infinite;
+}
+
+.hero-code-check-pulse {
+  display: inline-block;
+  animation: hero-code-check-pulse 2.2s ease-in-out infinite;
+}
+
+.hero-code-save-pulse {
+  animation: hero-code-save-pulse 1.8s ease-in-out infinite;
+}
+
+.hero-preview-label-breathe {
+  animation: hero-preview-label-breathe 2.5s ease-in-out infinite;
+}
+
+.hero-preview-placeholder-pulse {
+  animation: hero-preview-placeholder-pulse 2s ease-in-out infinite;
+}
+
+.hero-preview-card-float {
+  animation: hero-preview-card-float var(--hero-card-duration, 3s) ease-in-out var(--hero-card-delay, 0s) infinite;
+}
+
+.hero-halo-spin--animate {
+  animation: hero-halo-spin 30s linear infinite;
+}
+
+.hero-halo-spin-reverse--animate {
+  animation: hero-halo-spin-reverse 44s linear infinite;
+}
+
+.hero-accent-orb-a {
+  animation: hero-accent-orb-a 3.2s ease-in-out infinite;
+}
+
+.hero-accent-orb-b {
+  animation: hero-accent-orb-b 4.1s ease-in-out 0.4s infinite;
+}
+
+.hero-accent-orb-c {
+  animation: hero-accent-orb-c 2.6s ease-in-out 0.2s infinite;
+}
+
+.hero-shell-breathe {
+  animation: hero-shell-breathe 4s ease-in-out infinite;
+}
+
+.hero-creativity-bob {
+  animation: hero-creativity-bob 4s ease-in-out infinite;
+}
+
+.hero-activity-pulse {
+  animation: hero-activity-pulse 2.4s ease-in-out infinite;
+}
+
+.hero-performance-dot {
+  animation: hero-performance-dot 2s ease-in-out infinite;
+}
+
+@media (hover: hover) {
+  .hero-status-dot,
+  .hero-preview-placeholder-pulse,
+  .hero-preview-card-float,
+  .hero-halo-spin--animate,
+  .hero-halo-spin-reverse--animate,
+  .hero-accent-orb-a,
+  .hero-accent-orb-b,
+  .hero-accent-orb-c,
+  .hero-shell-breathe,
+  .hero-creativity-bob,
+  .hero-activity-pulse,
+  .hero-performance-dot {
+    will-change: transform, opacity;
+  }
+}
+
+@keyframes hero-status-dot-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: translate3d(0, 0, 0) scale(0.88);
+  }
+}
+
+@keyframes hero-code-pane-glow {
+  0%,
+  100% {
+    box-shadow: inset 0 0 0 0 rgba(99, 102, 241, 0);
+  }
+  50% {
+    box-shadow: inset 0 0 20px -12px rgba(99, 102, 241, 0.12);
+  }
+}
+
+@keyframes hero-code-footer-breathe {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes hero-code-check-pulse {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, 0, 0) scale(1.15);
+  }
+}
+
+@keyframes hero-code-save-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes hero-preview-label-breathe {
+  0%,
+  100% {
+    opacity: 0.75;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes hero-preview-placeholder-pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: translate3d(0, 0, 0) scale(0.98);
+  }
+  50% {
+    opacity: 0.75;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes hero-preview-card-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -3px, 0);
+  }
+}
+
+@keyframes hero-halo-spin {
+  from {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  to {
+    transform: translate3d(0, 0, 0) rotate(360deg);
+  }
+}
+
+@keyframes hero-halo-spin-reverse {
+  from {
+    transform: translate3d(0, 0, 0) rotate(360deg);
+  }
+  to {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+}
+
+@keyframes hero-accent-orb-a {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: translate3d(0, 0, 0) scale(1.15);
+  }
+}
+
+@keyframes hero-accent-orb-b {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    opacity: 0.75;
+    transform: translate3d(0, -6px, 0);
+  }
+}
+
+@keyframes hero-accent-orb-c {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes hero-shell-breathe {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.65;
+  }
+}
+
+@keyframes hero-creativity-bob {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -2px, 0);
+  }
+}
+
+@keyframes hero-activity-pulse {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: translate3d(0, 0, 0) scale(1.08);
+  }
+}
+
+@keyframes hero-performance-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: translate3d(0, 0, 0) scale(0.9);
+  }
 }
 
 /* Hide expensive noise filter on touch/low-end devices */
@@ -280,7 +685,7 @@ body.menu-open {
     animation: none;
   }
 
-  .page-pattern-tiles--animate {
+  .page-pattern-layer--animate {
     animation: none;
   }
 }
@@ -446,10 +851,10 @@ body.menu-open {
 
 @keyframes navbar-tagline-scanline {
   from {
-    background-position: 0 0;
+    transform: translateY(0);
   }
   to {
-    background-position: 0 6px;
+    transform: translateY(6px);
   }
 }
 
@@ -467,7 +872,7 @@ body.menu-open {
     rgba(75, 85, 99, 0.2) 3px
   );
   animation: navbar-tagline-scanline 1.8s linear infinite;
-  will-change: background-position;
+  will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {

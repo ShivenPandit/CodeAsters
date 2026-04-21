@@ -22,11 +22,12 @@ export default function PagePattern() {
   }, []);
 
   return (
-    <div
-      className={`page-pattern-tiles pointer-events-none ${
-        reduce || !isDocumentVisible ? "" : "page-pattern-tiles--animate"
-      }`}
-      aria-hidden
-    />
+    <div className="page-pattern-tiles pointer-events-none" aria-hidden>
+      <div
+        className={`page-pattern-layer ${
+          reduce || !isDocumentVisible ? "" : "page-pattern-layer--animate"
+        }`}
+      />
+    </div>
   );
 }

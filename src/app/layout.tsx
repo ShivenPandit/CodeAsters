@@ -27,11 +27,17 @@ import {
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
+  preload: true,
+  fallback: ["system-ui", "Segoe UI", "Arial", "sans-serif"],
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
+  preload: true,
+  fallback: ["ui-monospace", "SFMono-Regular", "Consolas", "monospace"],
 });
 
 const googleVerificationToken = process.env.GOOGLE_SITE_VERIFICATION?.trim();

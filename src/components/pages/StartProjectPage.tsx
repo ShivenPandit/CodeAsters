@@ -161,20 +161,35 @@ export default function StartProjectPage() {
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           {ambientOn && (
             <>
-              <motion.div
-                className="absolute -right-32 -top-24 h-[28rem] w-[28rem] rounded-full bg-[#6366F1]/[0.09] blur-3xl"
-                animate={{ opacity: [0.45, 0.75, 0.45], scale: [1, 1.05, 1] }}
-                transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+              <div
+                className="ambient-blob-loop absolute -right-32 -top-24 h-[28rem] w-[28rem] rounded-full bg-[#6366F1]/[0.09] blur-3xl"
+                style={{
+                  "--ambient-duration": "14s",
+                  "--ambient-delay": "0s",
+                  "--ambient-o-min": 0.45,
+                  "--ambient-o-max": 0.75,
+                  "--ambient-scale": 1.05,
+                } as CSSProperties & Record<string, string | number>}
               />
-              <motion.div
-                className="absolute -bottom-32 -left-24 h-[22rem] w-[22rem] rounded-full bg-[#8B5CF6]/[0.07] blur-3xl"
-                animate={{ opacity: [0.35, 0.65, 0.35] }}
-                transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              <div
+                className="ambient-blob-loop absolute -bottom-32 -left-24 h-[22rem] w-[22rem] rounded-full bg-[#8B5CF6]/[0.07] blur-3xl"
+                style={{
+                  "--ambient-duration": "11s",
+                  "--ambient-delay": "1s",
+                  "--ambient-o-min": 0.35,
+                  "--ambient-o-max": 0.65,
+                  "--ambient-scale": 1,
+                } as CSSProperties & Record<string, string | number>}
               />
-              <motion.div
-                className="absolute left-1/2 top-1/3 h-40 w-40 -translate-x-1/2 rounded-full bg-cyan-400/[0.06] blur-2xl"
-                animate={{ opacity: [0.25, 0.5, 0.25] }}
-                transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+              <div
+                className="ambient-blob-loop absolute left-1/2 top-1/3 h-40 w-40 -translate-x-1/2 rounded-full bg-cyan-400/[0.06] blur-2xl"
+                style={{
+                  "--ambient-duration": "9s",
+                  "--ambient-delay": "0.5s",
+                  "--ambient-o-min": 0.25,
+                  "--ambient-o-max": 0.5,
+                  "--ambient-scale": 1,
+                } as CSSProperties & Record<string, string | number>}
               />
             </>
           )}
@@ -215,13 +230,11 @@ export default function StartProjectPage() {
                 className="rounded-2xl border border-[#E5E5E5] bg-white/90 p-5 shadow-sm backdrop-blur-sm"
               >
                 <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-[#0A0A0A]">
-                  <motion.span
-                    animate={ambientOn ? { scale: [1, 1.08, 1] } : {}}
-                    transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                    className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#6366F1]/10"
+                  <span
+                    className={`flex h-8 w-8 items-center justify-center rounded-lg bg-[#6366F1]/10 ${ambientOn ? "ambient-icon-pulse" : ""}`}
                   >
                     <Sparkles className="h-4 w-4 text-[#6366F1]" strokeWidth={2} />
-                  </motion.span>
+                  </span>
                   Quick signals
                 </div>
                 <ul className="space-y-2.5 text-sm text-[#64748B]">

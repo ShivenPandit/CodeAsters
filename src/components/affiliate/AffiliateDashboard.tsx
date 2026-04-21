@@ -17,7 +17,7 @@ import {
   X,
   Eye,
 } from "lucide-react";
-import { useCallback, useEffect, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useState, type CSSProperties, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useCanHover } from "@/lib/useCanHover";
 
@@ -241,15 +241,25 @@ export default function AffiliateDashboard() {
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         {ambientOn && (
           <>
-            <motion.div
-              className="absolute -right-32 top-20 h-[28rem] w-[28rem] rounded-full bg-[#6366F1]/[0.05] blur-3xl"
-              animate={{ opacity: [0.3, 0.55, 0.3] }}
-              transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+            <div
+              className="ambient-blob-loop absolute -right-32 top-20 h-[28rem] w-[28rem] rounded-full bg-[#6366F1]/[0.05] blur-3xl"
+              style={{
+                "--ambient-duration": "14s",
+                "--ambient-delay": "0s",
+                "--ambient-o-min": 0.3,
+                "--ambient-o-max": 0.55,
+                "--ambient-scale": 1,
+              } as CSSProperties & Record<string, string | number>}
             />
-            <motion.div
-              className="absolute -left-24 bottom-0 h-[22rem] w-[22rem] rounded-full bg-emerald-500/[0.04] blur-3xl"
-              animate={{ opacity: [0.25, 0.45, 0.25] }}
-              transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            <div
+              className="ambient-blob-loop absolute -left-24 bottom-0 h-[22rem] w-[22rem] rounded-full bg-emerald-500/[0.04] blur-3xl"
+              style={{
+                "--ambient-duration": "11s",
+                "--ambient-delay": "1s",
+                "--ambient-o-min": 0.25,
+                "--ambient-o-max": 0.45,
+                "--ambient-scale": 1,
+              } as CSSProperties & Record<string, string | number>}
             />
           </>
         )}

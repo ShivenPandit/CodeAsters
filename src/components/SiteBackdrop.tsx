@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useReducedMotion } from "framer-motion";
+import { useEffect, useState, type CSSProperties } from "react";
 import { useCanHover } from "@/lib/useCanHover";
 
 const sideOrbs = [
@@ -52,84 +52,44 @@ export default function SiteBackdrop() {
       </div>
 
       {sideOrbs.map((orb, i) => (
-        <motion.div
+        <div
           key={i}
-          className={`absolute hidden rounded-full blur-[90px] md:block ${orb.side === "left"
-              ? "bg-[#6366F1]/[0.11]"
-              : "bg-[#8B5CF6]/[0.1]"
-            }`}
+          className={`site-backdrop-orb ${
+            enableMotion
+              ? orb.side === "left"
+                ? "site-backdrop-orb--left"
+                : "site-backdrop-orb--right"
+              : ""
+          } absolute hidden rounded-full blur-[90px] md:block ${
+            orb.side === "left" ? "bg-[#6366F1]/[0.11]" : "bg-[#8B5CF6]/[0.1]"
+          }`}
           style={{
             top: orb.top,
             width: orb.size,
             height: orb.size,
-            ...(orb.side === "left"
-              ? { left: orb.left }
-              : { right: orb.right }),
-          }}
-          animate={
-            enableMotion
-              ? {
-                x: orb.side === "left" ? [0, 18, -8, 0] : [0, -16, 10, 0],
-                y: [0, 32, -12, 0],
-                opacity: [0.45, 0.75, 0.5, 0.45],
-              }
-              : undefined
-          }
-          transition={
-            enableMotion
-              ? {
-                duration: orb.duration,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: orb.delay,
-              }
-              : undefined
-          }
+            ...(orb.side === "left" ? { left: orb.left } : { right: orb.right }),
+            "--orb-duration": `${orb.duration}s`,
+            "--orb-delay": `${orb.delay}s`,
+          } as CSSProperties & Record<string, string | number>}
         />
       ))}
 
       {sparkles.map((s, i) => (
-        <motion.div
+        <div
           key={`sp-${i}`}
-          className="absolute hidden h-1 w-1 rounded-full bg-[#6366F1]/40 shadow-[0_0_12px_rgba(99,102,241,0.35)] md:block"
+          className={`site-backdrop-sparkle ${enableMotion ? "site-backdrop-sparkle--animate" : ""} absolute hidden h-1 w-1 rounded-full bg-[#6366F1]/40 shadow-[0_0_12px_rgba(99,102,241,0.35)] md:block`}
           style={{
             top: s.top,
             ...(s.side === "left" ? { left: s.offset } : { right: s.offset }),
-          }}
-          animate={
-            enableMotion
-              ? {
-                y: [0, -14, 0],
-                opacity: [0.2, 0.55, 0.2],
-                scale: [1, 1.4, 1],
-              }
-              : undefined
-          }
-          transition={
-            enableMotion
-              ? {
-                duration: 5 + (i % 3),
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: s.delay,
-              }
-              : undefined
-          }
+            "--sparkle-duration": `${5 + (i % 3)}s`,
+            "--sparkle-delay": `${s.delay}s`,
+          } as CSSProperties & Record<string, string | number>}
         />
       ))}
 
-      <motion.div
-        className="absolute inset-0 opacity-[0.035]"
-        style={{
-          backgroundImage:
-            "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.5) 50%, transparent 60%)",
-          backgroundSize: "200% 100%",
-        }}
-        animate={enableMotion ? { backgroundPosition: ["200% 0", "-200% 0"] } : undefined}
-        transition={
-          enableMotion ? { duration: 28, repeat: Infinity, ease: "linear" } : undefined
-        }
-      />
+      <div className={`backdrop-sheen absolute inset-0 opacity-[0.035] ${enableMotion ? "backdrop-sheen--animate" : ""}`}>
+        <div className="backdrop-sheen-layer" />
+      </div>
     </div>
   );
 }

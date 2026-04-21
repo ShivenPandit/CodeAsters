@@ -176,15 +176,25 @@ export default function BeACodeAsterPage() {
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           {ambientOn && (
             <>
-              <motion.div
-                className="absolute -right-32 -top-24 h-[28rem] w-[28rem] rounded-full bg-[#6366F1]/[0.09] blur-3xl"
-                animate={{ opacity: [0.45, 0.75, 0.45], scale: [1, 1.05, 1] }}
-                transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+              <div
+                className="ambient-blob-loop absolute -right-32 -top-24 h-[28rem] w-[28rem] rounded-full bg-[#6366F1]/[0.09] blur-3xl"
+                style={{
+                  "--ambient-duration": "14s",
+                  "--ambient-delay": "0s",
+                  "--ambient-o-min": 0.45,
+                  "--ambient-o-max": 0.75,
+                  "--ambient-scale": 1.05,
+                } as CSSProperties & Record<string, string | number>}
               />
-              <motion.div
-                className="absolute -bottom-32 -left-24 h-[22rem] w-[22rem] rounded-full bg-[#8B5CF6]/[0.07] blur-3xl"
-                animate={{ opacity: [0.35, 0.65, 0.35] }}
-                transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              <div
+                className="ambient-blob-loop absolute -bottom-32 -left-24 h-[22rem] w-[22rem] rounded-full bg-[#8B5CF6]/[0.07] blur-3xl"
+                style={{
+                  "--ambient-duration": "11s",
+                  "--ambient-delay": "1s",
+                  "--ambient-o-min": 0.35,
+                  "--ambient-o-max": 0.65,
+                  "--ambient-scale": 1,
+                } as CSSProperties & Record<string, string | number>}
               />
             </>
           )}

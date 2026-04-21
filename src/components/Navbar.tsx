@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { scheduleRafTask } from "@/lib/rafScheduler";
 
 const links = [
   { name: "Services", href: "/services" },
@@ -20,6 +21,7 @@ export default function Navbar() {
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollYRef = useRef(0);
   const tickingRef = useRef(false);
+  const pendingFrameCancelRef = useRef<(() => void) | null>(null);
   const pathname = usePathname();
   const mobileMenuId = "mobile-primary-nav";
 
@@ -51,14 +53,20 @@ export default function Navbar() {
       if (tickingRef.current) return;
       tickingRef.current = true;
 
-      window.requestAnimationFrame(() => {
+      pendingFrameCancelRef.current?.();
+      pendingFrameCancelRef.current = scheduleRafTask(() => {
         tickingRef.current = false;
+        pendingFrameCancelRef.current = null;
         updateFromScroll();
       });
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      pendingFrameCancelRef.current?.();
+      pendingFrameCancelRef.current = null;
+    };
   }, [open]);
 
 
