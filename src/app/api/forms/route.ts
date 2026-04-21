@@ -107,7 +107,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    await sendEmail(validation.templateParams);
+    await sendEmail(validation.formType, validation.templateParams);
   } catch (error) {
     console.error("[forms] email send failure", error);
     return NextResponse.json(

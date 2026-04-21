@@ -53,6 +53,34 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 
 When the variable is set, the root layout injects `gtag.js` and enables page tracking automatically.
 
+## Contact And Project Forms (EmailJS)
+
+All form submissions (`/contact`, `/start`, and `/be-a-codeaster`) are sent through the server route:
+
+- `src/app/api/forms/route.ts`
+
+Required environment variables:
+
+```bash
+EMAILJS_SERVICE_ID=service_xxxxxxx
+EMAILJS_PUBLIC_KEY=public_xxxxxxxxxxxxxxxxx
+EMAILJS_TEMPLATE_CONTACT=template_xxxxxxx
+```
+
+Optional (recommended) variables:
+
+```bash
+# Use separate templates per form type if needed
+EMAILJS_TEMPLATE_PROJECT=template_xxxxxxx
+EMAILJS_TEMPLATE_AFFILIATE=template_xxxxxxx
+
+# Generic fallback template key
+EMAILJS_TEMPLATE_ID=template_xxxxxxx
+
+# Only if your EmailJS account requires private access tokens
+EMAILJS_PRIVATE_KEY=private_xxxxxxxxxxxxxxxxx
+```
+
 ## WhatsApp Floating Chat Button
 
 The reusable floating WhatsApp chat button is enabled globally and reads contact details from:
