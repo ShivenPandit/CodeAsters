@@ -20,8 +20,8 @@ import {
   buildWhatsAppUrl,
 } from "@/lib/contact";
 import { useCanHover } from "@/lib/useCanHover";
-
-const ease = [0.25, 0.1, 0.25, 1] as const;
+import { useScrollReveal, useScrollRevealContainer } from "@/lib/useScrollReveal";
+import type { CSSProperties } from "react";
 
 const experienceOptions = ["Beginner", "Intermediate", "Expert"];
 
@@ -79,6 +79,12 @@ export default function BeACodeAsterPage() {
   const canHover = useCanHover();
   const reduceMotion = useReducedMotion();
   const ambientOn = !reduceMotion;
+  const howItWorksRef = useScrollReveal<HTMLDivElement>({ margin: "-40px" });
+  const stepsRef = useScrollRevealContainer<HTMLDivElement>();
+  const payoutRef = useScrollReveal<HTMLDivElement>({ margin: "-40px" });
+  const payoutTiersRef = useScrollRevealContainer<HTMLDivElement>();
+  const perksRef = useScrollRevealContainer<HTMLUListElement>();
+  const formRef = useScrollReveal<HTMLDivElement>({ margin: "-30px" });
 
   const [form, setForm] = useState({
     fullName: "",
@@ -186,42 +192,34 @@ export default function BeACodeAsterPage() {
         </div>
 
         <div className="relative z-[1] mx-auto max-w-6xl px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.5, ease }}
-            className="mb-8"
+          <div
+            ref={howItWorksRef}
+            className="scroll-reveal mb-8"
           >
             <h2 className="mb-6 text-2xl font-semibold tracking-[-0.02em] text-[#0A0A0A] sm:text-3xl">
               How this program works
             </h2>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div ref={stepsRef} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {programFlow.map((step, i) => (
-                <motion.div
+                <div
                   key={step.n}
-                  initial={reduceMotion ? false : { opacity: 0, y: 12 }}
-                  whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.35, delay: 0.06 * i, ease }}
-                  className="rounded-2xl border border-[#E5E5E5] bg-white/80 p-5 shadow-sm backdrop-blur-sm"
+                  className="scroll-reveal rounded-2xl border border-[#E5E5E5] bg-white/80 p-5 shadow-sm backdrop-blur-sm"
+                  style={{ "--reveal-delay": `${i * 60}ms` } as CSSProperties}
                 >
                   <span className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-lg bg-[#6366F1]/10 text-xs font-bold text-[#6366F1]">
                     {step.n}
                   </span>
                   <p className="mb-1 text-sm font-semibold text-[#0A0A0A]">{step.title}</p>
                   <p className="text-xs leading-relaxed text-[#64748B]">{step.detail}</p>
-                </motion.div>
+                </div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.45, delay: 0.05, ease }}
-            className="mb-8 rounded-2xl border border-[#E5E5E5] bg-white/80 p-6 shadow-sm backdrop-blur-sm"
+          <div
+            ref={payoutRef}
+            className="scroll-reveal mb-8 rounded-2xl border border-[#E5E5E5] bg-white/80 p-6 shadow-sm backdrop-blur-sm"
+            style={{ "--reveal-delay": "50ms" } as CSSProperties}
           >
             <div className="mb-4 flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-[#6366F1]" strokeWidth={2} />
@@ -229,47 +227,38 @@ export default function BeACodeAsterPage() {
                 Commission and payout
               </h3>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div ref={payoutTiersRef} className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {payoutTiers.map((item, i) => (
-                <motion.div
+                <div
                   key={item.tier}
-                  initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-                  whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: 0.05 * i, ease }}
-                  className="rounded-xl border border-[#E5E5E5] bg-[#FAFAFA] p-4"
+                  className="scroll-reveal rounded-xl border border-[#E5E5E5] bg-[#FAFAFA] p-4"
+                  style={{ "--reveal-delay": `${i * 50}ms` } as CSSProperties}
                 >
                   <p className="text-sm font-semibold text-[#0A0A0A]">{item.tier}</p>
                   <p className="mt-1 text-lg font-bold text-[#6366F1]">{item.rate}</p>
                   <p className="mt-1 text-xs text-[#64748B]">{item.condition}</p>
-                </motion.div>
+                </div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
           <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-10">
             <aside className="space-y-6 lg:col-span-4">
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.45, ease }}
+              <div
                 className="rounded-2xl border border-[#E5E5E5] bg-white/80 p-5 shadow-sm backdrop-blur-sm"
               >
                 <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#E5E5E5] bg-[#FAFAFA] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#6366F1]">
                   <Sparkles className="h-3.5 w-3.5" strokeWidth={2} />
                   Why Join
                 </div>
-                <ul className="space-y-4">
+                <ul ref={perksRef} className="space-y-4">
                   {perks.map((perk, i) => {
                     const Icon = perk.icon;
                     return (
-                      <motion.li
+                      <li
                         key={perk.title}
-                        initial={reduceMotion ? false : { opacity: 0, x: -8 }}
-                        whileInView={reduceMotion ? undefined : { opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.35, delay: 0.08 * i, ease }}
-                        className="flex gap-3"
+                        className="scroll-reveal flex gap-3"
+                        style={{ "--reveal-delay": `${i * 80}ms` } as CSSProperties}
                       >
                         <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#6366F1]/10 text-[#6366F1]">
                           <Icon className="h-4 w-4" strokeWidth={2} />
@@ -278,16 +267,13 @@ export default function BeACodeAsterPage() {
                           <p className="text-sm font-semibold text-[#0A0A0A]">{perk.title}</p>
                           <p className="mt-0.5 text-xs leading-relaxed text-[#64748B]">{perk.description}</p>
                         </div>
-                      </motion.li>
+                      </li>
                     );
                   })}
                 </ul>
-              </motion.div>
+              </div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.45, delay: 0.1, ease }}
+              <div
                 className="rounded-2xl border border-[#E5E5E5] bg-white/90 p-5 shadow-sm backdrop-blur-sm"
               >
                 <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-[#0A0A0A]">
@@ -313,7 +299,7 @@ export default function BeACodeAsterPage() {
                     </span>
                   </a>
                 </div>
-              </motion.div>
+              </div>
             </aside>
 
             <div className="lg:col-span-8">
@@ -349,12 +335,9 @@ export default function BeACodeAsterPage() {
                   </button>
                 </motion.div>
               ) : (
-                <motion.div
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ duration: 0.5, ease }}
-                  className="relative"
+                <div
+                  ref={formRef}
+                  className="scroll-reveal relative"
                 >
                   <div className="pointer-events-none absolute -inset-px rounded-[1.05rem] bg-gradient-to-b from-white/80 to-transparent opacity-90" />
                   <motion.form
@@ -533,12 +516,10 @@ export default function BeACodeAsterPage() {
                       </div>
                     )}
 
-                    <motion.button
+                    <button
                       type="submit"
                       disabled={status === "sending"}
-                      whileHover={canHover ? { scale: status === "sending" ? 1 : 1.02 } : undefined}
-                      whileTap={{ scale: status === "sending" ? 1 : 0.97 }}
-                      className="flex w-full items-center justify-center gap-2 rounded-full bg-[#0A0A0A] py-3.5 text-sm font-medium text-white shadow-md transition-colors hover:bg-[#1a1a1a] disabled:cursor-not-allowed disabled:opacity-50"
+                      className="flex w-full items-center justify-center gap-2 rounded-full bg-[#0A0A0A] py-3.5 text-sm font-medium text-white shadow-md transition-all hover:bg-[#1a1a1a] hover:scale-[1.02] active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
                     >
                       {status === "sending" ? (
                         <>
@@ -551,7 +532,7 @@ export default function BeACodeAsterPage() {
                           <ArrowRight size={16} />
                         </>
                       )}
-                    </motion.button>
+                    </button>
 
                     <p className="text-center text-xs text-[#6B7280]">
                       Looking for project delivery instead?{" "}
@@ -560,7 +541,7 @@ export default function BeACodeAsterPage() {
                       </Link>
                     </p>
                   </motion.form>
-                </motion.div>
+                </div>
               )}
             </div>
           </div>

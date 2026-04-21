@@ -1,8 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
-
-const ease = [0.25, 0.1, 0.25, 1] as const;
+import { useScrollReveal, useScrollRevealContainer } from "@/lib/useScrollReveal";
+import type { CSSProperties } from "react";
 
 const steps = [
   {
@@ -28,16 +27,17 @@ const steps = [
 ];
 
 export default function ProcessPreview() {
+  const headingRef = useScrollReveal<HTMLDivElement>();
+  const descRef = useScrollReveal<HTMLDivElement>({ margin: "-80px" });
+  const gridRef = useScrollRevealContainer<HTMLDivElement>();
+
   return (
     <section className="bg-page-white-soft section-space">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 mb-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.5, ease }}
-            className="lg:col-span-2"
+          <div
+            ref={headingRef}
+            className="scroll-reveal lg:col-span-2"
           >
             <span className="inline-block text-xs font-medium tracking-[0.2em] uppercase text-[#6366F1] mb-4">
               Process
@@ -45,32 +45,27 @@ export default function ProcessPreview() {
             <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.025em] leading-[1.1] text-[#0A0A0A]">
               Structured from start to&nbsp;finish.
             </h2>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.5, delay: 0.1, ease }}
-            className="lg:col-span-3 flex items-end"
+          </div>
+          <div
+            ref={descRef}
+            className="scroll-reveal lg:col-span-3 flex items-end"
+            style={{ "--reveal-delay": "100ms" } as CSSProperties}
           >
             <p className="text-base text-[#4B5563] leading-relaxed">
               Every project follows a clear, repeatable process — designed for transparency,
               quality, and timely delivery.
             </p>
-          </motion.div>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+        <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
           <div className="hidden lg:block absolute top-8 left-[12.5%] right-[12.5%] h-px bg-[#E5E5E5]" />
 
           {steps.map((step, i) => (
-            <motion.div
+            <div
               key={step.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.1, ease }}
-              className="relative group"
+              className="scroll-reveal relative group"
+              style={{ "--reveal-delay": `${i * 100}ms` } as CSSProperties}
             >
               <div className="relative z-10 w-14 h-14 rounded-xl border border-[#E5E5E5] bg-white shadow-sm flex items-center justify-center mb-4 transition-all duration-300 group-hover:border-[#6366F1]/30 group-hover:shadow-md">
                 <span className="text-sm font-mono font-semibold text-[#6366F1]">
@@ -81,7 +76,7 @@ export default function ProcessPreview() {
               <p className="text-sm text-[#6B7280] leading-relaxed">
                 {step.description}
               </p>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

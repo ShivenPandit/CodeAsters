@@ -1,12 +1,11 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { ArrowRight, ExternalLink, Globe, Database, ShoppingCart, Monitor, Zap } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useCanHover } from "@/lib/useCanHover";
-
-const ease = [0.25, 0.1, 0.25, 1] as const;
+import { useScrollReveal, useScrollRevealContainer } from "@/lib/useScrollReveal";
+import type { CSSProperties } from "react";
 
 type FrameVariant = "minimal" | "balanced";
 
@@ -36,8 +35,7 @@ function StaticImagePreview({
   frameVariant = "balanced",
   imageWidth,
   imageHeight,
-  imageQuality = 95,
-  unoptimized = false,
+  imageQuality = 85,
 }: {
   src: string;
   label: string;
@@ -45,7 +43,6 @@ function StaticImagePreview({
   imageWidth: number;
   imageHeight: number;
   imageQuality?: number;
-  unoptimized?: boolean;
 }) {
   const frame = getFrameClasses(frameVariant);
 
@@ -69,7 +66,6 @@ function StaticImagePreview({
           height={imageHeight}
           sizes="(max-width: 768px) 100vw, 50vw"
           quality={imageQuality}
-          unoptimized={unoptimized}
           className="block w-full h-auto max-h-[min(70vh,520px)] object-cover object-top"
         />
       </div>
@@ -160,8 +156,7 @@ const projects = [
     imageSrc: "/deepstudio-preview.png",
     imageWidth: 1280,
     imageHeight: 720,
-    imageQuality: 100,
-    unoptimized: true,
+    imageQuality: 85,
     frameVariant: "minimal" as const,
   },
   {
@@ -178,8 +173,7 @@ const projects = [
     imageSrc: "/mychoices-preview.png",
     imageWidth: 1280,
     imageHeight: 720,
-    imageQuality: 100,
-    unoptimized: true,
+    imageQuality: 85,
     frameVariant: "minimal" as const,
   },
   {
@@ -196,8 +190,7 @@ const projects = [
     imageSrc: "/management-system-preview.png",
     imageWidth: 1024,
     imageHeight: 464,
-    imageQuality: 100,
-    unoptimized: true,
+    imageQuality: 85,
     frameVariant: "balanced" as const,
   },
   {
@@ -214,8 +207,7 @@ const projects = [
     imageSrc: "/label-studio-sjit.png",
     imageWidth: 1908,
     imageHeight: 970,
-    imageQuality: 100,
-    unoptimized: true,
+    imageQuality: 85,
     frameVariant: "minimal" as const,
   },
   {
@@ -232,24 +224,23 @@ const projects = [
     imageSrc: "/ai-catalog-generator-preview.png",
     imageWidth: 1600,
     imageHeight: 900,
-    imageQuality: 100,
-    unoptimized: true,
+    imageQuality: 85,
     frameVariant: "minimal" as const,
   },
 ];
 
 export default function WorkPreview() {
   const canHover = useCanHover();
+  const headingRef = useScrollReveal<HTMLDivElement>();
+  const gridRef = useScrollRevealContainer<HTMLDivElement>();
+  const linkRef = useScrollReveal<HTMLDivElement>({ margin: "-40px" });
 
   return (
     <section className="bg-page-soft section-space">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5, ease }}
-          className="mb-8"
+        <div
+          ref={headingRef}
+          className="scroll-reveal mb-8"
         >
           <span className="inline-block text-xs font-medium tracking-[0.2em] uppercase text-[#6366F1] mb-4">
             Selected Work
@@ -257,19 +248,16 @@ export default function WorkPreview() {
           <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.025em] leading-[1.1] text-[#0A0A0A]">
             Projects we&apos;ve delivered.
           </h2>
-        </motion.div>
+        </div>
 
-        <div className="mb-8 space-y-6">
+        <div ref={gridRef} className="mb-8 space-y-6">
           {projects.map((project, i) => {
             const Icon = project.categoryIcon;
             return (
-              <motion.div
+              <div
                 key={project.name}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1, ease }}
-                className="group rounded-2xl border border-[#E5E5E5] bg-white hover:shadow-xl hover:shadow-black/[0.04] hover:border-[#D4D4D4] transition-all duration-500 overflow-hidden"
+                className="scroll-reveal group rounded-2xl border border-[#E5E5E5] bg-white hover:shadow-xl hover:shadow-black/[0.04] hover:border-[#D4D4D4] transition-all duration-500 overflow-hidden"
+                style={{ "--reveal-delay": `${i * 100}ms` } as CSSProperties}
               >
                 <div className="grid md:grid-cols-2 gap-0">
                   {/* Text content */}
@@ -306,26 +294,22 @@ export default function WorkPreview() {
                     </div>
 
                     {project.url && (
-                      <motion.a
+                      <a
                         href={project.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        whileHover={canHover ? { scale: 1.02 } : undefined}
-                        whileTap={{ scale: 0.97 }}
-                        className="inline-flex items-center gap-2 text-sm font-medium text-[#0A0A0A] hover:text-[#6366F1] transition-colors duration-300 w-fit"
+                        className="inline-flex items-center gap-2 text-sm font-medium text-[#0A0A0A] hover:text-[#6366F1] transition-all duration-300 w-fit hover:scale-[1.02] active:scale-[0.97]"
                       >
                         View Live Project
                         <ExternalLink size={13} />
-                      </motion.a>
+                      </a>
                     )}
                   </div>
 
                   {/* Visual mockup */}
                   <div className="p-5 lg:p-7 bg-[#FAFAFB] border-t md:border-t-0 md:border-l border-[#E5E5E5] flex items-center">
-                    <motion.div
-                      whileHover={canHover ? { y: -4 } : undefined}
-                      transition={{ duration: 0.3, ease: "easeOut" }}
-                      className="w-full"
+                    <div
+                      className={`w-full transition-transform duration-300 ease-out ${canHover ? 'hover:-translate-y-1' : ''}`}
                     >
                       {project.previewType === "image" && project.imageSrc ? (
                         <StaticImagePreview
@@ -335,24 +319,22 @@ export default function WorkPreview() {
                           imageWidth={project.imageWidth}
                           imageHeight={project.imageHeight}
                           imageQuality={project.imageQuality}
-                          unoptimized={project.unoptimized}
                         />
                       ) : (
                         <ManagementSystemMockup />
                       )}
-                    </motion.div>
+                    </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.2, ease }}
+        <div
+          ref={linkRef}
+          className="scroll-reveal"
+          style={{ "--reveal-delay": "200ms" } as CSSProperties}
         >
           <Link
             href="/work"
@@ -361,7 +343,7 @@ export default function WorkPreview() {
             View all work
             <ArrowRight size={14} className="transition-transform duration-300 group-hover/link:translate-x-1" />
           </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

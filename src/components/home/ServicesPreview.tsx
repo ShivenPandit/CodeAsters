@@ -1,11 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { ArrowRight, Globe, Code2, Server, Layers, LayoutDashboard, Settings } from "lucide-react";
 import Link from "next/link";
-import { useCanHover } from "@/lib/useCanHover";
-
-const ease = [0.25, 0.1, 0.25, 1] as const;
+import { useScrollReveal, useScrollRevealContainer } from "@/lib/useScrollReveal";
+import type { CSSProperties } from "react";
 
 const services = [
   {
@@ -47,18 +45,18 @@ const services = [
 ];
 
 export default function ServicesPreview() {
-  const canHover = useCanHover();
+  const headingRef = useScrollReveal<HTMLDivElement>();
+  const descRef = useScrollReveal<HTMLDivElement>({ margin: "-80px" });
+  const gridRef = useScrollRevealContainer<HTMLDivElement>();
+  const linkRef = useScrollReveal<HTMLDivElement>({ margin: "-40px" });
 
   return (
     <section className="bg-page-white-soft section-space">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 mb-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.5, ease }}
-            className="lg:col-span-2"
+          <div
+            ref={headingRef}
+            className="scroll-reveal lg:col-span-2"
           >
             <span className="inline-block text-xs font-medium tracking-[0.2em] uppercase text-[#6366F1] mb-4">
               Services
@@ -66,32 +64,26 @@ export default function ServicesPreview() {
             <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.025em] leading-[1.1] text-[#0A0A0A]">
               Full-stack software development.
             </h2>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.5, delay: 0.1, ease }}
-            className="lg:col-span-3 flex items-end"
+          </div>
+          <div
+            ref={descRef}
+            className="scroll-reveal lg:col-span-3 flex items-end"
+            style={{ "--reveal-delay": "100ms" } as CSSProperties}
           >
             <p className="text-base text-[#4B5563] leading-relaxed">
               From websites and mobile apps to enterprise platforms and cloud infrastructure — we handle the full scope of modern software development.
             </p>
-          </motion.div>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
+        <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
           {services.map((service, i) => {
             const Icon = service.icon;
             return (
-              <motion.div
+              <div
                 key={service.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.06, ease }}
-                whileHover={canHover ? { y: -2 } : undefined}
-                className="group p-6 rounded-xl border border-[#E5E5E5] bg-white hover:shadow-lg hover:shadow-black/[0.04] hover:border-[#D4D4D4] transition-all duration-300"
+                className="scroll-reveal group p-6 rounded-xl border border-[#E5E5E5] bg-white hover:shadow-lg hover:shadow-black/[0.04] hover:border-[#D4D4D4] transition-all duration-300"
+                style={{ "--reveal-delay": `${i * 60}ms` } as CSSProperties}
               >
                 <div
                   className="w-10 h-10 rounded-lg flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-105"
@@ -105,16 +97,15 @@ export default function ServicesPreview() {
                 <p className="text-sm text-[#4B5563] leading-relaxed">
                   {service.description}
                 </p>
-              </motion.div>
+              </div>
             );
           })}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.3, ease }}
+        <div
+          ref={linkRef}
+          className="scroll-reveal"
+          style={{ "--reveal-delay": "300ms" } as CSSProperties}
         >
           <Link
             href="/services"
@@ -123,7 +114,7 @@ export default function ServicesPreview() {
             Explore all services
             <ArrowRight size={14} className="transition-transform duration-300 group-hover/link:translate-x-1" />
           </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

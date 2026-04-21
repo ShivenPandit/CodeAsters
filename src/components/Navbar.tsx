@@ -87,14 +87,13 @@ export default function Navbar() {
   }, [open]);
 
   return (
-    <motion.nav
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: isVisible ? "0%" : "-100%", opacity: 1 }}
-      transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] as const }}
+    <nav
       aria-label="Primary"
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 navbar-root ${
+        isVisible ? "navbar-visible" : "navbar-hidden"
+      } ${
         scrolled
-          ? "bg-white/80 backdrop-blur-xl shadow-sm border-b border-[#E5E5E5]"
+          ? "navbar-scrolled"
           : "bg-transparent"
       }`}
     >
@@ -146,16 +145,12 @@ export default function Navbar() {
             ))}
 
             {/* Be a CodeAsters CTA */}
-            <motion.div
-              whileHover={canHover ? { scale: 1.02 } : undefined}
-              whileTap={{ scale: 0.97 }}
-              className="relative group"
-            >
+            <div className="relative group">
               <Link
                 href="/be-a-codeaster"
                 data-cursor="Join"
                 aria-current={pathname === "/be-a-codeaster" ? "page" : undefined}
-                className={`inline-flex items-center gap-1.5 px-4 py-2 border text-sm font-medium rounded-full transition-all duration-300 ${
+                className={`inline-flex items-center gap-1.5 px-4 py-2 border text-sm font-medium rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] ${
                   pathname === "/be-a-codeaster"
                     ? "border-[#6366F1] bg-[#6366F1]/5 text-[#6366F1]"
                     : "border-[#6366F1]/30 text-[#6366F1] hover:border-[#6366F1] hover:bg-[#6366F1]/5"
@@ -172,18 +167,16 @@ export default function Navbar() {
                   <div className="absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 border-l border-t border-[#6366F1]/20 bg-white/95" />
                 </div>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div whileHover={canHover ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.97 }}>
-              <Link
-                href="/start"
-                data-cursor="Let's Talk"
-                aria-current={pathname === "/start" ? "page" : undefined}
-                className="px-5 py-2 bg-[#0A0A0A] hover:bg-[#1a1a1a] text-white text-sm font-medium rounded-full transition-colors duration-300 shadow-sm"
-              >
-                Start a Project
-              </Link>
-            </motion.div>
+            <Link
+              href="/start"
+              data-cursor="Let's Talk"
+              aria-current={pathname === "/start" ? "page" : undefined}
+              className="px-5 py-2 bg-[#0A0A0A] hover:bg-[#1a1a1a] text-white text-sm font-medium rounded-full transition-all duration-300 shadow-sm hover:scale-[1.02] active:scale-[0.97]"
+            >
+              Start a Project
+            </Link>
           </div>
           </LayoutGroup>
 
@@ -250,6 +243,6 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </nav>
   );
 }

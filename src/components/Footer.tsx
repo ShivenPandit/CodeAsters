@@ -1,10 +1,8 @@
-"use client";
-
-import { motion } from "framer-motion";
-import { Github, Linkedin, Instagram, ArrowUp, Mail } from "lucide-react";
+import { Github, Linkedin, Instagram, Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useCanHover } from "@/lib/useCanHover";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
+import SocialLink from "@/components/SocialLink";
 
 const footerLinks = {
   Company: [
@@ -33,12 +31,6 @@ const socials = [
 ];
 
 export default function Footer() {
-  const canHover = useCanHover();
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   return (
     <footer className="relative z-[1] border-t border-[#E5E5E5]/80 bg-page-white-soft py-12 text-[#0A0A0A] backdrop-blur-sm" role="contentinfo">
       <div className="absolute top-0 left-0 right-0 h-px bg-[#E5E5E5]" />
@@ -73,18 +65,9 @@ export default function Footer() {
             <ul className="flex gap-3" aria-label="Social links">
               {socials.map((social) => (
                 <li key={social.label}>
-                  <motion.a
-                    href={social.href}
-                    aria-label={social.label}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={canHover ? { y: -2, scale: 1.05 } : undefined}
-                    whileTap={{ scale: 0.95 }}
-                    transition={{ duration: 0.2, ease: "easeOut" }}
-                    className="w-9 h-9 rounded-lg bg-[#FAFAFA] border border-[#E5E5E5] hover:border-[#6366F1]/30 hover:text-[#6366F1] flex items-center justify-center transition-colors duration-300 text-[#6B7280]"
-                  >
+                  <SocialLink href={social.href} label={social.label}>
                     <social.icon size={15} />
-                  </motion.a>
+                  </SocialLink>
                 </li>
               ))}
             </ul>
@@ -100,7 +83,7 @@ export default function Footer() {
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className="text-[#6B7280] hover:text-[#0A0A0A] transition-colors duration-300 text-sm"
+                      className="link-hover text-[#6B7280] hover:text-[#0A0A0A] transition-colors duration-300 text-sm"
                     >
                       {link.name}
                     </Link>
@@ -113,17 +96,9 @@ export default function Footer() {
 
         <div className="pt-8 border-t border-[#E5E5E5] flex flex-col xl:flex-row items-center justify-between gap-4">
           <p className="text-xs text-[#6B7280]">
-            © {new Date().getFullYear()} CodeAsters. All rights reserved.
+            © 2026 CodeAsters. All rights reserved.
           </p>
-          <motion.button
-            onClick={scrollToTop}
-            whileHover={canHover ? { y: -2 } : undefined}
-            whileTap={{ scale: 0.9 }}
-            className="w-9 h-9 rounded-full border border-[#E5E5E5] hover:border-[#6366F1]/40 hover:text-[#6366F1] flex items-center justify-center transition-colors duration-300 text-[#6B7280]"
-            aria-label="Scroll to top"
-          >
-            <ArrowUp size={15} />
-          </motion.button>
+          <ScrollToTopButton />
         </div>
       </div>
     </footer>

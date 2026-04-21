@@ -16,8 +16,8 @@ import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
 import { buildWhatsAppUrl } from "@/lib/contact";
 import { useCanHover } from "@/lib/useCanHover";
-
-const ease = [0.25, 0.1, 0.25, 1] as const;
+import { useScrollReveal, useScrollRevealContainer } from "@/lib/useScrollReveal";
+import type { CSSProperties } from "react";
 
 const serviceOptions = [
   "Web Design & Development",
@@ -50,6 +50,8 @@ const whatsappContactHref = buildWhatsAppUrl("");
 export default function StartProjectPage() {
   const canHover = useCanHover();
   const reduceMotion = useReducedMotion();
+  const stepsContainerRef = useScrollRevealContainer<HTMLUListElement>();
+  const formContainerRef = useScrollReveal<HTMLDivElement>({ margin: "-30px" });
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -183,25 +185,19 @@ export default function StartProjectPage() {
           <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-10">
             {/* Aside — scannable, light UI */}
             <aside className="space-y-6 lg:col-span-4">
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.45, ease }}
+              <div
                 className="rounded-2xl border border-[#E5E5E5] bg-white/80 p-5 shadow-sm backdrop-blur-sm"
               >
                 <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#E5E5E5] bg-[#FAFAFA] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#6366F1]">
                   <ClipboardList className="h-3.5 w-3.5" strokeWidth={2} />
                   How it works
                 </div>
-                <ul className="space-y-4">
+                <ul ref={stepsContainerRef} className="space-y-4">
                   {steps.map((s, i) => (
-                    <motion.li
+                    <li
                       key={s.n}
-                      initial={reduceMotion ? false : { opacity: 0, x: -8 }}
-                      whileInView={reduceMotion ? undefined : { opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.35, delay: 0.08 * i, ease }}
-                      className="flex gap-3"
+                      className="scroll-reveal flex gap-3"
+                      style={{ "--reveal-delay": `${i * 80}ms` } as CSSProperties}
                     >
                       <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#6366F1]/10 text-xs font-bold text-[#6366F1]">
                         {s.n}
@@ -210,15 +206,12 @@ export default function StartProjectPage() {
                         <p className="text-sm font-semibold text-[#0A0A0A]">{s.title}</p>
                         <p className="mt-0.5 text-xs leading-relaxed text-[#64748B]">{s.detail}</p>
                       </div>
-                    </motion.li>
+                    </li>
                   ))}
                 </ul>
-              </motion.div>
+              </div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.45, delay: 0.1, ease }}
+              <div
                 className="rounded-2xl border border-[#E5E5E5] bg-white/90 p-5 shadow-sm backdrop-blur-sm"
               >
                 <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-[#0A0A0A]">
@@ -255,19 +248,16 @@ export default function StartProjectPage() {
                     </a>
                   </li>
                 </ul>
-              </motion.div>
+              </div>
 
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2, duration: 0.4 }}
+              <p
                 className="px-1 text-center text-xs text-[#94A3B8] lg:text-left"
               >
                 Just saying hi?{" "}
                 <Link href="/contact" className="font-medium text-[#6366F1] hover:underline">
                   General contact
                 </Link>
-              </motion.p>
+              </p>
             </aside>
 
             {/* Form — unchanged fields, refined shell */}
@@ -305,12 +295,9 @@ export default function StartProjectPage() {
                   </button>
                 </motion.div>
               ) : (
-                <motion.div
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ duration: 0.5, ease }}
-                  className="relative"
+                <div
+                  ref={formContainerRef}
+                  className="scroll-reveal relative"
                 >
                   <div className="pointer-events-none absolute -inset-px rounded-[1.05rem] bg-gradient-to-b from-white/80 to-transparent opacity-90" />
                   <motion.form
@@ -520,12 +507,10 @@ export default function StartProjectPage() {
                       </div>
                     )}
 
-                    <motion.button
+                    <button
                       type="submit"
                       disabled={status === "sending"}
-                      whileHover={canHover ? { scale: status === "sending" ? 1 : 1.02 } : undefined}
-                      whileTap={{ scale: status === "sending" ? 1 : 0.97 }}
-                      className="flex w-full items-center justify-center gap-2 rounded-full bg-[#0A0A0A] py-3.5 text-sm font-medium text-white shadow-md transition-colors hover:bg-[#1a1a1a] disabled:cursor-not-allowed disabled:opacity-50"
+                      className="flex w-full items-center justify-center gap-2 rounded-full bg-[#0A0A0A] py-3.5 text-sm font-medium text-white shadow-md transition-all hover:bg-[#1a1a1a] hover:scale-[1.02] active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
                     >
                       {status === "sending" ? (
                         <>
@@ -538,7 +523,7 @@ export default function StartProjectPage() {
                           <ArrowRight size={16} />
                         </>
                       )}
-                    </motion.button>
+                    </button>
 
                     <p className="text-center text-xs text-[#6B7280]">
                       Prefer a lighter touch?{" "}
@@ -547,7 +532,7 @@ export default function StartProjectPage() {
                       </Link>
                     </p>
                   </motion.form>
-                </motion.div>
+                </div>
               )}
             </div>
           </div>

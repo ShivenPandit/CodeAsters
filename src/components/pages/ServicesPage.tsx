@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import {
   ArrowRight,
   Bot,
@@ -19,9 +18,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
-import { useCanHover } from "@/lib/useCanHover";
-
-const ease = [0.25, 0.1, 0.25, 1] as const;
+import { useScrollReveal, useScrollRevealContainer } from "@/lib/useScrollReveal";
+import type { CSSProperties } from "react";
 
 const services = [
   {
@@ -250,7 +248,11 @@ const buildTypes = [
 ];
 
 export default function ServicesPage() {
-  const canHover = useCanHover();
+  const introRef = useScrollReveal<HTMLDivElement>();
+  const cardsRef = useScrollRevealContainer<HTMLDivElement>();
+  const techHeadingRef = useScrollReveal<HTMLDivElement>();
+  const techGridRef = useScrollRevealContainer<HTMLDivElement>();
+  const ctaRef = useScrollReveal<HTMLDivElement>();
 
   return (
     <>
@@ -263,12 +265,9 @@ export default function ServicesPage() {
       {/* Intro */}
       <section className="bg-page-soft section-space-bottom-compact">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease }}
-            className="grid gap-8 lg:grid-cols-5 lg:gap-12"
+          <div
+            ref={introRef}
+            className="scroll-reveal grid gap-8 lg:grid-cols-5 lg:gap-12"
           >
             <div className="lg:col-span-2">
               <span className="inline-block text-xs font-medium tracking-[0.2em] uppercase text-[#6366F1] mb-4">
@@ -293,24 +292,21 @@ export default function ServicesPage() {
                 ))}
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Service Cards */}
       <section className="bg-page-soft section-space-bottom">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <div className="space-y-6 lg:space-y-8">
+          <div ref={cardsRef} className="space-y-6 lg:space-y-8">
             {services.map((service, i) => {
               const Icon = service.icon;
               return (
-                <motion.div
+                <div
                   key={service.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.4, delay: i * 0.03, ease }}
-                  className="rounded-2xl border border-[#E5E5E5] bg-white p-6 transition-all duration-300 hover:border-[#D4D4D4] hover:shadow-md lg:p-8"
+                  className="scroll-reveal rounded-2xl border border-[#E5E5E5] bg-white p-6 transition-all duration-300 hover:border-[#D4D4D4] hover:shadow-md lg:p-8"
+                  style={{ "--reveal-delay": `${i * 30}ms` } as CSSProperties}
                 >
                   <div className="grid gap-8 lg:grid-cols-5 lg:gap-10">
                     <div className="lg:col-span-3">
@@ -359,7 +355,7 @@ export default function ServicesPage() {
                       </p>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </div>
@@ -369,12 +365,9 @@ export default function ServicesPage() {
       {/* Technology Stack */}
       <section className="bg-page-white-soft section-space">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease }}
-            className="mb-8 text-center"
+          <div
+            ref={techHeadingRef}
+            className="scroll-reveal mb-8 text-center"
           >
             <span className="inline-block text-xs font-medium tracking-[0.2em] uppercase text-[#6366F1] mb-4">
               How We Build
@@ -385,17 +378,14 @@ export default function ServicesPage() {
             <p className="mx-auto max-w-xl text-base leading-relaxed text-[#64748B]">
               Picked for speed, maintainability, and real-world reliability — not hype cycles.
             </p>
-          </motion.div>
+          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div ref={techGridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {techCategories.map((cat, ci) => (
-              <motion.div
+              <div
                 key={cat.label}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: ci * 0.08, ease }}
-                className="p-6 rounded-xl border border-[#E5E5E5] bg-[#FAFAFB] hover:border-[#D4D4D4] transition-colors duration-300"
+                className="scroll-reveal p-6 rounded-xl border border-[#E5E5E5] bg-[#FAFAFB] hover:border-[#D4D4D4] transition-colors duration-300"
+                style={{ "--reveal-delay": `${ci * 80}ms` } as CSSProperties}
               >
                 <div className="text-xs font-semibold text-[#6366F1] uppercase tracking-wider mb-4">
                   {cat.label}
@@ -410,7 +400,7 @@ export default function ServicesPage() {
                     </div>
                   ))}
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -419,12 +409,10 @@ export default function ServicesPage() {
       {/* CTA */}
       <section className="bg-page-soft section-space">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.2, ease }}
-            className="text-center"
+          <div
+            ref={ctaRef}
+            className="scroll-reveal text-center"
+            style={{ "--reveal-delay": "200ms" } as CSSProperties}
           >
             <h3 className="mb-2 text-2xl font-semibold tracking-tight text-[#0A0A0A]">
               Ready when you are.
@@ -433,25 +421,21 @@ export default function ServicesPage() {
               Send a project brief for scope &amp; timeline, or a short note if you&apos;re still exploring.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
-              <motion.div whileHover={canHover ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.97 }} className="inline-block">
-                <Link
-                  href="/start"
-                  className="inline-flex items-center gap-2 rounded-full bg-[#0A0A0A] px-7 py-3.5 text-sm font-medium text-white shadow-md transition-colors hover:bg-[#1a1a1a]"
-                >
-                  Start a project
-                  <ArrowRight size={16} />
-                </Link>
-              </motion.div>
-              <motion.div whileHover={canHover ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.97 }} className="inline-block">
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 rounded-full border border-[#E5E5E5] px-7 py-3.5 text-sm font-medium text-[#0A0A0A] transition-colors hover:border-[#CBD5E1] hover:bg-white"
-                >
-                  Contact
-                </Link>
-              </motion.div>
+              <Link
+                href="/start"
+                className="inline-flex items-center gap-2 rounded-full bg-[#0A0A0A] px-7 py-3.5 text-sm font-medium text-white shadow-md transition-all hover:bg-[#1a1a1a] hover:scale-[1.02] active:scale-[0.97]"
+              >
+                Start a project
+                <ArrowRight size={16} />
+              </Link>
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 rounded-full border border-[#E5E5E5] px-7 py-3.5 text-sm font-medium text-[#0A0A0A] transition-all hover:border-[#CBD5E1] hover:bg-white hover:scale-[1.02] active:scale-[0.97]"
+              >
+                Contact
+              </Link>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
     </>

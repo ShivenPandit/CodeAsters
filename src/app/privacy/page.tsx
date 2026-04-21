@@ -44,7 +44,7 @@ export default function Privacy() {
         </h1>
 
         <div className="prose-custom space-y-8 text-sm text-[#6B7280] leading-relaxed">
-          <p>Last updated: {LAST_UPDATED}</p>
+          <p>Last updated: <time dateTime="2026-03-28">{LAST_UPDATED}</time></p>
 
           <section>
             <h2 className="text-lg font-semibold text-[#0A0A0A] mb-3">Information We Collect</h2>

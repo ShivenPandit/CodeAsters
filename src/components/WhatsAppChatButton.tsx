@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 type WhatsAppChatButtonProps = {
   phoneNumber: string;
   message?: string;
@@ -13,7 +17,14 @@ export default function WhatsAppChatButton({
   ariaLabel = "Chat with us on WhatsApp",
   className,
 }: WhatsAppChatButtonProps) {
+  const [isVisible, setIsVisible] = useState(false);
   const normalizedPhone = normalizePhoneNumber(phoneNumber);
+
+  useEffect(() => {
+    // Delay appearance so it doesn't compete with initial page load
+    const timer = window.setTimeout(() => setIsVisible(true), 2500);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   if (!normalizedPhone) {
     return null;
@@ -26,6 +37,10 @@ export default function WhatsAppChatButton({
 
   const rootClassName = [
     "group fixed bottom-5 right-5 z-[9500] inline-flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAFAFB]",
+    "transition-all duration-500 ease-out",
+    isVisible
+      ? "translate-y-0 opacity-100"
+      : "translate-y-4 opacity-0 pointer-events-none",
     className,
   ]
     .filter(Boolean)

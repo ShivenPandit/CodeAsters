@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useCanHover } from "@/lib/useCanHover";
+import { useLowPerformanceDevice } from "@/lib/useLowPerformanceDevice";
 
 const sideOrbs = [
   { side: "left" as const, top: "10%", left: "-8%", size: 280, delay: 0, duration: 22 },
@@ -23,6 +24,7 @@ const sparkles = [
 export default function SiteBackdrop() {
   const reduce = useReducedMotion();
   const canHover = useCanHover();
+  const isLowPerf = useLowPerformanceDevice();
   const [isDocumentVisible, setIsDocumentVisible] = useState(true);
 
   useEffect(() => {
@@ -36,6 +38,7 @@ export default function SiteBackdrop() {
   }, []);
 
   const enableMotion = !reduce && canHover && isDocumentVisible;
+  const visibleSparkles = isLowPerf ? sparkles.slice(0, 3) : sparkles;
 
   return (
     <div
@@ -88,7 +91,7 @@ export default function SiteBackdrop() {
         />
       ))}
 
-      {sparkles.map((s, i) => (
+      {visibleSparkles.map((s, i) => (
         <motion.div
           key={`sp-${i}`}
           className="absolute hidden h-1 w-1 rounded-full bg-[#6366F1]/40 shadow-[0_0_12px_rgba(99,102,241,0.35)] md:block"

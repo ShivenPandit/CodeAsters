@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useScrollReveal } from "@/lib/useScrollReveal";
 
 interface SectionHeadingProps {
   label: string;
@@ -15,13 +15,12 @@ export default function SectionHeading({
   titleAccent,
   description,
 }: SectionHeadingProps) {
+  const ref = useScrollReveal<HTMLDivElement>({ margin: "-80px" });
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as const }}
-      className="mb-6 lg:mb-8"
+    <div
+      ref={ref}
+      className="scroll-reveal mb-6 lg:mb-8"
     >
       <span className="inline-block text-xs font-medium tracking-[0.2em] uppercase text-[#6366F1] mb-4">
         {label}
@@ -37,6 +36,6 @@ export default function SectionHeading({
           {description}
         </p>
       )}
-    </motion.div>
+    </div>
   );
 }

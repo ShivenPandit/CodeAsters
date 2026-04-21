@@ -26,7 +26,9 @@ const routes: SitemapEntry[] = [
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
+  // Use a static date reflecting actual content changes rather than new Date()
+  // which would report every build as "just updated" — reducing Google's trust in the signal.
+  const lastModified = new Date("2026-04-21");
 
   return routes.map((route) => {
     const url = absoluteUrl(route.path);

@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import {
   ArrowRight,
   Globe,
@@ -23,8 +22,8 @@ import Link from "next/link";
 import Image from "next/image";
 import PageHeader from "@/components/PageHeader";
 import { useCanHover } from "@/lib/useCanHover";
-
-const ease = [0.25, 0.1, 0.25, 1] as const;
+import { useScrollReveal, useScrollRevealContainer } from "@/lib/useScrollReveal";
+import type { CSSProperties } from "react";
 
 const iconMap = { Palette, Zap, Monitor, Layout, Globe, Database, BarChart3, Shield, Server, Package, Factory, TrendingUp, Settings } as const;
 
@@ -59,7 +58,6 @@ type BrowserFrameMockupProps = {
   imageWidth: number;
   imageHeight: number;
   imageQuality?: number;
-  unoptimized?: boolean;
   footerLabel?: string;
   frameVariant?: FrameVariant;
 };
@@ -70,8 +68,7 @@ function BrowserFrameMockup({
   label,
   imageWidth,
   imageHeight,
-  imageQuality = 95,
-  unoptimized = false,
+  imageQuality = 85,
   footerLabel = "Live preview",
   frameVariant = "balanced",
 }: BrowserFrameMockupProps) {
@@ -99,7 +96,6 @@ function BrowserFrameMockup({
           height={imageHeight}
           sizes="(max-width: 1024px) 100vw, 60vw"
           quality={imageQuality}
-          unoptimized={unoptimized}
           className="block w-full h-auto max-h-[min(70vh,520px)] object-cover object-top"
         />
       </div>
@@ -126,8 +122,7 @@ function DeepStudioMockup() {
       label="deep-studio.vercel.app"
       imageWidth={1280}
       imageHeight={720}
-      imageQuality={100}
-      unoptimized
+      imageQuality={85}
       frameVariant="minimal"
     />
   );
@@ -141,8 +136,7 @@ function ManagementSystemMockup() {
       label="management / dashboard"
       imageWidth={1024}
       imageHeight={464}
-      imageQuality={100}
-      unoptimized
+      imageQuality={85}
       frameVariant="balanced"
     />
   );
@@ -156,8 +150,7 @@ function MyChoicesMockup() {
       label="my-choices-lovat.vercel.app"
       imageWidth={1280}
       imageHeight={720}
-      imageQuality={100}
-      unoptimized
+      imageQuality={85}
       frameVariant="minimal"
     />
   );
@@ -171,8 +164,7 @@ function LabelStudioMockup() {
       label="label studio / sjit labels"
       imageWidth={1908}
       imageHeight={970}
-      imageQuality={100}
-      unoptimized
+      imageQuality={85}
       footerLabel="Product preview"
       frameVariant="minimal"
     />
@@ -187,8 +179,7 @@ function AICatalogGeneratorMockup() {
       label="ai catalog / generator"
       imageWidth={1600}
       imageHeight={900}
-      imageQuality={100}
-      unoptimized
+      imageQuality={85}
       footerLabel="AI workflow preview"
       frameVariant="minimal"
     />
@@ -357,6 +348,8 @@ const projects = [
 
 export default function WorkPage() {
   const canHover = useCanHover();
+  const containerRef = useScrollRevealContainer<HTMLDivElement>();
+  const ctaRef = useScrollReveal<HTMLDivElement>({ margin: "-60px" });
 
   return (
     <>
@@ -368,28 +361,23 @@ export default function WorkPage() {
 
       <section className="bg-page-soft section-space-bottom">
         <div className="max-w-5xl mx-auto px-6 lg:px-8">
-          <div className="space-y-8 md:space-y-10 lg:space-y-12">
+          <div ref={containerRef} className="space-y-8 md:space-y-10 lg:space-y-12">
             {projects.map((project, i) => {
               const CategoryIcon = project.categoryIcon;
               const Mockup = project.Mockup;
               return (
-                <motion.article
+                <article
                   key={project.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.5, delay: i * 0.1, ease }}
-                  className="rounded-2xl border border-[#E5E5E5] bg-white overflow-hidden shadow-sm hover:shadow-lg hover:shadow-black/[0.04] transition-shadow duration-500"
+                  className="scroll-reveal rounded-2xl border border-[#E5E5E5] bg-white overflow-hidden shadow-sm hover:shadow-lg hover:shadow-black/[0.04] transition-shadow duration-500"
+                  style={{ "--reveal-delay": `${i * 60}ms` } as CSSProperties}
                 >
                   {/* Visual mockup */}
                   <div className="p-6 lg:p-8 bg-[#FAFAFB] border-b border-[#E5E5E5]">
-                    <motion.div
-                      whileHover={canHover ? { y: -4 } : undefined}
-                      transition={{ duration: 0.3, ease: "easeOut" }}
-                      className="w-full"
+                    <div
+                      className={`w-full transition-transform duration-300 ease-out ${canHover ? 'hover:-translate-y-1' : ''}`}
                     >
                       <Mockup />
-                    </motion.div>
+                    </div>
                   </div>
 
                   {/* Content */}
@@ -515,31 +503,27 @@ export default function WorkPage() {
                       </div>
 
                       {project.url && (
-                        <motion.a
+                        <a
                           href={project.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          whileHover={canHover ? { scale: 1.02 } : undefined}
-                          whileTap={{ scale: 0.97 }}
-                          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0A0A0A] hover:bg-[#1a1a1a] text-white text-sm font-medium rounded-full transition-colors duration-300 shadow-sm"
+                          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0A0A0A] hover:bg-[#1a1a1a] text-white text-sm font-medium rounded-full transition-all duration-300 shadow-sm hover:scale-[1.02] active:scale-[0.97]"
                         >
                           View Live Project
                           <ExternalLink size={14} />
-                        </motion.a>
+                        </a>
                       )}
                     </div>
                   </div>
-                </motion.article>
+                </article>
               );
             })}
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.2, ease }}
-            className="mt-8 text-center md:mt-10 lg:mt-12"
+          <div
+            ref={ctaRef}
+            className="scroll-reveal mt-8 text-center md:mt-10 lg:mt-12"
+            style={{ "--reveal-delay": "200ms" } as CSSProperties}
           >
             <h3 className="text-2xl font-semibold text-[#0A0A0A] tracking-tight mb-3">
               Have a project in mind?
@@ -547,16 +531,14 @@ export default function WorkPage() {
             <p className="text-base text-[#4B5563] mb-6">
               Let&apos;s discuss what we can build together — with a clear scope, timeline, and technical approach.
             </p>
-            <motion.div whileHover={canHover ? { scale: 1.02 } : undefined} whileTap={{ scale: 0.97 }} className="inline-block">
-              <Link
-                href="/start"
-                className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#0A0A0A] hover:bg-[#1a1a1a] text-white font-medium rounded-full text-sm transition-colors duration-300 shadow-md"
-              >
-                Start a Project
-                <ArrowRight size={16} />
-              </Link>
-            </motion.div>
-          </motion.div>
+            <Link
+              href="/start"
+              className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#0A0A0A] hover:bg-[#1a1a1a] text-white font-medium rounded-full text-sm transition-all duration-300 shadow-md hover:scale-[1.02] active:scale-[0.97]"
+            >
+              Start a Project
+              <ArrowRight size={16} />
+            </Link>
+          </div>
         </div>
       </section>
     </>
