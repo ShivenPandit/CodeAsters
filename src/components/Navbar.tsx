@@ -6,7 +6,6 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCanHover } from "@/lib/useCanHover";
 
 const links = [
   { name: "Services", href: "/services" },
@@ -22,7 +21,6 @@ export default function Navbar() {
   const lastScrollYRef = useRef(0);
   const tickingRef = useRef(false);
   const pathname = usePathname();
-  const canHover = useCanHover();
   const mobileMenuId = "mobile-primary-nav";
 
   useEffect(() => {

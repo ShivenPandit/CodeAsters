@@ -14,7 +14,6 @@ import { Activity, ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useRef, useCallback, useEffect, useState } from "react";
 import { useCanHover } from "@/lib/useCanHover";
-import { useLowPerformanceDevice } from "@/lib/useLowPerformanceDevice";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -124,39 +123,26 @@ function useHeroParallax(isParallaxDisabled: boolean) {
     };
   }, []);
 
-  /* Layer springs — different mass/damping for depth separation */
+  /* Layer springs — one shared spring pair to reduce motion overhead */
+  const smoothX = useSpring(rawX, { damping: 30, stiffness: 130, mass: 0.65 });
+  const smoothY = useSpring(rawY, { damping: 30, stiffness: 130, mass: 0.65 });
 
-  // Text — fast, small displacement
-  const tSX = useSpring(rawX, { damping: 40, stiffness: 180, mass: 0.4 });
-  const tSY = useSpring(rawY, { damping: 40, stiffness: 180, mass: 0.4 });
-  const textX = useTransform(tSX, [-1, 1], [-4, 4]);
-  const textY = useTransform(tSY, [-1, 1], [-3, 3]);
+  const textX = useTransform(smoothX, [-1, 1], [-4, 4]);
+  const textY = useTransform(smoothY, [-1, 1], [-3, 3]);
 
-  // Mockup frame — medium lag, perspective tilt
-  const mSX = useSpring(rawX, { damping: 30, stiffness: 120, mass: 0.7 });
-  const mSY = useSpring(rawY, { damping: 30, stiffness: 120, mass: 0.7 });
-  const mockX = useTransform(mSX, [-1, 1], [-8, 8]);
-  const mockY = useTransform(mSY, [-1, 1], [-6, 6]);
-  const mockRY = useTransform(mSX, [-1, 1], [-2.5, 2.5]);
-  const mockRX = useTransform(mSY, [-1, 1], [2, -2]);
+  const mockX = useTransform(smoothX, [-1, 1], [-8, 8]);
+  const mockY = useTransform(smoothY, [-1, 1], [-6, 6]);
+  const mockRY = useTransform(smoothX, [-1, 1], [-2.5, 2.5]);
+  const mockRX = useTransform(smoothY, [-1, 1], [2, -2]);
 
-  // Float card 1 (Build Deployed) — more lag, more travel
-  const f1SX = useSpring(rawX, { damping: 24, stiffness: 100, mass: 0.9 });
-  const f1SY = useSpring(rawY, { damping: 24, stiffness: 100, mass: 0.9 });
-  const float1X = useTransform(f1SX, [-1, 1], [-7, 7]);
-  const float1Y = useTransform(f1SY, [-1, 1], [-6, 6]);
+  const float1X = useTransform(smoothX, [-1, 1], [-7, 7]);
+  const float1Y = useTransform(smoothY, [-1, 1], [-6, 6]);
 
-  // Float card 2 (Performance) — subtle motion so side/below cards stay off the mockup
-  const f2SX = useSpring(rawX, { damping: 20, stiffness: 85, mass: 1.1 });
-  const f2SY = useSpring(rawY, { damping: 20, stiffness: 85, mass: 1.1 });
-  const float2X = useTransform(f2SX, [-1, 1], [-5, 5]);
-  const float2Y = useTransform(f2SY, [-1, 1], [-4, 4]);
+  const float2X = useTransform(smoothX, [-1, 1], [-5, 5]);
+  const float2Y = useTransform(smoothY, [-1, 1], [-4, 4]);
 
-  // Glow — fast follow
-  const gSX = useSpring(rawX, { damping: 35, stiffness: 200, mass: 0.25 });
-  const gSY = useSpring(rawY, { damping: 35, stiffness: 200, mass: 0.25 });
-  const glowLeft = useTransform(gSX, [-1, 1], ["20%", "80%"]);
-  const glowTop = useTransform(gSY, [-1, 1], ["20%", "80%"]);
+  const glowLeft = useTransform(smoothX, [-1, 1], ["20%", "80%"]);
+  const glowTop = useTransform(smoothY, [-1, 1], ["20%", "80%"]);
 
   return {
     sectionRef: ref,
@@ -840,8 +826,7 @@ function HeroVisual({ mockup, float1, float2 }: VisualProps) {
 export default function Hero() {
   const canHover = useCanHover();
   const reduceMotion = useReducedMotion();
-  const isLowPerformanceDevice = useLowPerformanceDevice();
-  const isParallaxDisabled = !canHover || !!reduceMotion || isLowPerformanceDevice;
+  const isParallaxDisabled = !canHover || !!reduceMotion;
 
   const {
     sectionRef,
