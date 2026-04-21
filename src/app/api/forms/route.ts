@@ -54,6 +54,7 @@ function hasTrustedOrigin(request: Request, headerList: Headers) {
 
 export async function POST(request: Request) {
   const headerList = await headers();
+  const isDevelopment = process.env.NODE_ENV !== "production";
 
   if (!hasTrustedOrigin(request, headerList)) {
     return NextResponse.json(
@@ -86,34 +87,43 @@ export async function POST(request: Request) {
     );
   }
 
-  const clientIp = extractClientIp(headerList);
-  const rateConfig = rateLimitByFormType[validation.formType];
-  const rateKey = `${validation.formType}:${clientIp}`;
-  const rateLimitResult = consumeRateLimit(rateKey, rateConfig.max, rateConfig.windowMs);
+  if (!isDevelopment) {
+    const clientIp = extractClientIp(headerList);
+    const rateConfig = rateLimitByFormType[validation.formType];
+    const rateKey = `${validation.formType}:${clientIp}`;
+    const rateLimitResult = consumeRateLimit(rateKey, rateConfig.max, rateConfig.windowMs);
 
-  if (!rateLimitResult.allowed) {
-    return NextResponse.json(
-      {
-        ok: false,
-        error: "Too many requests. Please try again in a little while.",
-      },
-      {
-        status: 429,
-        headers: {
-          "Retry-After": String(rateLimitResult.retryAfterSeconds),
+    if (!rateLimitResult.allowed) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: "Too many requests. Please try again in a little while.",
         },
-      }
-    );
+        {
+          status: 429,
+          headers: {
+            "Retry-After": String(rateLimitResult.retryAfterSeconds),
+          },
+        }
+      );
+    }
   }
 
   try {
     await sendEmail(validation.formType, validation.templateParams);
   } catch (error) {
     console.error("[forms] email send failure", error);
+    const detail =
+      error instanceof Error
+        ? error.message
+        : "Unexpected server error while sending email.";
+
     return NextResponse.json(
       {
         ok: false,
-        error: "Unable to send your message right now. Please try again shortly.",
+        error: isDevelopment
+          ? detail
+          : "Unable to send your message right now. Please try again shortly.",
       },
       { status: 502 }
     );
