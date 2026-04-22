@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 import { useCanHover } from "@/lib/useCanHover";
 
 const sideOrbs = [
@@ -21,22 +21,49 @@ const sparkles = [
 
 export default function SiteBackdrop() {
   const canHover = useCanHover();
-  const [isDocumentVisible, setIsDocumentVisible] = useState(true);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isVisibleRef = useRef(true);
 
   useEffect(() => {
     const onVisibilityChange = () => {
-      setIsDocumentVisible(document.visibilityState !== "hidden");
+      isVisibleRef.current = document.visibilityState !== "hidden";
+      updateAnimationClasses();
+    };
+
+    const updateAnimationClasses = () => {
+      if (!containerRef.current) return;
+      const enableMotion = canHover && isVisibleRef.current;
+      
+      // Update orb animations
+      containerRef.current.querySelectorAll(".site-backdrop-orb").forEach((el, i) => {
+        const orb = sideOrbs[i];
+        if (!orb) return;
+        el.classList.toggle(
+          orb.side === "left" ? "site-backdrop-orb--left" : "site-backdrop-orb--right",
+          enableMotion
+        );
+      });
+      
+      // Update sparkle animations
+      containerRef.current.querySelectorAll(".site-backdrop-sparkle").forEach((el) => {
+        el.classList.toggle("site-backdrop-sparkle--animate", enableMotion);
+      });
+      
+      // Update sheen animation
+      const sheenEl = containerRef.current.querySelector(".backdrop-sheen");
+      if (sheenEl) {
+        sheenEl.classList.toggle("backdrop-sheen--animate", enableMotion);
+      }
     };
 
     onVisibilityChange();
     document.addEventListener("visibilitychange", onVisibilityChange);
     return () => document.removeEventListener("visibilitychange", onVisibilityChange);
-  }, []);
-
-  const enableMotion = canHover && isDocumentVisible;
+  }, [canHover]);
 
   return (
     <div
+      ref={containerRef}
       className="pointer-events-none fixed inset-0 z-[1] overflow-hidden"
       aria-hidden
     >
@@ -53,11 +80,7 @@ export default function SiteBackdrop() {
         <div
           key={i}
           className={`site-backdrop-orb ${
-            enableMotion
-              ? orb.side === "left"
-                ? "site-backdrop-orb--left"
-                : "site-backdrop-orb--right"
-              : ""
+            orb.side === "left" ? "site-backdrop-orb--left" : "site-backdrop-orb--right"
           } absolute hidden rounded-full blur-[90px] md:block ${
             orb.side === "left" ? "bg-[#6366F1]/[0.11]" : "bg-[#8B5CF6]/[0.1]"
           }`}
@@ -75,7 +98,7 @@ export default function SiteBackdrop() {
       {sparkles.map((s, i) => (
         <div
           key={`sp-${i}`}
-          className={`site-backdrop-sparkle ${enableMotion ? "site-backdrop-sparkle--animate" : ""} absolute hidden h-1 w-1 rounded-full bg-[#6366F1]/40 shadow-[0_0_12px_rgba(99,102,241,0.35)] md:block`}
+          className="site-backdrop-sparkle absolute hidden h-1 w-1 rounded-full bg-[#6366F1]/40 shadow-[0_0_12px_rgba(99,102,241,0.35)] md:block"
           style={{
             top: s.top,
             ...(s.side === "left" ? { left: s.offset } : { right: s.offset }),
@@ -85,7 +108,7 @@ export default function SiteBackdrop() {
         />
       ))}
 
-      <div className={`backdrop-sheen absolute inset-0 opacity-[0.035] ${enableMotion ? "backdrop-sheen--animate" : ""}`}>
+      <div className="backdrop-sheen absolute inset-0 opacity-[0.035]">
         <div className="backdrop-sheen-layer" />
       </div>
     </div>

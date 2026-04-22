@@ -1,17 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
 /**
  * Must live inside the same stacking context as page sections so translucent
  * section backgrounds composite over the tiles (fixed body::before does not).
  */
 export default function PagePattern() {
-  const [isDocumentVisible, setIsDocumentVisible] = useState(true);
+  const layerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onVisibilityChange = () => {
-      setIsDocumentVisible(document.visibilityState !== "hidden");
+      if (!layerRef.current) return;
+      const isVisible = document.visibilityState !== "hidden";
+      layerRef.current.classList.toggle("page-pattern-layer--animate", isVisible);
     };
 
     onVisibilityChange();
@@ -22,9 +24,8 @@ export default function PagePattern() {
   return (
     <div className="page-pattern-tiles pointer-events-none" aria-hidden>
       <div
-        className={`page-pattern-layer ${
-          !isDocumentVisible ? "" : "page-pattern-layer--animate"
-        }`}
+        ref={layerRef}
+        className="page-pattern-layer page-pattern-layer--animate"
       />
     </div>
   );
