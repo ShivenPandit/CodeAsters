@@ -142,8 +142,8 @@ function useHeroParallax(isParallaxDisabled: boolean) {
   const float2X = useTransform(smoothX, [-1, 1], [-5, 5]);
   const float2Y = useTransform(smoothY, [-1, 1], [-4, 4]);
 
-  const glowLeft = useTransform(smoothX, [-1, 1], ["20%", "80%"]);
-  const glowTop = useTransform(smoothY, [-1, 1], ["20%", "80%"]);
+  const glowX = useTransform(smoothX, [-1, 1], [-180, 180]);
+  const glowY = useTransform(smoothY, [-1, 1], [-140, 140]);
 
   return {
     sectionRef: ref,
@@ -161,8 +161,8 @@ function useHeroParallax(isParallaxDisabled: boolean) {
     float1Y,
     float2X,
     float2Y,
-    glowLeft,
-    glowTop,
+    glowX,
+    glowY,
   };
 }
 
@@ -387,7 +387,7 @@ function HeroLiveCodePanel({
   return (
     <LayoutGroup>
       <div className="overflow-hidden rounded-xl border border-white/55 bg-white/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.75),0_4px_24px_-8px_rgba(99,102,241,0.14)] backdrop-blur-xl backdrop-saturate-150">
-        <div className="flex min-h-[2rem] flex-wrap items-center gap-x-2 gap-y-1 border-b border-white/45 px-2 py-1.5 backdrop-blur-md sm:gap-3">
+        <div className="flex min-h-[2rem] flex-wrap items-center gap-x-2 gap-y-1 border-b border-white/45 px-2 py-1.5 sm:gap-3">
           <div className="relative flex min-w-0 shrink gap-2 font-mono sm:gap-3">
             {["ship.ts", "route.ts"].map((name, ti) => (
               <span key={name} className="relative px-0.5 pb-0.5 text-[9px] font-medium">
@@ -411,7 +411,7 @@ function HeroLiveCodePanel({
         </div>
 
       <div className={`flex min-w-0 font-mono ${textSize}`}>
-        <div className="shrink-0 select-none border-r border-white/40 bg-white/20 px-2 py-2.5 text-right text-[#94A3B8] tabular-nums backdrop-blur-sm">
+        <div className="shrink-0 select-none border-r border-white/40 bg-white/20 px-2 py-2.5 text-right text-[#94A3B8] tabular-nums">
           {LIVE_CODE_LINES.map((_, i) => (
             <div key={i} className={`relative ${lineH}`}>
               {done === i && (
@@ -478,7 +478,7 @@ function HeroLiveSitePreview({
 
   return (
     <div
-      className="relative flex h-full min-h-[13.5rem] flex-col overflow-hidden rounded-xl border border-white/50 bg-gradient-to-b from-white/40 to-[#6366F1]/[0.1] p-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)] backdrop-blur-xl backdrop-saturate-150 sm:min-h-[16rem] lg:min-h-[17rem]"
+      className="relative flex h-full min-h-[13.5rem] flex-col overflow-hidden rounded-xl border border-white/50 bg-gradient-to-b from-white/40 to-[#6366F1]/[0.1] p-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)] sm:min-h-[16rem] lg:min-h-[17rem]"
       style={reduceMotion ? undefined : { filter: `hue-rotate(${hueRot}deg)` }}
     >
       <div className="mb-2 flex min-w-0 flex-wrap items-center justify-between gap-x-2 gap-y-1">
@@ -501,7 +501,7 @@ function HeroLiveSitePreview({
         )}
       </div>
 
-      <div className="relative z-[1] flex min-h-0 flex-1 flex-col gap-2 rounded-lg border border-white/35 bg-white/20 p-2 backdrop-blur-sm">
+      <div className="relative z-[1] flex min-h-0 flex-1 flex-col gap-2 rounded-lg border border-white/35 bg-white/20 p-2">
         <AnimatePresence>
           {!nav && !reduceMotion && (
             <motion.div
@@ -575,7 +575,7 @@ function HeroLiveSitePreview({
           {[0, 1, 2].map((i) => (
             <motion.div
               key={i}
-              className="space-y-1 rounded-md border border-white/45 bg-white/35 p-1.5 ring-1 ring-white/30 backdrop-blur-sm"
+              className="space-y-1 rounded-md border border-white/45 bg-white/35 p-1.5 ring-1 ring-white/30"
               initial={false}
               animate={
                 cards
@@ -638,7 +638,7 @@ function HeroLiveSitePreview({
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 4 }}
               transition={{ type: "spring", stiffness: 420, damping: 28 }}
-              className="pointer-events-none absolute bottom-2 left-1.5 right-1.5 z-[3] rounded-md border border-emerald-400/35 bg-emerald-500/15 px-1 py-1.5 text-center font-mono text-[6px] font-semibold uppercase leading-snug tracking-wide text-emerald-800 shadow-lg backdrop-blur-md sm:left-2 sm:right-2 sm:text-[7px]"
+              className="pointer-events-none absolute bottom-2 left-1.5 right-1.5 z-[3] rounded-md border border-emerald-400/35 bg-emerald-500/15 px-1 py-1.5 text-center font-mono text-[6px] font-semibold uppercase leading-snug tracking-wide text-emerald-800 shadow-lg sm:left-2 sm:right-2 sm:text-[7px]"
             >
               <span className="block whitespace-normal break-words">Hot reload · DOM updated</span>
             </motion.div>
@@ -687,7 +687,7 @@ function HeroVisual({ mockup, float1, float2 }: VisualProps) {
         <div className="relative">
           {/* Primary creative halo */}
           <div
-            className="pointer-events-none absolute -inset-[3%] -z-10 rounded-[2.35rem] blur-3xl sm:-inset-[5%] sm:rounded-[2.85rem]"
+            className="pointer-events-none absolute -inset-[2%] -z-10 rounded-[2.35rem] blur-[42px] sm:-inset-[4%] sm:rounded-[2.85rem] sm:blur-[52px]"
             style={{
               background:
                 "conic-gradient(from 120deg at 50% 50%, rgba(168,85,247,0.26), rgba(99,102,241,0.2), rgba(6,182,212,0.22), rgba(236,72,153,0.2), rgba(251,191,36,0.16), rgba(168,85,247,0.26))",
@@ -702,7 +702,7 @@ function HeroVisual({ mockup, float1, float2 }: VisualProps) {
           </div>
           {/* Counter-rotating softer wash */}
           <div
-            className="pointer-events-none absolute -inset-[8%] -z-10 rounded-[3rem] blur-[56px] sm:-inset-[10%] sm:blur-[72px]"
+            className="pointer-events-none absolute -inset-[7%] -z-10 rounded-[3rem] blur-[42px] sm:-inset-[9%] sm:blur-[56px]"
             style={{
               background:
                 "conic-gradient(from 300deg at 40% 40%, rgba(6,182,212,0.12), rgba(168,85,247,0.1), rgba(251,191,36,0.08), rgba(236,72,153,0.1), rgba(6,182,212,0.12))",
@@ -715,11 +715,11 @@ function HeroVisual({ mockup, float1, float2 }: VisualProps) {
             />
           </div>
           <div
-            className="pointer-events-none absolute -inset-4 rounded-[1.75rem] bg-gradient-to-br from-[#6366F1]/30 via-[#8B5CF6]/20 to-[#EC4899]/15 opacity-90 blur-3xl"
+            className="pointer-events-none absolute -inset-3 rounded-[1.75rem] bg-gradient-to-br from-[#6366F1]/30 via-[#8B5CF6]/20 to-[#EC4899]/15 opacity-90 blur-[42px]"
             aria-hidden
           />
           <div
-            className="pointer-events-none absolute -inset-2 rounded-[1.5rem] bg-gradient-to-tr from-cyan-400/12 via-transparent to-[#6366F1]/18 blur-2xl"
+            className="pointer-events-none absolute -inset-2 rounded-[1.5rem] bg-gradient-to-tr from-cyan-400/12 via-transparent to-[#6366F1]/18 blur-xl"
             aria-hidden
           />
 
@@ -742,7 +742,7 @@ function HeroVisual({ mockup, float1, float2 }: VisualProps) {
 
             <div className="overflow-hidden rounded-[1.1rem] border border-white/45 bg-white/[0.15] shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] sm:rounded-[1.25rem]">
               {/* Title bar — URL scrolls instead of truncating; Creativity sits in chrome */}
-              <div className="flex items-center gap-2 border-b border-white/40 bg-gradient-to-b from-white/50 to-white/25 px-3 py-4 backdrop-blur-md sm:gap-3 sm:px-5 sm:py-[1.125rem] lg:px-6">
+              <div className="flex items-center gap-2 border-b border-white/40 bg-gradient-to-b from-white/50 to-white/25 px-3 py-4 sm:gap-3 sm:px-5 sm:py-[1.125rem] lg:px-6">
                 <div className="flex shrink-0 gap-1.5">
                   <div className="h-2.5 w-2.5 rounded-full bg-[#FF5F57]/90 ring-1 ring-black/[0.06]" />
                   <div className="h-2.5 w-2.5 rounded-full bg-[#FEBC2E]/90 ring-1 ring-black/[0.06]" />
@@ -750,14 +750,14 @@ function HeroVisual({ mockup, float1, float2 }: VisualProps) {
                 </div>
                 <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
                   <div className="flex min-w-0 flex-1 justify-center">
-                    <div className="no-scrollbar flex h-7 max-w-full min-w-0 items-center justify-center overflow-x-auto rounded-lg border border-white/50 bg-white/35 px-2 shadow-inner backdrop-blur-sm sm:h-8 sm:max-w-[min(100%,440px)] sm:px-3">
+                    <div className="no-scrollbar flex h-7 max-w-full min-w-0 items-center justify-center overflow-x-auto rounded-lg border border-white/50 bg-white/35 px-2 shadow-inner sm:h-8 sm:max-w-[min(100%,440px)] sm:px-3">
                       <span className="whitespace-nowrap px-0.5 font-mono text-[10px] text-[#4B5563] sm:text-[11px]">
                         app.codeasters.io
                       </span>
                     </div>
                   </div>
                   <div
-                    className={`pointer-events-none flex shrink-0 items-center gap-1 rounded-full border border-white/60 bg-white/55 px-1.5 py-1 shadow-[0_8px_24px_-10px_rgba(99,102,241,0.35)] backdrop-blur-md sm:gap-1.5 sm:px-2.5 sm:py-1.5 ${reduceMotion ? "" : "hero-creativity-bob"}`}
+                    className={`pointer-events-none flex shrink-0 items-center gap-1 rounded-full border border-white/60 bg-white/55 px-1.5 py-1 shadow-[0_8px_24px_-10px_rgba(99,102,241,0.35)] sm:gap-1.5 sm:px-2.5 sm:py-1.5 ${reduceMotion ? "" : "hero-creativity-bob"}`}
                     aria-hidden
                   >
                     <Sparkles className="h-3 w-3 shrink-0 text-fuchsia-500 sm:h-3.5 sm:w-3.5" strokeWidth={2} />
@@ -791,7 +791,7 @@ function HeroVisual({ mockup, float1, float2 }: VisualProps) {
             className="pointer-events-none absolute left-full top-[14%] z-10 hidden w-max pl-3 lg:block xl:pl-4 2xl:pl-5"
           >
             <motion.div style={{ x: float1.x, y: float1.y }} className="will-change-transform transform">
-              <div className="rounded-xl border border-white/55 bg-white/50 px-3.5 py-2.5 shadow-[0_12px_32px_-8px_rgba(16,185,129,0.2),inset_0_1px_0_rgba(255,255,255,0.8)] backdrop-blur-xl backdrop-saturate-150">
+              <div className="rounded-xl border border-white/55 bg-white/50 px-3.5 py-2.5 shadow-[0_12px_32px_-8px_rgba(16,185,129,0.2),inset_0_1px_0_rgba(255,255,255,0.8)]">
                 <div className="flex items-center gap-2.5">
                   <div className="flex h-7 w-7 items-center justify-center rounded-md bg-emerald-500/10">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -812,7 +812,7 @@ function HeroVisual({ mockup, float1, float2 }: VisualProps) {
             className="pointer-events-none absolute left-1/2 top-full z-10 mt-5 hidden w-max -translate-x-1/2 lg:block xl:mt-6"
           >
             <motion.div style={{ x: float2.x, y: float2.y }} className="will-change-transform transform">
-              <div className="relative overflow-hidden rounded-2xl border border-indigo-200/50 bg-gradient-to-br from-white/70 via-indigo-50/40 to-[#6366F1]/[0.08] px-4 py-3 shadow-[0_14px_36px_-10px_rgba(99,102,241,0.28),inset_0_1px_0_rgba(255,255,255,0.9)] ring-1 ring-[#6366F1]/10 backdrop-blur-xl backdrop-saturate-150">
+              <div className="relative overflow-hidden rounded-2xl border border-indigo-200/50 bg-gradient-to-br from-white/70 via-indigo-50/40 to-[#6366F1]/[0.08] px-4 py-3 shadow-[0_14px_36px_-10px_rgba(99,102,241,0.28),inset_0_1px_0_rgba(255,255,255,0.9)] ring-1 ring-[#6366F1]/10">
                 <div className="pointer-events-none absolute -right-6 -top-6 h-16 w-16 rounded-full bg-[#6366F1]/15 blur-2xl" aria-hidden />
                 <div className="relative flex items-center gap-3">
                   <div className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#6366F1]/20 to-indigo-600/10 ring-1 ring-[#6366F1]/20">
@@ -870,8 +870,8 @@ export default function HeroAnimations({ children }: { children: ReactNode }) {
     float1Y,
     float2X,
     float2Y,
-    glowLeft,
-    glowTop,
+    glowX,
+    glowY,
   } = useHeroParallax(isParallaxDisabled);
 
   return (
@@ -897,8 +897,10 @@ export default function HeroAnimations({ children }: { children: ReactNode }) {
             <motion.div
               className="absolute w-[600px] h-[600px] rounded-full"
               style={{
-                left: glowLeft,
-                top: glowTop,
+                left: "50%",
+                top: "50%",
+                x: glowX,
+                y: glowY,
                 translateX: "-50%",
                 translateY: "-50%",
                 background:

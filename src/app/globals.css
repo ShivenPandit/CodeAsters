@@ -160,6 +160,12 @@ html {
   animation: ambient-drift 20s ease-in-out infinite;
 }
 
+.hero-ambient-glow {
+  width: 520px;
+  height: 520px;
+  filter: blur(64px);
+}
+
 @media (hover: hover) {
   .ambient-glow {
     will-change: transform, opacity;
@@ -218,6 +224,10 @@ html {
   pointer-events: none;
   transform: translateZ(0);
   animation: float-slow 6s ease-in-out infinite;
+}
+
+.hero-floating-dot {
+  animation-duration: 7.2s;
 }
 
 @media (hover: hover) {
@@ -359,7 +369,19 @@ html {
 }
 
 .hero-code-pane-glow {
-  animation: hero-code-pane-glow 5s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-code-pane-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow: inset 0 0 18px -12px rgba(99, 102, 241, 0.22);
+  opacity: 0.2;
+  animation: hero-code-pane-overlay-glow 5s ease-in-out infinite;
 }
 
 .hero-code-footer-breathe {
@@ -424,18 +446,10 @@ html {
 }
 
 @media (hover: hover) {
-  .hero-status-dot,
-  .hero-preview-placeholder-pulse,
   .hero-preview-card-float,
   .hero-halo-spin--animate,
   .hero-halo-spin-reverse--animate,
-  .hero-accent-orb-a,
-  .hero-accent-orb-b,
-  .hero-accent-orb-c,
-  .hero-shell-breathe,
-  .hero-creativity-bob,
-  .hero-activity-pulse,
-  .hero-performance-dot {
+  .hero-shell-breathe {
     will-change: transform, opacity;
   }
 }
@@ -452,13 +466,13 @@ html {
   }
 }
 
-@keyframes hero-code-pane-glow {
+@keyframes hero-code-pane-overlay-glow {
   0%,
   100% {
-    box-shadow: inset 0 0 0 0 rgba(99, 102, 241, 0);
+    opacity: 0.15;
   }
   50% {
-    box-shadow: inset 0 0 20px -12px rgba(99, 102, 241, 0.12);
+    opacity: 0.55;
   }
 }
 
