@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useCanHover } from "@/lib/useCanHover";
 
 const SiteBackdrop = dynamic(() => import("@/components/SiteBackdrop"), {
   ssr: false,
@@ -11,10 +12,12 @@ const CustomCursor = dynamic(() => import("@/components/CustomCursor"), {
 });
 
 export default function ClientEffects() {
+  const canHover = useCanHover();
+
   return (
     <>
       <SiteBackdrop />
-      <CustomCursor />
+      {canHover ? <CustomCursor /> : null}
     </>
   );
 }

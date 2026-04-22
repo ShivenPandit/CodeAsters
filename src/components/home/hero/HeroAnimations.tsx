@@ -10,7 +10,7 @@ import {
   type MotionValue,
 } from "framer-motion";
 import { Activity, Sparkles } from "lucide-react";
-import { useRef, useCallback, useEffect, useState, memo, type CSSProperties, type ReactNode } from "react";
+import { useRef, useCallback, useEffect, useState, useMemo, memo, type CSSProperties, type ReactNode } from "react";
 import { useCanHover } from "@/lib/useCanHover";
 import { scheduleRafTask } from "@/lib/rafScheduler";
 import HeroBackground from "@/components/home/hero/HeroBackground";
@@ -175,37 +175,113 @@ const LIVE_CODE_LINES = [
   "}",
 ];
 
+type LiveCodeSnapshot = { done: number; col: number };
+type LiveCodeSegment =
+  | { type: "typing"; lineIndex: number; col: number; endMs: number }
+  | { type: "linePause"; lineIndex: number; endMs: number }
+  | { type: "cyclePause"; endMs: number };
+
 function useHeroLiveCode() {
-  const reduceMotion = false;
-  const [done, setDone] = useState(0);
-  const [col, setCol] = useState(0);
+  const [snapshot, setSnapshot] = useState<LiveCodeSnapshot>({ done: 0, col: 0 });
+  const snapshotRef = useRef<LiveCodeSnapshot>({ done: 0, col: 0 });
+  const rafIdRef = useRef<number | null>(null);
+  const lastTsRef = useRef(0);
+  const elapsedMsRef = useRef(0);
+
+  const timeline = useMemo(() => {
+    const segments: LiveCodeSegment[] = [];
+    let cursorMs = 0;
+
+    LIVE_CODE_LINES.forEach((line, lineIndex) => {
+      for (let col = 1; col <= line.length; col += 1) {
+        const char = line[col - 1] ?? "";
+        const stepMs = char === " " ? 28 : 38 + ((col - 1) % 5) * 6;
+        cursorMs += stepMs;
+        segments.push({ type: "typing", lineIndex, col, endMs: cursorMs });
+      }
+
+      cursorMs += 320;
+      segments.push({ type: "linePause", lineIndex, endMs: cursorMs });
+    });
+
+    cursorMs += 2600;
+    segments.push({ type: "cyclePause", endMs: cursorMs });
+
+    return { segments, totalMs: cursorMs };
+  }, []);
 
   useEffect(() => {
-    if (done >= LIVE_CODE_LINES.length) {
-      const reset = window.setTimeout(() => {
-        setDone(0);
-        setCol(0);
-      }, 2600);
-      return () => window.clearTimeout(reset);
-    }
+    const tick = (ts: number) => {
+      if (lastTsRef.current === 0) lastTsRef.current = ts;
+      const rawDt = ts - lastTsRef.current;
+      lastTsRef.current = ts;
 
-    const line = LIVE_CODE_LINES[done];
-    if (col < line.length) {
-      const t = window.setTimeout(
-        () => setCol((c) => c + 1),
-        line[col] === " " ? 28 : 38 + (col % 5) * 6
-      );
-      return () => window.clearTimeout(t);
-    }
+      // Allow catch-up after tab throttling while avoiding giant jumps.
+      const dt = Math.max(0, Math.min(rawDt, 300));
+      elapsedMsRef.current += dt;
 
-    const next = window.setTimeout(() => {
-      setDone((d) => d + 1);
-      setCol(0);
-    }, 320);
-    return () => window.clearTimeout(next);
-  }, [done, col]);
+      const t = timeline.totalMs > 0 ? elapsedMsRef.current % timeline.totalMs : 0;
+      const seg =
+        timeline.segments.find((s) => t <= s.endMs) ??
+        timeline.segments[timeline.segments.length - 1];
 
-  return { done, col, reduceMotion };
+      let next: LiveCodeSnapshot;
+      if (!seg) {
+        next = { done: 0, col: 0 };
+      } else if (seg.type === "typing") {
+        next = { done: seg.lineIndex, col: seg.col };
+      } else if (seg.type === "linePause") {
+        next = { done: seg.lineIndex + 1, col: 0 };
+      } else {
+        next = { done: LIVE_CODE_LINES.length, col: 0 };
+      }
+
+      if (next.done !== snapshotRef.current.done || next.col !== snapshotRef.current.col) {
+        snapshotRef.current = next;
+        setSnapshot(next);
+      }
+
+      rafIdRef.current = window.requestAnimationFrame(tick);
+    };
+
+    rafIdRef.current = window.requestAnimationFrame(tick);
+    return () => {
+      if (rafIdRef.current !== null) window.cancelAnimationFrame(rafIdRef.current);
+    };
+  }, [timeline]);
+
+  return { done: snapshot.done, col: snapshot.col, reduceMotion: false };
+}
+
+function useHueCycle(stepMs = 3200) {
+  const [hue, setHue] = useState(0);
+  const rafIdRef = useRef<number | null>(null);
+  const lastTsRef = useRef(0);
+  const elapsedMsRef = useRef(0);
+
+  useEffect(() => {
+    const tick = (ts: number) => {
+      if (lastTsRef.current === 0) lastTsRef.current = ts;
+      const rawDt = ts - lastTsRef.current;
+      lastTsRef.current = ts;
+      const dt = Math.max(0, Math.min(rawDt, 300));
+
+      elapsedMsRef.current += dt;
+      if (elapsedMsRef.current >= stepMs) {
+        elapsedMsRef.current %= stepMs;
+        setHue((prev) => (prev + 1) % 3);
+      }
+
+      rafIdRef.current = window.requestAnimationFrame(tick);
+    };
+
+    rafIdRef.current = window.requestAnimationFrame(tick);
+    return () => {
+      if (rafIdRef.current !== null) window.cancelAnimationFrame(rafIdRef.current);
+    };
+  }, [stepMs]);
+
+  return hue;
 }
 
 function ColoredCodeLine({ index, hue }: { index: number; hue: number }) {
@@ -447,7 +523,6 @@ function HeroLiveSitePreview({
           animate={{
             opacity: nav ? 1 : 0,
             y: nav ? 0 : 6,
-            filter: nav ? "blur(0px)" : "blur(4px)",
           }}
           transition={{ duration: 0.45, ease }}
         >
@@ -591,13 +666,7 @@ interface VisualProps {
 
 function HeroVisual({ mockup, float1, float2 }: VisualProps) {
   const { done, col, reduceMotion } = useHeroLiveCode();
-  const [hue, setHue] = useState(0);
-
-  useEffect(() => {
-    if (reduceMotion) return;
-    const id = window.setInterval(() => setHue((h) => (h + 1) % 3), 3200);
-    return () => window.clearInterval(id);
-  }, [reduceMotion]);
+  const hue = useHueCycle(3200);
 
   return (
     <motion.div
@@ -847,7 +916,7 @@ export default function HeroAnimations({ children }: { children: ReactNode }) {
           {/* Left — text with subtle cursor parallax */}
           <motion.div
             style={isParallaxDisabled ? undefined : { x: textX, y: textY }}
-            className="pt-2 md:pt-0 will-change-transform transform"
+            className="hero-text-container pt-2 md:pt-0 will-change-transform transform"
           >
             {children}
           </motion.div>

@@ -1,8 +1,5 @@
+import ServicesPreview from "@/components/home/ServicesPreview";
 import dynamic from "next/dynamic";
-
-const ServicesPreview = dynamic(() => import("@/components/home/ServicesPreview"), {
-  loading: () => <div className="section-space" aria-hidden />,
-});
 
 const WorkPreview = dynamic(() => import("@/components/home/WorkPreview"), {
   loading: () => <div className="section-space" aria-hidden />,
