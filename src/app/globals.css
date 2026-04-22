@@ -227,7 +227,8 @@ html {
 }
 
 .hero-floating-dot {
-  animation-duration: 7.2s;
+  animation-duration: 8.2s;
+  opacity: 0.82;
 }
 
 @media (hover: hover) {
@@ -443,6 +444,11 @@ html {
 
 .hero-performance-dot {
   animation: hero-performance-dot 2s ease-in-out infinite;
+}
+
+.hero-cursor-glow {
+  will-change: transform, opacity;
+  contain: paint;
 }
 
 @media (hover: hover) {

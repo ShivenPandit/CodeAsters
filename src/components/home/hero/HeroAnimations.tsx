@@ -31,8 +31,11 @@ function useHeroParallax(isParallaxDisabled: boolean) {
   } | null>(null);
   const pointerRef = useRef({ x: 0, y: 0 });
   const frameCancelRef = useRef<(() => void) | null>(null);
+  const lastPointerFrameAtRef = useRef(-Infinity);
   const hoverRef = useRef(false);
   const [isHovered, setIsHovered] = useState(false);
+  const POINTER_TARGET_FPS = 75;
+  const POINTER_MIN_INTERVAL = 1000 / POINTER_TARGET_FPS;
 
   const updateBounds = useCallback(() => {
     const el = ref.current;
@@ -47,25 +50,27 @@ function useHeroParallax(isParallaxDisabled: boolean) {
     };
   }, []);
 
-  const flushPointerUpdate = useCallback(() => {
+  const flushPointerUpdate = useCallback((frameTime: number) => {
     frameCancelRef.current = null;
 
     if (isParallaxDisabled) return;
+    if (frameTime - lastPointerFrameAtRef.current < POINTER_MIN_INTERVAL) return;
 
     const bounds = boundsRef.current;
     if (!bounds || bounds.width === 0 || bounds.height === 0) return;
 
+    lastPointerFrameAtRef.current = frameTime;
     const normalizedX = ((pointerRef.current.x - bounds.left) / bounds.width) * 2 - 1;
     const normalizedY = ((pointerRef.current.y - bounds.top) / bounds.height) * 2 - 1;
 
     rawX.set(Math.max(-1, Math.min(1, normalizedX)));
     rawY.set(Math.max(-1, Math.min(1, normalizedY)));
-  }, [isParallaxDisabled, rawX, rawY]);
+  }, [isParallaxDisabled, rawX, rawY, POINTER_MIN_INTERVAL]);
 
   const queuePointerUpdate = useCallback(() => {
     if (frameCancelRef.current !== null) return;
-    frameCancelRef.current = scheduleRafTask(() => {
-      flushPointerUpdate();
+    frameCancelRef.current = scheduleRafTask((frame) => {
+      flushPointerUpdate(frame.time);
     });
   }, [flushPointerUpdate]);
 
@@ -95,6 +100,7 @@ function useHeroParallax(isParallaxDisabled: boolean) {
     }
 
     boundsRef.current = null;
+    lastPointerFrameAtRef.current = -Infinity;
     rawX.set(0);
     rawY.set(0);
   }, [rawX, rawY]);
@@ -664,6 +670,21 @@ interface VisualProps {
   float2: { x: MotionValue<number>; y: MotionValue<number> };
 }
 
+interface HeroSceneProps {
+  children: ReactNode;
+  isParallaxDisabled: boolean;
+  textX: MotionValue<number>;
+  textY: MotionValue<number>;
+  mockX: MotionValue<number>;
+  mockY: MotionValue<number>;
+  mockRotateX: MotionValue<number>;
+  mockRotateY: MotionValue<number>;
+  float1X: MotionValue<number>;
+  float1Y: MotionValue<number>;
+  float2X: MotionValue<number>;
+  float2Y: MotionValue<number>;
+}
+
 function HeroVisual({ mockup, float1, float2 }: VisualProps) {
   const { done, col, reduceMotion } = useHeroLiveCode();
   const hue = useHueCycle(3200);
@@ -848,6 +869,46 @@ function HeroVisual({ mockup, float1, float2 }: VisualProps) {
 
 const HeroVisualMemo = memo(HeroVisual);
 
+function HeroScene({
+  children,
+  isParallaxDisabled,
+  textX,
+  textY,
+  mockX,
+  mockY,
+  mockRotateX,
+  mockRotateY,
+  float1X,
+  float1Y,
+  float2X,
+  float2Y,
+}: HeroSceneProps) {
+  return (
+    <>
+      <HeroBackground />
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-8 pt-20 sm:pb-10 sm:pt-24 md:px-0 md:pt-12 md:pb-12 lg:px-10 lg:py-14 xl:px-12 xl:py-12 2xl:py-8">
+        <div className="grid items-center gap-10 md:grid-cols-2 md:gap-12 lg:gap-14">
+          <motion.div
+            style={isParallaxDisabled ? undefined : { x: textX, y: textY }}
+            className="hero-text-container pt-2 md:pt-0 will-change-transform transform"
+          >
+            {children}
+          </motion.div>
+          <div className="min-w-0 w-full lg:pr-4 xl:pr-8 2xl:pr-10">
+            <HeroVisualMemo
+              mockup={{ x: mockX, y: mockY, rotateX: mockRotateX, rotateY: mockRotateY }}
+              float1={{ x: float1X, y: float1Y }}
+              float2={{ x: float2X, y: float2Y }}
+            />
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+const HeroSceneMemo = memo(HeroScene);
+
 /* ─── Hero Section ─── */
 
 export default function HeroAnimations({ children }: { children: ReactNode }) {
@@ -895,7 +956,7 @@ export default function HeroAnimations({ children }: { children: ReactNode }) {
             transition={{ duration: 0.5 }}
           >
             <motion.div
-              className="absolute w-[600px] h-[600px] rounded-full"
+              className="hero-cursor-glow absolute w-[600px] h-[600px] rounded-full"
               style={{
                 left: "50%",
                 top: "50%",
@@ -911,28 +972,21 @@ export default function HeroAnimations({ children }: { children: ReactNode }) {
         )}
       </AnimatePresence>
 
-      <HeroBackground />
-
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-8 pt-20 sm:pb-10 sm:pt-24 md:px-0 md:pt-12 md:pb-12 lg:px-10 lg:py-14 xl:px-12 xl:py-12 2xl:py-8">
-        <div className="grid items-center gap-10 md:grid-cols-2 md:gap-12 lg:gap-14">
-          {/* Left — text with subtle cursor parallax */}
-          <motion.div
-            style={isParallaxDisabled ? undefined : { x: textX, y: textY }}
-            className="hero-text-container pt-2 md:pt-0 will-change-transform transform"
-          >
-            {children}
-          </motion.div>
-
-          {/* Right — visual with cursor-reactive 3D depth (side card + below card need horizontal room) */}
-          <div className="min-w-0 w-full lg:pr-4 xl:pr-8 2xl:pr-10">
-            <HeroVisualMemo
-              mockup={{ x: mockX, y: mockY, rotateX: mockRotateX, rotateY: mockRotateY }}
-              float1={{ x: float1X, y: float1Y }}
-              float2={{ x: float2X, y: float2Y }}
-            />
-          </div>
-        </div>
-      </div>
+      <HeroSceneMemo
+        isParallaxDisabled={isParallaxDisabled}
+        textX={textX}
+        textY={textY}
+        mockX={mockX}
+        mockY={mockY}
+        mockRotateX={mockRotateX}
+        mockRotateY={mockRotateY}
+        float1X={float1X}
+        float1Y={float1Y}
+        float2X={float2X}
+        float2Y={float2Y}
+      >
+        {children}
+      </HeroSceneMemo>
     </section>
   );
 }
