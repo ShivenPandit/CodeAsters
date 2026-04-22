@@ -1,14 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useReducedMotion } from "framer-motion";
 
 /**
  * Must live inside the same stacking context as page sections so translucent
  * section backgrounds composite over the tiles (fixed body::before does not).
  */
 export default function PagePattern() {
-  const reduce = useReducedMotion();
   const [isDocumentVisible, setIsDocumentVisible] = useState(true);
 
   useEffect(() => {
@@ -25,7 +23,7 @@ export default function PagePattern() {
     <div className="page-pattern-tiles pointer-events-none" aria-hidden>
       <div
         className={`page-pattern-layer ${
-          reduce || !isDocumentVisible ? "" : "page-pattern-layer--animate"
+          !isDocumentVisible ? "" : "page-pattern-layer--animate"
         }`}
       />
     </div>

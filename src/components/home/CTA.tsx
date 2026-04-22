@@ -8,7 +8,7 @@ export default function CTA() {
   const ref = useScrollReveal<HTMLDivElement>({ margin: "-60px" });
 
   return (
-    <section className="bg-page-soft section-space">
+    <section className="bg-page-soft section-space defer-render">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div
           ref={ref}

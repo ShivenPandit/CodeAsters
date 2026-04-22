@@ -121,13 +121,13 @@ export default function Navbar() {
                 CodeAsters
               </span>
               <span className="mt-1.5 ml-1 text-[10px] leading-none">
-                <span className="navbar-tagline-typewriter">Code to Unite</span>
+                <span key={pathname} className="navbar-tagline-typewriter">Code to Unite</span>
               </span>
             </span>
           </Link>
 
           <LayoutGroup>
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-6 xl:gap-8">
             {links.map((link) => (
               <Link
                 key={link.name}
@@ -188,7 +188,7 @@ export default function Navbar() {
 
           <button
             onClick={() => setOpen((prev) => !prev)}
-            className="md:hidden w-9 h-9 flex items-center justify-center rounded-lg border border-[#E5E5E5] text-[#6B7280]"
+            className="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg border border-[#E5E5E5] text-[#6B7280]"
             aria-label="Toggle menu"
             aria-expanded={open}
             aria-controls={mobileMenuId}
@@ -207,7 +207,7 @@ export default function Navbar() {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.25 }}
             id={mobileMenuId}
-            className="md:hidden bg-white/95 backdrop-blur-xl border-b border-[#E5E5E5]"
+            className="lg:hidden bg-white/95 backdrop-blur-xl border-b border-[#E5E5E5]"
           >
             <div className="max-w-6xl mx-auto px-6 py-4 space-y-1">
               {links.map((link) => (
@@ -229,11 +229,11 @@ export default function Navbar() {
                 href="/be-a-codeaster"
                 onClick={() => setOpen(false)}
                 aria-current={pathname === "/be-a-codeaster" ? "page" : undefined}
-                className="flex items-center gap-2 px-3 py-2.5 text-sm rounded-lg text-[#6366F1] font-medium hover:bg-[#6366F1]/5 transition-colors"
+                className="flex flex-wrap items-center gap-2 px-3 py-2.5 text-sm rounded-lg text-[#6366F1] font-medium hover:bg-[#6366F1]/5 transition-colors"
               >
                 <Users size={14} />
                 Be a CodeAster
-                <span className="ml-auto text-[10px] font-medium bg-[#6366F1]/10 px-2 py-0.5 rounded-full">
+                <span className="text-[10px] font-medium bg-[#6366F1]/10 px-2 py-0.5 rounded-full">
                   Earn 30%
                 </span>
               </Link>

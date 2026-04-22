@@ -2,6 +2,11 @@
 
 import { useEffect, useRef, type RefObject } from "react";
 
+function isInViewport(element: HTMLElement) {
+  const rect = element.getBoundingClientRect();
+  return rect.top < window.innerHeight && rect.bottom > 0;
+}
+
 /**
  * Lightweight CSS-based scroll reveal that runs on the compositor thread.
  *
@@ -41,6 +46,13 @@ export function useScrollReveal<T extends HTMLElement>(
       },
       { rootMargin: margin, threshold: 0.01 }
     );
+
+    if (isInViewport(el)) {
+      el.classList.add("scroll-reveal--visible");
+      if (once) {
+        return () => observer.disconnect();
+      }
+    }
 
     observer.observe(el);
     return () => observer.disconnect();
@@ -82,6 +94,12 @@ export function useScrollRevealContainer<T extends HTMLElement>(
       },
       { rootMargin: margin, threshold: 0.01 }
     );
+
+    children.forEach((child) => {
+      if (isInViewport(child)) {
+        child.classList.add("scroll-reveal--visible");
+      }
+    });
 
     children.forEach((child) => observer.observe(child));
     return () => observer.disconnect();

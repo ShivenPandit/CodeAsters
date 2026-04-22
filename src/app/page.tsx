@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import SEO, { createSEOMetadata } from "@/components/SEO";
 import Hero from "@/components/home/Hero";
-import ServicesPreview from "@/components/home/ServicesPreview";
-import WorkPreview from "@/components/home/WorkPreview";
-import ProcessPreview from "@/components/home/ProcessPreview";
-import CTA from "@/components/home/CTA";
+import HomePageSections from "@/sections/home/HomePageSections";
 import {
   buildBreadcrumbSchema,
   buildWebPageSchema,
@@ -42,10 +39,7 @@ export default function Home() {
         ]}
       />
       <Hero />
-      <ServicesPreview />
-      <WorkPreview />
-      <ProcessPreview />
-      <CTA />
+      <HomePageSections />
     </>
   );
 }

@@ -668,28 +668,6 @@ body.menu-open {
   overflow: hidden;
 }
 
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-
-  .ambient-glow, .floating-dot {
-    animation: none;
-  }
-
-  .site-pattern-drift {
-    animation: none;
-  }
-
-  .page-pattern-layer--animate {
-    animation: none;
-  }
-}
-
 /* Touch devices: restore cursor */
 @media (hover: none) and (pointer: coarse) {
   body, a, button, input, textarea, select, [role="button"], [data-cursor] {
@@ -727,6 +705,11 @@ body.menu-open {
 .section-header-space {
   padding-top: var(--space-header-top-mobile);
   padding-bottom: var(--space-header-bottom-mobile);
+}
+
+.defer-render {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 960px;
 }
 
 @media (min-width: 768px) {
@@ -873,23 +856,6 @@ body.menu-open {
   );
   animation: navbar-tagline-scanline 1.8s linear infinite;
   will-change: transform;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-code-cursor {
-    animation: none;
-    opacity: 1;
-  }
-
-  .navbar-tagline-typewriter {
-    width: auto;
-    border-right: 0;
-    animation: none;
-  }
-
-  .navbar-tagline-typewriter::before {
-    animation: none;
-  }
 }
 
 /* ─── CSS-based scroll reveal (compositor-thread, no React re-renders) ─── */

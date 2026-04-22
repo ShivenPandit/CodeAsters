@@ -1,6 +1,5 @@
 "use client";
 
-import { useReducedMotion } from "framer-motion";
 import { useEffect, useState, type CSSProperties } from "react";
 import { useCanHover } from "@/lib/useCanHover";
 
@@ -21,7 +20,6 @@ const sparkles = [
 ];
 
 export default function SiteBackdrop() {
-  const reduce = useReducedMotion();
   const canHover = useCanHover();
   const [isDocumentVisible, setIsDocumentVisible] = useState(true);
 
@@ -35,7 +33,7 @@ export default function SiteBackdrop() {
     return () => document.removeEventListener("visibilitychange", onVisibilityChange);
   }, []);
 
-  const enableMotion = !reduce && canHover && isDocumentVisible;
+  const enableMotion = canHover && isDocumentVisible;
 
   return (
     <div

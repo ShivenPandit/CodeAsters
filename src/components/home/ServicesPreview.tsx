@@ -51,7 +51,7 @@ export default function ServicesPreview() {
   const linkRef = useScrollReveal<HTMLDivElement>({ margin: "-40px" });
 
   return (
-    <section className="bg-page-white-soft section-space">
+    <section className="bg-page-white-soft section-space defer-render">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 mb-8">
           <div
@@ -82,7 +82,7 @@ export default function ServicesPreview() {
             return (
               <div
                 key={service.title}
-                className="scroll-reveal group p-6 rounded-xl border border-[#E5E5E5] bg-white hover:shadow-lg hover:shadow-black/[0.04] hover:border-[#D4D4D4] transition-all duration-300"
+                className="scroll-reveal group p-6 rounded-xl border border-[#E5E5E5] bg-white hover:shadow-lg hover:shadow-black/[0.04] hover:border-[#D4D4D4] transition-all duration-300 transform-gpu will-change-transform"
                 style={{ "--reveal-delay": `${i * 60}ms` } as CSSProperties}
               >
                 <div

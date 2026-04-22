@@ -7,7 +7,6 @@ import {
   useSpring,
   useTransform,
   AnimatePresence,
-  useReducedMotion,
   type MotionValue,
 } from "framer-motion";
 import { Activity, Sparkles } from "lucide-react";
@@ -109,11 +108,9 @@ function useHeroParallax(isParallaxDisabled: boolean) {
     };
 
     window.addEventListener("resize", handleViewportChange, { passive: true });
-    window.addEventListener("scroll", handleViewportChange, { passive: true });
 
     return () => {
       window.removeEventListener("resize", handleViewportChange);
-      window.removeEventListener("scroll", handleViewportChange);
     };
   }, [isParallaxDisabled, updateBounds, queuePointerUpdate]);
 
@@ -178,13 +175,11 @@ const LIVE_CODE_LINES = [
 ];
 
 function useHeroLiveCode() {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = false;
   const [done, setDone] = useState(0);
   const [col, setCol] = useState(0);
 
   useEffect(() => {
-    if (reduceMotion) return;
-
     if (done >= LIVE_CODE_LINES.length) {
       const reset = window.setTimeout(() => {
         setDone(0);
@@ -207,7 +202,7 @@ function useHeroLiveCode() {
       setCol(0);
     }, 320);
     return () => window.clearTimeout(next);
-  }, [done, col, reduceMotion]);
+  }, [done, col]);
 
   return { done, col, reduceMotion };
 }
@@ -781,8 +776,7 @@ function HeroVisual({ mockup, float1, float2 }: VisualProps) {
 
 export default function HeroShell({ children }: { children: ReactNode }) {
   const canHover = useCanHover();
-  const reduceMotion = useReducedMotion();
-  const isParallaxDisabled = !canHover || !!reduceMotion;
+  const isParallaxDisabled = !canHover;
 
   const {
     sectionRef,

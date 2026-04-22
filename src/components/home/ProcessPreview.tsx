@@ -32,7 +32,7 @@ export default function ProcessPreview() {
   const gridRef = useScrollRevealContainer<HTMLDivElement>();
 
   return (
-    <section className="bg-page-white-soft section-space">
+    <section className="bg-page-white-soft section-space defer-render">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 mb-8">
           <div

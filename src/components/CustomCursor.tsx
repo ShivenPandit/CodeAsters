@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { motion, useMotionValue, AnimatePresence } from "framer-motion";
 import { useCanHover } from "@/lib/useCanHover";
+import { scheduleRafTask } from "@/lib/rafScheduler";
 
 export default function CustomCursor() {
   const canHover = useCanHover();
@@ -13,11 +14,19 @@ export default function CustomCursor() {
   const [isPressed, setIsPressed] = useState(false);
   const [label, setLabel] = useState("");
   const [isVisible, setIsVisible] = useState(true);
+  const pointerRef = useRef({ x: -100, y: -100 });
+  const frameCancelRef = useRef<(() => void) | null>(null);
 
   const moveCursor = useCallback(
     (e: PointerEvent) => {
-      cursorX.set(e.clientX);
-      cursorY.set(e.clientY);
+      pointerRef.current = { x: e.clientX, y: e.clientY };
+      if (frameCancelRef.current) return;
+
+      frameCancelRef.current = scheduleRafTask(() => {
+        frameCancelRef.current = null;
+        cursorX.set(pointerRef.current.x);
+        cursorY.set(pointerRef.current.y);
+      });
     },
     [cursorX, cursorY]
   );
@@ -75,6 +84,8 @@ export default function CustomCursor() {
     document.documentElement.addEventListener("mouseenter", handleMouseEnter);
 
     return () => {
+      frameCancelRef.current?.();
+      frameCancelRef.current = null;
       window.removeEventListener("pointermove", moveCursor);
       document.removeEventListener("mouseover", handleMouseOver);
       document.removeEventListener("mouseout", handleMouseOut);
