@@ -73,7 +73,10 @@ export default function ContactPage() {
       }
 
       setStatus("sent");
-      trackMetaPixelEvent("Lead");
+      trackMetaPixelEvent("Lead", {
+        form_type: "contact",
+        lead_source: "contact_page",
+      });
       setForm({ name: "", email: "", phone: "", topic: "", message: "" });
       setHoneypot("");
       setSubmittedAt(Date.now());
@@ -141,7 +144,12 @@ export default function ContactPage() {
                 href={whatsappContactHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => trackMetaPixelEvent("Contact")}
+                onClick={() =>
+                  trackMetaPixelEvent("Contact", {
+                    contact_method: "whatsapp",
+                    source_page: "contact_page",
+                  })
+                }
                 className="flex items-center gap-4 rounded-2xl border border-[#E5E5E5] bg-white p-4 transition-all hover:border-[#D4D4D4]"
               >
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F0FDF4]">

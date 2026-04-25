@@ -141,7 +141,10 @@ export default function BeACodeAsterPage() {
       }
 
       setStatus("sent");
-      trackMetaPixelEvent("Lead");
+      trackMetaPixelEvent("Lead", {
+        form_type: "affiliate",
+        lead_source: "be_a_codeaster_page",
+      });
       setForm({
         fullName: "",
         email: "",
@@ -300,7 +303,12 @@ export default function BeACodeAsterPage() {
                     href={whatsappContactHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={() => trackMetaPixelEvent("Contact")}
+                    onClick={() =>
+                      trackMetaPixelEvent("Contact", {
+                        contact_method: "whatsapp",
+                        source_page: "be_a_codeaster_page",
+                      })
+                    }
                     className="group inline-flex w-full items-center gap-2 rounded-xl border border-[#E5E5E5] bg-[#FAFAFA] px-3 py-2 transition-colors hover:bg-white"
                   >
                     <MessageCircle className="h-4 w-4 text-emerald-600" strokeWidth={2} />

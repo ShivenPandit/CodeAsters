@@ -122,7 +122,10 @@ export default function StartProjectPage() {
 
       setThankYouParam(true);
       setStatus("sent");
-      trackMetaPixelEvent("Lead");
+      trackMetaPixelEvent("Lead", {
+        form_type: "project",
+        lead_source: "start_project_page",
+      });
       setForm({
         name: "",
         email: "",
@@ -256,7 +259,12 @@ export default function StartProjectPage() {
                       href={whatsappContactHref}
                       target="_blank"
                       rel="noopener noreferrer"
-                      onClick={() => trackMetaPixelEvent("Contact")}
+                      onClick={() =>
+                        trackMetaPixelEvent("Contact", {
+                          contact_method: "whatsapp",
+                          source_page: "start_project_page",
+                        })
+                      }
                       className="leading-tight"
                     >
                       <span className="block text-sm font-semibold text-[#0A0A0A]">WhatsApp</span>

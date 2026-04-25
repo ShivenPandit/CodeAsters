@@ -8,7 +8,7 @@ export default function MetaPixelPageView() {
   const pathname = usePathname();
 
   useEffect(() => {
-    trackMetaPixelEvent("PageView");
+    trackMetaPixelEvent("PageView", { page_path: pathname });
   }, [pathname]);
 
   return null;
