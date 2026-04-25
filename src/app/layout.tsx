@@ -157,7 +157,7 @@ fbq('init', '${metaPixelId}');
         <Script id="google-tag-manager" strategy="afterInteractive">
           {gtmBootstrapScript}
         </Script>
-        <Script id="meta-pixel" strategy="afterInteractive">
+        <Script id="meta-pixel" strategy="beforeInteractive">
           {metaPixelScript}
         </Script>
         <MetaPixelPageView />
