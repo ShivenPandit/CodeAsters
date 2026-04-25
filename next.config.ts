@@ -64,11 +64,11 @@ const cspReportOnly = [
   "object-src 'none'",
   "frame-ancestors 'self'",
   "form-action 'self'",
-  "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com",
+  "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https:",
   "font-src 'self' https://fonts.gstatic.com",
-  "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com",
+  "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://www.facebook.com https://connect.facebook.net",
   "frame-src https://www.googletagmanager.com",
   "upgrade-insecure-requests",
 ].join("; ");
