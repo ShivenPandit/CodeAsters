@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ClientEffects from "@/components/ClientEffects";
+import MetaPixelPageView from "@/components/MetaPixelPageView";
 import PagePattern from "@/components/PagePattern";
 import SEO from "@/components/SEO";
 import WhatsAppChatButton from "@/components/WhatsAppChatButton";
@@ -69,10 +70,10 @@ export const metadata: Metadata = {
   manifest: absoluteUrl("/manifest.webmanifest"),
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
       { url: "/icon", type: "image/png", sizes: "512x512" },
     ],
-    shortcut: ["/favicon.ico"],
+    shortcut: ["/icon-192.png"],
     apple: [{ url: "/apple-icon", type: "image/png", sizes: "180x180" }],
   },
   title: {
@@ -146,7 +147,6 @@ t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '${metaPixelId}');
-fbq('track', 'PageView');
 `;
 
   return (
@@ -160,6 +160,7 @@ fbq('track', 'PageView');
         <Script id="meta-pixel" strategy="afterInteractive">
           {metaPixelScript}
         </Script>
+        <MetaPixelPageView />
         <noscript>
           <iframe
             src={`https://www.googletagmanager.com/ns.html?id=${gtmContainerId}`}
