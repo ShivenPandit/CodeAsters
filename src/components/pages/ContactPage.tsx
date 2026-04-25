@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import PageHeader from "@/components/PageHeader";
 import { CONTACT_EMAIL, buildWhatsAppUrl } from "@/lib/contact";
+import { trackMetaPixelEvent } from "@/lib/metaPixel";
 import { useCanHover } from "@/lib/useCanHover";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
@@ -72,6 +73,7 @@ export default function ContactPage() {
       }
 
       setStatus("sent");
+      trackMetaPixelEvent("Lead");
       setForm({ name: "", email: "", phone: "", topic: "", message: "" });
       setHoneypot("");
       setSubmittedAt(Date.now());
@@ -139,6 +141,7 @@ export default function ContactPage() {
                 href={whatsappContactHref}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackMetaPixelEvent("Contact")}
                 className="flex items-center gap-4 rounded-2xl border border-[#E5E5E5] bg-white p-4 transition-all hover:border-[#D4D4D4]"
               >
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F0FDF4]">

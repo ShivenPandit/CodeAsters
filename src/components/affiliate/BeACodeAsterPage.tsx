@@ -19,6 +19,7 @@ import {
   CONTACT_WHATSAPP_DISPLAY,
   buildWhatsAppUrl,
 } from "@/lib/contact";
+import { trackMetaPixelEvent } from "@/lib/metaPixel";
 import { useCanHover } from "@/lib/useCanHover";
 import { useScrollReveal, useScrollRevealContainer } from "@/lib/useScrollReveal";
 import type { CSSProperties } from "react";
@@ -140,6 +141,7 @@ export default function BeACodeAsterPage() {
       }
 
       setStatus("sent");
+      trackMetaPixelEvent("Lead");
       setForm({
         fullName: "",
         email: "",
@@ -298,6 +300,7 @@ export default function BeACodeAsterPage() {
                     href={whatsappContactHref}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => trackMetaPixelEvent("Contact")}
                     className="group inline-flex w-full items-center gap-2 rounded-xl border border-[#E5E5E5] bg-[#FAFAFA] px-3 py-2 transition-colors hover:bg-white"
                   >
                     <MessageCircle className="h-4 w-4 text-emerald-600" strokeWidth={2} />

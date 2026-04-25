@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { trackMetaPixelEvent } from "@/lib/metaPixel";
 
 type WhatsAppChatButtonProps = {
   phoneNumber: string;
@@ -51,6 +52,7 @@ export default function WhatsAppChatButton({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={() => trackMetaPixelEvent("Contact")}
       aria-label={ariaLabel}
       title={ariaLabel}
       data-cursor="WhatsApp"

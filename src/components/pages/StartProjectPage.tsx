@@ -15,6 +15,7 @@ import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
 import { buildWhatsAppUrl } from "@/lib/contact";
+import { trackMetaPixelEvent } from "@/lib/metaPixel";
 import { useCanHover } from "@/lib/useCanHover";
 import { useScrollReveal, useScrollRevealContainer } from "@/lib/useScrollReveal";
 import type { CSSProperties } from "react";
@@ -121,6 +122,7 @@ export default function StartProjectPage() {
 
       setThankYouParam(true);
       setStatus("sent");
+      trackMetaPixelEvent("Lead");
       setForm({
         name: "",
         email: "",
@@ -254,6 +256,7 @@ export default function StartProjectPage() {
                       href={whatsappContactHref}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => trackMetaPixelEvent("Contact")}
                       className="leading-tight"
                     >
                       <span className="block text-sm font-semibold text-[#0A0A0A]">WhatsApp</span>
