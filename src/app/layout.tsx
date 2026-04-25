@@ -44,7 +44,7 @@ const googleVerificationToken = process.env.GOOGLE_SITE_VERIFICATION?.trim();
 const bingVerificationToken = process.env.BING_SITE_VERIFICATION?.trim();
 const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim();
 const gtmContainerId = "GTM-M9R7GNGL";
-const metaPixelId = "2138609143647687";
+const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID || "2138609143647687";
 
 const metadataVerification: Metadata["verification"] = {
   google: googleVerificationToken || undefined,
