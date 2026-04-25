@@ -881,11 +881,11 @@ body.menu-open {
 /* ─── CSS-based scroll reveal (compositor-thread, no React re-renders) ─── */
 .scroll-reveal {
   opacity: 0;
-  transform: translateY(20px) translateZ(0);
+  transform: translateY(12px) translateZ(0);
   transition:
-    opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
-    transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
-  transition-delay: var(--reveal-delay, 0ms);
+    opacity 0.28s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.28s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition-delay: clamp(0ms, var(--reveal-delay, 0ms), 150ms);
 }
 
 .scroll-reveal--visible {
