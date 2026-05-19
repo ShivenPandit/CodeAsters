@@ -1,129 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 CodeAsters
 
-## SEO & Domain Migration Setup
+**Software built for performance, scale, and precision.**
 
-Set the canonical domain through environment variables:
+CodeAsters is a full-stack software development agency specializing in building high-quality digital products — from modern websites to enterprise-grade systems.
 
-```bash
-NEXT_PUBLIC_SITE_URL=https://codeasters.com
-```
+🌐 Website: https://www.codeasters.com/
 
-Use `.env.local` for local development and `.env.example` as reference.
+---
 
-Key SEO files:
+## 📌 About
 
-- `src/lib/seo.ts` - dynamic canonical URL helpers, metadata builder, and schema builders
-- `src/components/SEO.tsx` - reusable JSON-LD renderer and metadata helper export
-- `src/app/sitemap.ts` - dynamic sitemap generation
-- `src/app/robots.ts` - dynamic robots policy and sitemap link
-- `next.config.ts` - host-based 301 migration redirects from `codeasters.vercel.app` to canonical domain
+CodeAsters designs and develops scalable, production-ready software solutions including:
 
-## Search Ownership Verification (Google + Bing)
+- 🌐 Websites & Web Applications  
+- 📊 Dashboards & Internal Tools  
+- 🏢 ERP & Business Systems  
+- 📱 Mobile Applications  
+- ☁️ Cloud Infrastructure & APIs  
 
-Environment variables already supported by metadata:
+We focus on modern architecture, performance, and clean user experiences to deliver real-world impact.
 
-```bash
-GOOGLE_SITE_VERIFICATION=your_google_token
-BING_SITE_VERIFICATION=your_bing_msvalidate_token
-```
+---
 
-After deploying with these values:
+## ⚙️ Tech Stack
 
-- Open Google Search Console and verify your property using the HTML tag method.
-- Open Bing Webmaster Tools and verify with the `msvalidate.01` meta value.
+We use cutting-edge technologies to build robust and scalable systems:
 
-Helpful URLs to submit and check:
+- **Frontend:** Next.js, React, Tailwind CSS  
+- **Backend:** Node.js, FastAPI  
+- **Database:** PostgreSQL, Redis  
+- **Languages:** TypeScript, Python  
+- **Cloud & DevOps:** APIs, CI/CD pipelines, deployment infrastructure  
 
-- `https://codeasters.com/sitemap.xml`
-- `https://codeasters.com/robots.txt`
+---
 
-## Favicon And Google Analytics
+## 🧩 Services
 
-The app now ships explicit icon routes for browser and Apple touch icons:
+### 💻 Web Design & Development
+Modern, SEO-friendly, and high-performance websites.
 
-- `/favicon.ico` (legacy fallback)
-- `/icon` (generated branded PNG)
-- `/apple-icon` (generated branded Apple touch icon)
+### 🔧 Full-Stack Development
+End-to-end product development across frontend, backend, and databases.
 
-Google Analytics 4 is supported via environment variable:
+### 📊 Dashboards & Admin Panels
+Custom dashboards with real-time data and role-based access.
 
-```bash
-NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
-```
+### 🏢 ERP Systems
+Enterprise solutions for inventory, finance, and operations.
 
-When the variable is set, the root layout injects `gtag.js` and enables page tracking automatically.
+### 🔗 APIs & Integrations
+Secure APIs, third-party integrations, and scalable backend systems.
 
-## Contact And Project Forms (EmailJS)
+---
 
-All form submissions (`/contact`, `/start`, and `/be-a-codeaster`) are sent through the server route:
+## 📁 Featured Projects
 
-- `src/app/api/forms/route.ts`
+### 🔹 DeepStudio
+Premium studio website with smooth animations and modern UI.
 
-Required environment variables:
+### 🔹 My Choices (E-commerce)
+Clean and responsive shopping experience built with Next.js.
 
-```bash
-EMAILJS_SERVICE_ID=service_xxxxxxx
-EMAILJS_PUBLIC_KEY=public_xxxxxxxxxxxxxxxxx
-EMAILJS_TEMPLATE_CONTACT=template_xxxxxxx
-```
+### 🔹 Enterprise ERP System
+Full-scale ERP for managing production, inventory, and financial workflows.
 
-Optional (recommended) variables:
+---
 
-```bash
-# Use separate templates per form type if needed
-EMAILJS_TEMPLATE_PROJECT=template_xxxxxxx
-EMAILJS_TEMPLATE_AFFILIATE=template_xxxxxxx
+## 🤝 Work With Us
 
-# Generic fallback template key
-EMAILJS_TEMPLATE_ID=template_xxxxxxx
+We help startups, businesses, and enterprises build scalable digital products.
 
-# Only if your EmailJS account requires private access tokens
-EMAILJS_PRIVATE_KEY=private_xxxxxxxxxxxxxxxxx
-```
+👉 Start your project: https://www.codeasters.com/start
 
-## WhatsApp Floating Chat Button
+---
 
-The reusable floating WhatsApp chat button is enabled globally and reads contact details from:
+## 💼 Opportunities
 
-- `src/lib/contact.ts`
+Become a partner and earn commission by closing deals with CodeAsters.
 
-The component automatically opens links in this format:
+---
 
-```txt
-https://wa.me/<phone_number>?text=<encoded_message>
-```
+## 📬 Contact
 
-## Getting Started
+- Website: https://www.codeasters.com/contact
+- Email: codeasters@gmail.com
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ⭐ Support
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+If you like our work, consider giving this repo a ⭐ to support us!
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📄 License
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the MIT License — feel free to use and modify.
