@@ -16,6 +16,8 @@ const routes: SitemapEntry[] = [
     imagePaths: [DEFAULT_OG_IMAGE_PATH, BRAND_IMAGE_PATH],
   },
   { path: "/services", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/products", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/portfolio", changeFrequency: "weekly", priority: 0.85 },
   { path: "/work", changeFrequency: "weekly", priority: 0.9 },
   { path: "/start", changeFrequency: "weekly", priority: 0.9 },
   { path: "/be-a-codeaster", changeFrequency: "weekly", priority: 0.85 },

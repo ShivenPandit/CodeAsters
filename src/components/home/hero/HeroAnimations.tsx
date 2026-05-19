@@ -10,16 +10,53 @@ import {
   type MotionValue,
 } from "framer-motion";
 import { Activity, Sparkles } from "lucide-react";
-import { useRef, useCallback, useEffect, useState, useMemo, memo, type CSSProperties, type ReactNode } from "react";
+import { useRef, useCallback, useEffect, useState, useMemo, memo, type CSSProperties, type ReactNode, type RefObject } from "react";
 import { useCanHover } from "@/lib/useCanHover";
+import { usePerformanceTier } from "@/lib/usePerformanceMode";
 import { scheduleRafTask } from "@/lib/rafScheduler";
 import HeroBackground from "@/components/home/hero/HeroBackground";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
+function usePageVisibility() {
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    const update = () => setIsVisible(document.visibilityState !== "hidden");
+    update();
+    document.addEventListener("visibilitychange", update);
+    return () => document.removeEventListener("visibilitychange", update);
+  }, []);
+
+  return isVisible;
+}
+
+function useElementInView<T extends HTMLElement>(
+  ref: RefObject<T>,
+  options?: { margin?: string; threshold?: number }
+) {
+  const [isInView, setIsInView] = useState(true);
+  const { margin = "0px", threshold = 0.12 } = options ?? {};
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { rootMargin: margin, threshold }
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [ref, margin, threshold]);
+
+  return isInView;
+}
+
 /* ─── Cursor parallax hook (hero-scoped) ─── */
 
-function useHeroParallax(isParallaxDisabled: boolean) {
+function useHeroParallax(isParallaxDisabled: boolean, pointerFps: number) {
   const ref = useRef<HTMLElement>(null);
   const rawX = useMotionValue(0);
   const rawY = useMotionValue(0);
@@ -34,8 +71,8 @@ function useHeroParallax(isParallaxDisabled: boolean) {
   const lastPointerFrameAtRef = useRef(-Infinity);
   const hoverRef = useRef(false);
   const [isHovered, setIsHovered] = useState(false);
-  const POINTER_TARGET_FPS = 75;
-  const POINTER_MIN_INTERVAL = 1000 / POINTER_TARGET_FPS;
+  const safeFps = Math.max(30, Math.min(90, pointerFps));
+  const pointerMinInterval = 1000 / safeFps;
 
   const updateBounds = useCallback(() => {
     const el = ref.current;
@@ -54,7 +91,7 @@ function useHeroParallax(isParallaxDisabled: boolean) {
     frameCancelRef.current = null;
 
     if (isParallaxDisabled) return;
-    if (frameTime - lastPointerFrameAtRef.current < POINTER_MIN_INTERVAL) return;
+    if (frameTime - lastPointerFrameAtRef.current < pointerMinInterval) return;
 
     const bounds = boundsRef.current;
     if (!bounds || bounds.width === 0 || bounds.height === 0) return;
@@ -65,7 +102,7 @@ function useHeroParallax(isParallaxDisabled: boolean) {
 
     rawX.set(Math.max(-1, Math.min(1, normalizedX)));
     rawY.set(Math.max(-1, Math.min(1, normalizedY)));
-  }, [isParallaxDisabled, rawX, rawY, POINTER_MIN_INTERVAL]);
+  }, [isParallaxDisabled, rawX, rawY, pointerMinInterval]);
 
   const queuePointerUpdate = useCallback(() => {
     if (frameCancelRef.current !== null) return;
@@ -187,12 +224,14 @@ type LiveCodeSegment =
   | { type: "linePause"; lineIndex: number; endMs: number }
   | { type: "cyclePause"; endMs: number };
 
-function useHeroLiveCode() {
+function useHeroLiveCode(isActive: boolean) {
   const [snapshot, setSnapshot] = useState<LiveCodeSnapshot>({ done: 0, col: 0 });
   const snapshotRef = useRef<LiveCodeSnapshot>({ done: 0, col: 0 });
-  const rafIdRef = useRef<number | null>(null);
+  const timerRef = useRef<number | null>(null);
   const lastTsRef = useRef(0);
   const elapsedMsRef = useRef(0);
+  const lastTRef = useRef(0);
+  const segmentIndexRef = useRef(0);
 
   const timeline = useMemo(() => {
     const segments: LiveCodeSegment[] = [];
@@ -217,20 +256,43 @@ function useHeroLiveCode() {
   }, []);
 
   useEffect(() => {
-    const tick = (ts: number) => {
-      if (lastTsRef.current === 0) lastTsRef.current = ts;
-      const rawDt = ts - lastTsRef.current;
-      lastTsRef.current = ts;
+    if (!isActive) {
+      if (timerRef.current !== null) {
+        window.clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+      lastTsRef.current = 0;
+      return;
+    }
 
-      // Allow catch-up after tab throttling while avoiding giant jumps.
+    const segments = timeline.segments;
+    const totalMs = timeline.totalMs;
+
+    const tick = () => {
+      const now = performance.now();
+      if (lastTsRef.current === 0) lastTsRef.current = now;
+      const rawDt = now - lastTsRef.current;
+      lastTsRef.current = now;
+
       const dt = Math.max(0, Math.min(rawDt, 300));
       elapsedMsRef.current += dt;
 
-      const t = timeline.totalMs > 0 ? elapsedMsRef.current % timeline.totalMs : 0;
-      const seg =
-        timeline.segments.find((s) => t <= s.endMs) ??
-        timeline.segments[timeline.segments.length - 1];
+      if (totalMs <= 0 || segments.length === 0) return;
+      const t = elapsedMsRef.current % totalMs;
 
+      if (t < lastTRef.current) {
+        segmentIndexRef.current = 0;
+      }
+      lastTRef.current = t;
+
+      let index = segmentIndexRef.current;
+      while (segments[index] && t > segments[index].endMs) {
+        index += 1;
+      }
+      if (index >= segments.length) index = segments.length - 1;
+      segmentIndexRef.current = index;
+
+      const seg = segments[index];
       let next: LiveCodeSnapshot;
       if (!seg) {
         next = { done: 0, col: 0 };
@@ -247,45 +309,32 @@ function useHeroLiveCode() {
         setSnapshot(next);
       }
 
-      rafIdRef.current = window.requestAnimationFrame(tick);
+      const nextDelay = Math.max(16, seg ? seg.endMs - t : 120);
+      timerRef.current = window.setTimeout(tick, nextDelay);
     };
 
-    rafIdRef.current = window.requestAnimationFrame(tick);
+    tick();
     return () => {
-      if (rafIdRef.current !== null) window.cancelAnimationFrame(rafIdRef.current);
+      if (timerRef.current !== null) {
+        window.clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
     };
-  }, [timeline]);
+  }, [isActive, timeline]);
 
   return { done: snapshot.done, col: snapshot.col, reduceMotion: false };
 }
 
-function useHueCycle(stepMs = 3200) {
+function useHueCycle(isActive: boolean, stepMs = 3200) {
   const [hue, setHue] = useState(0);
-  const rafIdRef = useRef<number | null>(null);
-  const lastTsRef = useRef(0);
-  const elapsedMsRef = useRef(0);
 
   useEffect(() => {
-    const tick = (ts: number) => {
-      if (lastTsRef.current === 0) lastTsRef.current = ts;
-      const rawDt = ts - lastTsRef.current;
-      lastTsRef.current = ts;
-      const dt = Math.max(0, Math.min(rawDt, 300));
-
-      elapsedMsRef.current += dt;
-      if (elapsedMsRef.current >= stepMs) {
-        elapsedMsRef.current %= stepMs;
-        setHue((prev) => (prev + 1) % 3);
-      }
-
-      rafIdRef.current = window.requestAnimationFrame(tick);
-    };
-
-    rafIdRef.current = window.requestAnimationFrame(tick);
-    return () => {
-      if (rafIdRef.current !== null) window.cancelAnimationFrame(rafIdRef.current);
-    };
-  }, [stepMs]);
+    if (!isActive) return;
+    const id = window.setInterval(() => {
+      setHue((prev) => (prev + 1) % 3);
+    }, stepMs);
+    return () => window.clearInterval(id);
+  }, [isActive, stepMs]);
 
   return hue;
 }
@@ -668,11 +717,15 @@ interface VisualProps {
   };
   float1: { x: MotionValue<number>; y: MotionValue<number> };
   float2: { x: MotionValue<number>; y: MotionValue<number> };
+  isActive: boolean;
+  isLite: boolean;
 }
 
 interface HeroSceneProps {
   children: ReactNode;
   isParallaxDisabled: boolean;
+  isActive: boolean;
+  isLite: boolean;
   textX: MotionValue<number>;
   textY: MotionValue<number>;
   mockX: MotionValue<number>;
@@ -685,9 +738,9 @@ interface HeroSceneProps {
   float2Y: MotionValue<number>;
 }
 
-function HeroVisual({ mockup, float1, float2 }: VisualProps) {
-  const { done, col, reduceMotion } = useHeroLiveCode();
-  const hue = useHueCycle(3200);
+function HeroVisual({ mockup, float1, float2, isActive, isLite }: VisualProps) {
+  const { done, col, reduceMotion } = useHeroLiveCode(isActive);
+  const hue = useHueCycle(isActive, isLite ? 3800 : 3200);
 
   return (
     <motion.div
@@ -713,6 +766,7 @@ function HeroVisual({ mockup, float1, float2 }: VisualProps) {
               background:
                 "conic-gradient(from 120deg at 50% 50%, rgba(168,85,247,0.26), rgba(99,102,241,0.2), rgba(6,182,212,0.22), rgba(236,72,153,0.2), rgba(251,191,36,0.16), rgba(168,85,247,0.26))",
             }}
+            data-perf="hero-halo"
             data-reduced={reduceMotion ? "true" : "false"}
             aria-hidden
           >
@@ -728,6 +782,7 @@ function HeroVisual({ mockup, float1, float2 }: VisualProps) {
               background:
                 "conic-gradient(from 300deg at 40% 40%, rgba(6,182,212,0.12), rgba(168,85,247,0.1), rgba(251,191,36,0.08), rgba(236,72,153,0.1), rgba(6,182,212,0.12))",
             }}
+            data-perf="hero-halo"
             aria-hidden
           >
             <span
@@ -737,10 +792,12 @@ function HeroVisual({ mockup, float1, float2 }: VisualProps) {
           </div>
           <div
             className="pointer-events-none absolute -inset-3 rounded-[1.75rem] bg-gradient-to-br from-[#6366F1]/30 via-[#8B5CF6]/20 to-[#EC4899]/15 opacity-90 blur-[42px]"
+            data-perf="hero-glow"
             aria-hidden
           />
           <div
             className="pointer-events-none absolute -inset-2 rounded-[1.5rem] bg-gradient-to-tr from-cyan-400/12 via-transparent to-[#6366F1]/18 blur-xl"
+            data-perf="hero-glow"
             aria-hidden
           />
 
@@ -872,6 +929,8 @@ const HeroVisualMemo = memo(HeroVisual);
 function HeroScene({
   children,
   isParallaxDisabled,
+  isActive,
+  isLite,
   textX,
   textY,
   mockX,
@@ -899,6 +958,8 @@ function HeroScene({
               mockup={{ x: mockX, y: mockY, rotateX: mockRotateX, rotateY: mockRotateY }}
               float1={{ x: float1X, y: float1Y }}
               float2={{ x: float2X, y: float2Y }}
+              isActive={isActive}
+              isLite={isLite}
             />
           </div>
         </div>
@@ -914,6 +975,9 @@ const HeroSceneMemo = memo(HeroScene);
 export default function HeroAnimations({ children }: { children: ReactNode }) {
   const canHover = useCanHover();
   const isParallaxDisabled = !canHover;
+  const performanceTier = usePerformanceTier();
+  const isLite = performanceTier === "lite";
+  const pointerFps = isLite ? 45 : 75;
 
   const {
     sectionRef,
@@ -933,7 +997,11 @@ export default function HeroAnimations({ children }: { children: ReactNode }) {
     float2Y,
     glowX,
     glowY,
-  } = useHeroParallax(isParallaxDisabled);
+  } = useHeroParallax(isParallaxDisabled, pointerFps);
+
+  const isPageVisible = usePageVisibility();
+  const isInView = useElementInView(sectionRef, { margin: "-10% 0px", threshold: 0.2 });
+  const isActive = isPageVisible && isInView;
 
   return (
     <section
@@ -974,6 +1042,8 @@ export default function HeroAnimations({ children }: { children: ReactNode }) {
 
       <HeroSceneMemo
         isParallaxDisabled={isParallaxDisabled}
+        isActive={isActive}
+        isLite={isLite}
         textX={textX}
         textY={textY}
         mockX={mockX}

@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, ExternalLink, Globe, Database, ShoppingCart, Monitor, Zap } from "lucide-react";
+import { ArrowRight, Globe, Database, ShoppingCart, Monitor, Zap } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useCanHover } from "@/lib/useCanHover";
@@ -293,17 +293,6 @@ export default function WorkPreview() {
                       ))}
                     </div>
 
-                    {project.url && (
-                      <a
-                        href={project.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-sm font-medium text-[#0A0A0A] hover:text-[#6366F1] transition-all duration-300 w-fit hover:scale-[1.02] active:scale-[0.97]"
-                      >
-                        View Live Project
-                        <ExternalLink size={13} />
-                      </a>
-                    )}
                   </div>
 
                   {/* Visual mockup */}

@@ -160,6 +160,11 @@ export default function ContactPage() {
                   <div className="text-sm text-[#6B7280]">Chat with us</div>
                 </div>
               </a>
+
+              <div className="pt-2 text-[10px] text-[#A1A1AA] opacity-70">
+                <div>Contact: +91 98880 69497</div>
+                <div>Address: Prem vihar, tibba road, ludhiana</div>
+              </div>
             </motion.div>
 
             {/* Right — short form */}

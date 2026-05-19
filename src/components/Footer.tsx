@@ -7,7 +7,7 @@ import SocialLink from "@/components/SocialLink";
 const footerLinks = {
   Company: [
     { name: "About", href: "/about" },
-    { name: "Work", href: "/work" },
+    { name: "Portfolio", href: "/portfolio" },
     { name: "Start a project", href: "/start" },
     { name: "Be a CodeAster", href: "/be-a-codeaster" },
     { name: "Contact", href: "/contact" },

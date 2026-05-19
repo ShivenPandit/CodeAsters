@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
-import { motion, useMotionValue, AnimatePresence } from "framer-motion";
+import { motion, useMotionValue } from "framer-motion";
 import { useCanHover } from "@/lib/useCanHover";
 import { scheduleRafTask } from "@/lib/rafScheduler";
 
@@ -12,7 +12,7 @@ export default function CustomCursor() {
   const hoverTargetRef = useRef<HTMLElement | null>(null);
   const [isHovering, setIsHovering] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
-  const [label, setLabel] = useState("");
+  const [hoverStyle, setHoverStyle] = useState<"default" | "action">("default");
   const [isVisible, setIsVisible] = useState(true);
   const pointerRef = useRef({ x: -100, y: -100 });
   const frameCancelRef = useRef<(() => void) | null>(null);
@@ -51,7 +51,7 @@ export default function CustomCursor() {
 
       hoverTargetRef.current = nextTarget;
       setIsHovering(true);
-      setLabel(nextTarget.getAttribute("data-cursor") || "");
+      setHoverStyle(nextTarget.hasAttribute("data-cursor") ? "action" : "default");
     };
 
     const handleMouseOut = (e: MouseEvent) => {
@@ -67,7 +67,7 @@ export default function CustomCursor() {
 
       hoverTargetRef.current = null;
       setIsHovering(false);
-      setLabel("");
+      setHoverStyle("default");
     };
 
     const handleMouseDown = () => setIsPressed(true);
@@ -104,8 +104,19 @@ export default function CustomCursor() {
 
   if (!canHover) return null;
 
-  const hasLabel = label.length > 0;
-  const size = hasLabel ? 64 : isHovering ? 44 : 8;
+  const ringSize = isHovering ? (hoverStyle === "action" ? 56 : 48) : 22;
+  const dotSize = isHovering ? 6 : 8;
+  const ringColor = isHovering
+    ? hoverStyle === "action"
+      ? "rgba(99, 102, 241, 0.55)"
+      : "rgba(15, 23, 42, 0.35)"
+    : "rgba(15, 23, 42, 0.2)";
+  const ringGlow = isHovering
+    ? hoverStyle === "action"
+      ? "0 0 18px rgba(99, 102, 241, 0.25)"
+      : "0 0 12px rgba(15, 23, 42, 0.18)"
+    : "0 0 0 transparent";
+  const dotColor = isHovering ? "rgba(99, 102, 241, 0.9)" : "rgba(10, 10, 10, 0.9)";
 
   return (
     <motion.div
@@ -116,44 +127,37 @@ export default function CustomCursor() {
         translateX: "-50%",
         translateY: "-50%",
       }}
-      animate={{ opacity: isVisible ? 1 : 0 }}
-      transition={{ duration: 0.1 }}
+      animate={{
+        opacity: isVisible ? 1 : 0,
+        scale: isPressed ? 0.92 : 1,
+      }}
+      transition={{ duration: 0.12 }}
     >
       <motion.div
-        className="rounded-full flex items-center justify-center"
+        className="absolute left-1/2 top-1/2 rounded-full border"
+        style={{ translateX: "-50%", translateY: "-50%" }}
         animate={{
-          width: size,
-          height: size,
-          backgroundColor: isHovering
-            ? "rgba(99, 102, 241, 0.1)"
-            : "rgba(10, 10, 10, 0.9)",
-          scale: isPressed ? 0.85 : 1,
-          boxShadow: isHovering
-            ? "0 0 0 1.5px rgba(99, 102, 241, 0.15)"
-            : "0 0 0 0px transparent",
+          width: ringSize,
+          height: ringSize,
+          borderColor: ringColor,
+          boxShadow: ringGlow,
+          backgroundColor: isHovering ? "rgba(99, 102, 241, 0.05)" : "rgba(15, 23, 42, 0.02)",
         }}
-        transition={{
-          type: "spring",
-          damping: 14,
-          stiffness: 620,
-          mass: 0.18,
+        transition={{ type: "spring", damping: 16, stiffness: 260, mass: 0.35 }}
+      />
+      <motion.div
+        className="absolute left-1/2 top-1/2 rounded-full"
+        style={{ translateX: "-50%", translateY: "-50%" }}
+        animate={{
+          width: dotSize,
+          height: dotSize,
+          backgroundColor: dotColor,
         }}
-      >
-        <AnimatePresence>
-          {hasLabel && (
-            <motion.span
-              key={label}
-              initial={{ opacity: 0, scale: 0.6 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.6 }}
-              transition={{ duration: 0.15 }}
-              className="text-[10px] font-medium text-[#6366F1] select-none whitespace-nowrap"
-            >
-              {label}
-            </motion.span>
-          )}
-        </AnimatePresence>
-      </motion.div>
+        transition={{ type: "spring", damping: 18, stiffness: 420, mass: 0.25 }}
+      />
+      {isHovering && (
+        <div className="cursor-orbit" style={{ width: ringSize, height: ringSize }} />
+      )}
     </motion.div>
   );
 }

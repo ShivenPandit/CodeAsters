@@ -32,7 +32,7 @@ const serviceOptions = [
   "UI/UX & Design Systems",
   "APIs & Integrations",
   "Cloud & Performance",
-  "Automation",
+  "Workflow Systems",
   "Other / Not sure",
 ];
 

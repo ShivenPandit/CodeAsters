@@ -64,7 +64,7 @@ const services = [
       "RESTful API design and implementation",
       "Authentication and authorization systems",
       "Database architecture and query optimization",
-      "Business logic and workflow automation",
+      "Business logic and workflow orchestration",
       "Caching, rate limiting, and security hardening",
     ],
     ideal: "Applications that need robust, secure, and well-structured server-side systems.",
@@ -190,7 +190,7 @@ const services = [
       "Deploy, SSL, Nginx, CI/CD, performance passes, and SEO-friendly foundations — so production stays boring in a good way.",
     includes: [
       "VPS deployment with Nginx and SSL configuration",
-      "CI/CD pipeline setup and automation",
+      "CI/CD pipeline setup and release workflows",
       "Performance auditing and Core Web Vitals optimization",
       "SEO technical architecture and indexing",
       "Ongoing maintenance, monitoring, and backups",
@@ -201,18 +201,18 @@ const services = [
   {
     icon: Bot,
     accent: "#06B6D4",
-    title: "Automation & Workflow Systems",
+    title: "Workflow Systems",
     summary:
       "Rules, triggers, and notifications across your tools — less manual work, clearer handoffs, fewer mistakes.",
     includes: [
       "Custom workflow and rules engine implementation",
-      "Trigger-based task automation across systems",
+      "Trigger-based task routing across systems",
       "Email, Slack, and webhook notification workflows",
       "Approval routing and escalation logic",
       "Monitoring, logging, and failure recovery handling",
     ],
-    ideal: "Teams that want to replace repetitive manual work with reliable, measurable automation.",
-    tags: ["Automation", "Webhooks", "APIs", "Node.js", "FastAPI"],
+    ideal: "Teams that want to replace repetitive manual work with reliable, measurable orchestration.",
+    tags: ["Workflow Orchestration", "Webhooks", "APIs", "Node.js", "FastAPI"],
   },
 ];
 
@@ -241,25 +241,43 @@ const buildTypes = [
   "Admin Dashboards",
   "ERP Systems",
   "E-commerce Platforms",
-  "Automation Workflows",
+  "Operations Workflows",
   "Backend Systems",
   "Cloud-Connected Platforms",
   "Mobile Applications",
 ];
 
-export default function ServicesPage() {
+type ServicesPageHeader = {
+  label: string;
+  title: string;
+  description: string;
+};
+
+type ServicesPageProps = {
+  header?: ServicesPageHeader;
+};
+
+const defaultHeader: ServicesPageHeader = {
+  label: "Services",
+  title: "Build across the full stack.",
+  description:
+    "Websites, products, dashboards, ERP, mobile, and cloud — shipped with modern tooling and production discipline.",
+};
+
+export default function ServicesPage({ header }: ServicesPageProps) {
   const introRef = useScrollReveal<HTMLDivElement>();
   const cardsRef = useScrollRevealContainer<HTMLDivElement>();
   const techHeadingRef = useScrollReveal<HTMLDivElement>();
   const techGridRef = useScrollRevealContainer<HTMLDivElement>();
   const ctaRef = useScrollReveal<HTMLDivElement>();
+  const pageHeader = header ?? defaultHeader;
 
   return (
     <>
       <PageHeader
-        label="Services"
-        title="Build across the full stack."
-        description="Websites, products, dashboards, ERP, mobile, and cloud — shipped with modern tooling and production discipline."
+        label={pageHeader.label}
+        title={pageHeader.title}
+        description={pageHeader.description}
       />
 
       {/* Intro */}

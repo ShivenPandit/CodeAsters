@@ -12,7 +12,6 @@ import {
   BarChart3,
   Shield,
   Server,
-  ExternalLink,
   Package,
   Factory,
   TrendingUp,
@@ -319,7 +318,7 @@ const projects = [
   {
     id: "aicatalog",
     name: "AI Catalog Generator",
-    category: "AI Product Imaging / Commerce Automation",
+    category: "AI Product Imaging / Commerce Systems",
     categoryIcon: Zap,
     color: "#0EA5E9",
     url: null,
@@ -330,7 +329,7 @@ const projects = [
     modules: null,
     scope: [
       "Single-image upload and guided generation workflow",
-      "Automated multi-view catalog output composition",
+      "Multi-view catalog output composition",
       "Consistent background and layout styling for product cards",
       "Batch-ready output panel for scalable merchandising",
       "Operator-friendly UI optimized for quick handoff",
@@ -346,17 +345,35 @@ const projects = [
   },
 ];
 
-export default function WorkPage() {
+type WorkPageHeader = {
+  label: string;
+  title: string;
+  description: string;
+};
+
+type WorkPageProps = {
+  header?: WorkPageHeader;
+};
+
+const defaultHeader: WorkPageHeader = {
+  label: "Work",
+  title: "Real systems. Shipped to production.",
+  description:
+    "From enterprise ERP platforms to high-performance websites — built from concept to deployment with hands-on execution.",
+};
+
+export default function WorkPage({ header }: WorkPageProps) {
   const canHover = useCanHover();
   const containerRef = useScrollRevealContainer<HTMLDivElement>();
   const ctaRef = useScrollReveal<HTMLDivElement>({ margin: "-60px" });
+  const pageHeader = header ?? defaultHeader;
 
   return (
     <>
       <PageHeader
-        label="Work"
-        title="Real systems. Shipped to&nbsp;production."
-        description="From enterprise ERP platforms to high-performance websites — built from concept to deployment with hands-on execution."
+        label={pageHeader.label}
+        title={pageHeader.title}
+        description={pageHeader.description}
       />
 
       <section className="bg-page-soft section-space-bottom">
@@ -502,17 +519,6 @@ export default function WorkPage() {
                         ))}
                       </div>
 
-                      {project.url && (
-                        <a
-                          href={project.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0A0A0A] hover:bg-[#1a1a1a] text-white text-sm font-medium rounded-full transition-all duration-300 shadow-sm hover:scale-[1.02] active:scale-[0.97]"
-                        >
-                          View Live Project
-                          <ExternalLink size={14} />
-                        </a>
-                      )}
                     </div>
                   </div>
                 </article>

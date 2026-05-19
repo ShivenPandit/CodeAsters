@@ -10,7 +10,8 @@ import { scheduleRafTask } from "@/lib/rafScheduler";
 
 const links = [
   { name: "Services", href: "/services" },
-  { name: "Work", href: "/work" },
+  { name: "Products", href: "/products" },
+  { name: "Portfolio", href: "/portfolio" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
 ];

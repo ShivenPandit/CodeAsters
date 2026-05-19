@@ -74,6 +74,11 @@ export default function Terms() {
           </section>
 
           <section>
+            <h2 className="text-lg font-semibold text-[#0A0A0A] mb-3">Refund Policy</h2>
+            <p>On any circumstances, refunds are not applicable.</p>
+          </section>
+
+          <section>
             <h2 className="text-lg font-semibold text-[#0A0A0A] mb-3">Intellectual Property</h2>
             <p>
               Upon full payment, all custom code, designs, and deliverables created specifically for your
