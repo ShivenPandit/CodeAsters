@@ -32,7 +32,7 @@ function usePageVisibility() {
 }
 
 function useElementInView<T extends HTMLElement>(
-  ref: RefObject<T>,
+  ref: RefObject<T | null>,
   options?: { margin?: string; threshold?: number }
 ) {
   const [isInView, setIsInView] = useState(true);
