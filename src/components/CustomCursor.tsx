@@ -16,6 +16,24 @@ export default function CustomCursor() {
   const [isVisible, setIsVisible] = useState(true);
   const pointerRef = useRef({ x: -100, y: -100 });
   const frameCancelRef = useRef<(() => void) | null>(null);
+  const interactiveSelector = "a, button, input, textarea, select, [role='button'], [data-cursor]";
+
+  const updateHoverTarget = useCallback(() => {
+    const { x, y } = pointerRef.current;
+    if (x < 0 || y < 0) return;
+
+    const hit = document.elementFromPoint(x, y) as HTMLElement | null;
+    const interactive = hit?.closest(interactiveSelector) as HTMLElement | null;
+
+    if (interactive === hoverTargetRef.current) return;
+
+    hoverTargetRef.current = interactive;
+    const nextHovering = Boolean(interactive);
+    const nextStyle = interactive && interactive.hasAttribute("data-cursor") ? "action" : "default";
+
+    setIsHovering((prev) => (prev === nextHovering ? prev : nextHovering));
+    setHoverStyle((prev) => (prev === nextStyle ? prev : nextStyle));
+  }, []);
 
   const moveCursor = useCallback(
     (e: PointerEvent) => {
@@ -26,58 +44,26 @@ export default function CustomCursor() {
         frameCancelRef.current = null;
         cursorX.set(pointerRef.current.x);
         cursorY.set(pointerRef.current.y);
+        updateHoverTarget();
       });
     },
-    [cursorX, cursorY]
+    [cursorX, cursorY, updateHoverTarget]
   );
 
   useEffect(() => {
     if (!canHover) return;
 
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const interactive =
-        target.closest("a") ||
-        target.closest("button") ||
-        target.closest("[role='button']") ||
-        target.closest("[data-cursor]") ||
-        target.closest("input") ||
-        target.closest("textarea");
-
-      if (!interactive) return;
-
-      const nextTarget = interactive as HTMLElement;
-      if (hoverTargetRef.current === nextTarget) return;
-
-      hoverTargetRef.current = nextTarget;
-      setIsHovering(true);
-      setHoverStyle(nextTarget.hasAttribute("data-cursor") ? "action" : "default");
-    };
-
-    const handleMouseOut = (e: MouseEvent) => {
-      const relatedTarget = e.relatedTarget as HTMLElement | null;
-
-      if (
-        hoverTargetRef.current &&
-        relatedTarget &&
-        hoverTargetRef.current.contains(relatedTarget)
-      ) {
-        return;
-      }
-
+    const handleMouseDown = () => setIsPressed(true);
+    const handleMouseUp = () => setIsPressed(false);
+    const handleMouseLeave = () => {
+      setIsVisible(false);
       hoverTargetRef.current = null;
       setIsHovering(false);
       setHoverStyle("default");
     };
-
-    const handleMouseDown = () => setIsPressed(true);
-    const handleMouseUp = () => setIsPressed(false);
-    const handleMouseLeave = () => setIsVisible(false);
     const handleMouseEnter = () => setIsVisible(true);
 
     window.addEventListener("pointermove", moveCursor, { passive: true });
-    document.addEventListener("mouseover", handleMouseOver);
-    document.addEventListener("mouseout", handleMouseOut);
     document.addEventListener("mousedown", handleMouseDown);
     document.addEventListener("mouseup", handleMouseUp);
     document.documentElement.addEventListener("mouseleave", handleMouseLeave);
@@ -87,8 +73,6 @@ export default function CustomCursor() {
       frameCancelRef.current?.();
       frameCancelRef.current = null;
       window.removeEventListener("pointermove", moveCursor);
-      document.removeEventListener("mouseover", handleMouseOver);
-      document.removeEventListener("mouseout", handleMouseOut);
       document.removeEventListener("mousedown", handleMouseDown);
       document.removeEventListener("mouseup", handleMouseUp);
       document.documentElement.removeEventListener(
