@@ -129,7 +129,9 @@ export default function Navbar() {
 
           <LayoutGroup>
           <div className="hidden lg:flex items-center gap-6 xl:gap-8">
-            {links.map((link) => (
+            {links
+              .filter((link) => link.name !== "Portfolio")
+              .map((link) => (
               <Link
                 key={link.name}
                 href={link.href}

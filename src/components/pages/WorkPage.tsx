@@ -118,7 +118,7 @@ function DeepStudioMockup() {
     <BrowserFrameMockup
       src="/deepstudio-preview.png"
       alt="DeepStudio website preview"
-      label="deep-studio.vercel.app"
+      label="deepstudio website"
       imageWidth={1280}
       imageHeight={720}
       imageQuality={85}
@@ -146,7 +146,7 @@ function MyChoicesMockup() {
     <BrowserFrameMockup
       src="/mychoices-preview.png"
       alt="My Choices website preview"
-      label="my-choices-lovat.vercel.app"
+      label="my choices storefront"
       imageWidth={1280}
       imageHeight={720}
       imageQuality={85}
@@ -194,7 +194,7 @@ const projects = [
     category: "Website Design & Development",
     categoryIcon: Globe,
     color: "#6366F1",
-    url: "https://deep-studio.vercel.app/",
+    url: null,
     summary:
       "A premium studio website built to reflect a high-end creative identity. The project required fluid page transitions, performance-first architecture, and bold visual design — delivered with a modern frontend stack and strong attention to interaction quality and front-end polish.",
     problem: null,
@@ -221,7 +221,7 @@ const projects = [
     category: "E-commerce Website",
     categoryIcon: ShoppingCart,
     color: "#EC4899",
-    url: "https://my-choices-lovat.vercel.app/",
+    url: null,
     summary:
       "A client e-commerce website built in Next.js with a clean shopping flow, category-driven browsing, and responsive product experiences across devices.",
     problem: null,
