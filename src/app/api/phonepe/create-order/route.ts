@@ -10,6 +10,7 @@ const rateLimitConfig = {
   max: 8,
   windowMs: 60 * 1000,
 };
+const orderCookieName = "phonepe_order_id";
 
 function extractClientIp(headerList: Headers) {
   const xff = headerList.get("x-forwarded-for");
@@ -141,12 +142,29 @@ export async function POST(request: Request) {
       },
     });
 
-    return NextResponse.json({ ok: true, ...order }, { status: 200 });
+    const response = NextResponse.json(
+      { ok: true, ...order },
+      {
+        status: 200,
+        headers: {
+          "Cache-Control": "no-store",
+        },
+      }
+    );
+    response.cookies.set(orderCookieName, order.merchantOrderId, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60,
+    });
+
+    return response;
   } catch (error) {
     const detail = error instanceof Error ? error.message : "Unable to create order.";
     return NextResponse.json(
       { ok: false, error: detail },
-      { status: 502 }
+      { status: 502, headers: { "Cache-Control": "no-store" } }
     );
   }
 }

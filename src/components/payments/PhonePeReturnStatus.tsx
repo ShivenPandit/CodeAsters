@@ -17,7 +17,23 @@ type StatusResponse = {
 };
 
 export default function PhonePeReturnStatus({ merchantOrderId }: { merchantOrderId: string }) {
-  const [resolvedOrderId, setResolvedOrderId] = useState(merchantOrderId);
+  const [resolvedOrderId, setResolvedOrderId] = useState(() => {
+    if (merchantOrderId) return merchantOrderId;
+    if (typeof window === "undefined") return "";
+
+    try {
+      const params = new URLSearchParams(window.location.search);
+      return (
+        params.get("merchantOrderId") ||
+        params.get("orderId") ||
+        window.sessionStorage.getItem("phonepe:merchantOrderId") ||
+        window.localStorage.getItem("phonepe:merchantOrderId") ||
+        ""
+      );
+    } catch {
+      return "";
+    }
+  });
   const [status, setStatus] = useState<StatusState>("loading");
   const [detail, setDetail] = useState("");
 
@@ -32,7 +48,10 @@ export default function PhonePeReturnStatus({ merchantOrderId }: { merchantOrder
     if (typeof window === "undefined") return;
 
     try {
+      const params = new URLSearchParams(window.location.search);
       const stored =
+        params.get("merchantOrderId") ||
+        params.get("orderId") ||
         window.sessionStorage.getItem("phonepe:merchantOrderId") ||
         window.localStorage.getItem("phonepe:merchantOrderId");
       if (stored && stored !== resolvedOrderId) {

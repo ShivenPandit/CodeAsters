@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import SEO, { createSEOMetadata } from "@/components/SEO";
 import PaymentReturnPage from "@/components/pages/PaymentReturnPage";
 import { buildStandardBreadcrumb, buildWebPageSchema } from "@/lib/seo";
@@ -13,13 +14,21 @@ export const metadata: Metadata = createSEOMetadata({
   keywords: ["payment status", "PhonePe", "order status"],
 });
 
-export default function PaymentReturn({
+const orderCookieName = "phonepe_order_id";
+
+export default async function PaymentReturn({
   searchParams,
 }: {
-  searchParams: { merchantOrderId?: string };
+  searchParams: Promise<{ merchantOrderId?: string; orderId?: string }>;
 }) {
+  const resolvedSearchParams = await searchParams;
+  const cookieStore = await cookies();
   const merchantOrderId =
-    typeof searchParams.merchantOrderId === "string" ? searchParams.merchantOrderId : "";
+    typeof resolvedSearchParams.merchantOrderId === "string"
+      ? resolvedSearchParams.merchantOrderId
+      : typeof resolvedSearchParams.orderId === "string"
+        ? resolvedSearchParams.orderId
+        : cookieStore.get(orderCookieName)?.value || "";
 
   return (
     <>
