@@ -20,6 +20,7 @@ type PhonePeStatusResponse = Record<string, unknown>;
 export type PhonePeCreateOrderInput = {
   amount: number;
   merchantOrderId?: string;
+  metaInfo?: Record<string, string>;
   expireAfter?: number;
 };
 
@@ -141,6 +142,7 @@ export async function createPhonePeOrder(input: PhonePeCreateOrderInput) {
       },
     },
     ...(expireAfter ? { expireAfter } : {}),
+    ...(input.metaInfo ? { metaInfo: input.metaInfo } : {}),
   };
 
   const response = await fetch(PHONEPE_CHECKOUT_URL, {

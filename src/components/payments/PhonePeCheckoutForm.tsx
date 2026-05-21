@@ -7,7 +7,9 @@ const inputBase =
   "w-full px-4 py-3 rounded-xl border border-[#D4D4D4] bg-white text-[#0A0A0A] text-sm placeholder:text-[#9CA3AF] outline-none transition-all duration-200 focus:border-[#6366F1] focus:ring-2 focus:ring-[#6366F1]/10";
 
 export default function PhonePeCheckoutForm() {
-  const [amount, setAmount] = useState("499");
+  const [customerName, setCustomerName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [amount, setAmount] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -17,6 +19,21 @@ export default function PhonePeCheckoutForm() {
 
     setStatus("loading");
     setErrorMessage("");
+
+    const trimmedName = customerName.trim();
+    const trimmedPhone = customerPhone.trim();
+
+    if (!trimmedName) {
+      setStatus("error");
+      setErrorMessage("Enter customer name.");
+      return;
+    }
+
+    if (!trimmedPhone) {
+      setStatus("error");
+      setErrorMessage("Enter customer phone number.");
+      return;
+    }
 
     const amountValue = Number(amount);
     if (!Number.isFinite(amountValue) || amountValue <= 0) {
@@ -40,6 +57,8 @@ export default function PhonePeCheckoutForm() {
         },
         body: JSON.stringify({
           amount: amountPaise,
+          customerName: trimmedName,
+          customerPhone: trimmedPhone,
         }),
       });
 
@@ -72,7 +91,31 @@ export default function PhonePeCheckoutForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div>
-        <label className="block text-sm font-medium text-[#0A0A0A] mb-2">Amount (INR)</label>
+        <label className="mb-2 block text-sm font-medium text-[#0A0A0A]">Customer name</label>
+        <input
+          type="text"
+          value={customerName}
+          onChange={(event) => setCustomerName(event.target.value)}
+          className={inputBase}
+          placeholder="Enter customer name"
+          autoComplete="name"
+        />
+      </div>
+
+      <div>
+        <label className="mb-2 block text-sm font-medium text-[#0A0A0A]">Phone number</label>
+        <input
+          type="tel"
+          value={customerPhone}
+          onChange={(event) => setCustomerPhone(event.target.value)}
+          className={inputBase}
+          placeholder="+91 98XXXXXX90"
+          autoComplete="tel"
+        />
+      </div>
+
+      <div>
+        <label className="mb-2 block text-sm font-medium text-[#0A0A0A]">Amount (INR)</label>
         <input
           type="number"
           min="1"
@@ -80,7 +123,7 @@ export default function PhonePeCheckoutForm() {
           value={amount}
           onChange={(event) => setAmount(event.target.value)}
           className={inputBase}
-          placeholder="499"
+          placeholder="Enter custom amount"
           inputMode="decimal"
         />
       </div>

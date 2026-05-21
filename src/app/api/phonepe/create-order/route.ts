@@ -47,6 +47,23 @@ function toInteger(value: unknown) {
   return parsed;
 }
 
+function stripControlChars(value: string) {
+  return value.replace(/[\u0000-\u001F\u007F]/g, "");
+}
+
+function safeText(value: unknown, maxLength: number) {
+  if (typeof value !== "string") return "";
+  return stripControlChars(value).trim().slice(0, maxLength);
+}
+
+function normalizePhoneNumber(value: string) {
+  return value.replace(/[^\d+]/g, "");
+}
+
+function isValidPhoneNumber(value: string) {
+  return /^\+?[0-9]{7,20}$/.test(value);
+}
+
 export async function POST(request: Request) {
   const headerList = await headers();
   const isDevelopment = process.env.NODE_ENV !== "production";
@@ -98,9 +115,30 @@ export async function POST(request: Request) {
     );
   }
 
+  const customerName = safeText(data.customerName, 80);
+  const customerPhone = normalizePhoneNumber(safeText(data.customerPhone, 24));
+
+  if (!customerName) {
+    return NextResponse.json(
+      { ok: false, error: "Customer name is required." },
+      { status: 400 }
+    );
+  }
+
+  if (!customerPhone || !isValidPhoneNumber(customerPhone)) {
+    return NextResponse.json(
+      { ok: false, error: "Valid customer phone number is required." },
+      { status: 400 }
+    );
+  }
+
   try {
     const order = await createPhonePeOrder({
       amount,
+      metaInfo: {
+        udf1: customerName,
+        udf2: customerPhone,
+      },
     });
 
     return NextResponse.json({ ok: true, ...order }, { status: 200 });
