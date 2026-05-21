@@ -402,6 +402,7 @@ export default function ProductsPage() {
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <PrimaryButton href="/services">Explore Services</PrimaryButton>
               <SecondaryButton href="/contact">Book Consultation</SecondaryButton>
+              <SecondaryButton href="/payment">Pay with PhonePe</SecondaryButton>
             </div>
 
             <div className="mt-10 flex flex-wrap gap-3 text-xs text-[#6B7280]">

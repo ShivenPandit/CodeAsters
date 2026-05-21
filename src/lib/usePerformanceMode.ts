@@ -31,7 +31,11 @@ export function usePerformanceTier() {
   const [tier, setTier] = useState<PerformanceTier>("full");
 
   useEffect(() => {
-    setTier(detectPerformanceTier());
+    const timeoutId = window.setTimeout(() => {
+      setTier(detectPerformanceTier());
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, []);
 
   return tier;

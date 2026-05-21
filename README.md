@@ -34,6 +34,33 @@ We use cutting-edge technologies to build robust and scalable systems:
 
 ---
 
+## 💳 PhonePe Payment Gateway
+
+This project includes a secure PhonePe Standard Checkout (OAuth) integration using Next.js API routes.
+
+### Environment Variables
+
+- PHONEPE_CLIENT_ID=your_client_id
+- PHONEPE_CLIENT_SECRET=your_client_secret
+- PHONEPE_CLIENT_VERSION=your_client_version
+- PHONEPE_REDIRECT_URL=https://yourdomain.com/payment/return
+- PHONEPE_WEBHOOK_USERNAME=your_webhook_username
+- PHONEPE_WEBHOOK_PASSWORD=your_webhook_password
+- PHONEPE_EXPIRE_AFTER_SECONDS=1200 (optional)
+- PHONEPE_MERCHANT_ID=your_merchant_id (partner integrations only)
+
+### API Endpoints
+
+- POST /api/phonepe/create-order
+- GET /api/phonepe/order-status?merchantOrderId=...&details=false
+- POST /api/phonepe/webhook
+
+### Payment Page
+
+Open /payment to start the PhonePe checkout flow in the browser. The redirect lands on /payment/return.
+
+---
+
 ## 🧩 Services
 
 ### 💻 Web Design & Development
